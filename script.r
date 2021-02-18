@@ -52,6 +52,27 @@ colnames(df) <- convert2DwC(colnames(df)) # convert to DarwinCore terms
 #                           "scientificNameAuthorship", "taxonomicStatus", 
 #                           "nomenclaturalStatus", "namePublishedIn")
 
+# basic string cleaning functions
+toproper <- function(x) ifelse(!is.na(x), paste0(toupper(substr(x, 1, 1)), tolower(substring(x, 2))),NA) # fix capitalization
+removePunc <- function(x) ifelse(!is.na(x), gsub('[[:punct:]]+','',x)) # remove punctuation (but not spaces)
+containsPunc <- function(x) ifelse(!is.na(x), grepl('[[:punct:]]', x, perl = TRUE))
+
+# fix capitalization for both genus and species
+for(i in 1:ncol(df)) {
+  name <- colnames(df)[i]
+  if(grepl('infraspecificepithet', tolower(name), perl = TRUE)|
+     grepl('variety', tolower(name), perl = TRUE) |
+     grepl('form', tolower(name), perl = TRUE) |
+     grepl('species', tolower(name), perl = TRUE)
+  ) {
+    df[,i] <- sapply(df[,i], tolower)
+  } else if(grepl('author', tolower(name), perl = TRUE) |
+            grepl('publi', tolower(name), perl = TRUE)) {
+  } else {
+    df[,i] <- sapply(df[,i], toproper)
+  }
+}
+
 # select single-word specific_epithets
 name_length <- function(x) ifelse(!is.na(x), length(unlist(strsplit(x, ' '))), 0)
 incomplete_epithet <- df[which(lapply(df$species, name_length) == 0 | lapply(df$genus, name_length) == 0),] # no-name species OR genus
@@ -60,16 +81,6 @@ multi_epithet <- df[which(lapply(df$species, name_length) > 1 | lapply(df$genus,
 
 multi_subsp <- single_epithet[which(lapply(single_epithet$infraspecificEpithet, name_length) > 1),] # multi-name subspecies
 single_epithet <- single_epithet[which(lapply(single_epithet$infraspecificEpithet, name_length) <= 1),] # single subspecific name OR no subspecies
-
-# basic string cleaning functions
-toproper <- function(x) ifelse(!is.na(x), paste0(toupper(substr(x, 1, 1)), tolower(substring(x, 2))),NA) # fix capitalization
-removePunc <- function(x) ifelse(!is.na(x), gsub('[[:punct:] ]+','',x)) # remove punctuation (but not spaces)
-containsPunc <- function(x) ifelse(!is.na(x), grepl('[[:punct:]]', x, perl = TRUE))
-
-# fix capitalization for both genus and species
-single_epithet$genus <- toproper(single_epithet$genus)
-single_epithet$species <- tolower(single_epithet$species)
-single_epithet$infraspecificEpithet <- tolower(single_epithet$infraspecificEpithet)
 
 # strip spaces from ends of strings
 single_epithet$genus <- lapply(single_epithet$genus, trimws)
@@ -107,15 +118,13 @@ single_epithet <- single_epithet[which(!duplicated(single_epithet$canonical)),] 
 # Watch for: Ornithodoros vunkeri; Ornithodoros yukeri; Ornithodoros yunkeri
 
 # synonymize subspecies example: Amblyomma triguttatum triguttatum = Amblyomma triguttatum
-synonymize_subspecies()
+single_epithet <- synonymize_subspecies(single_epithet)
 
+# number unique
+nominate_species <- single_epithet[single_epithet$accid == 0, ]
+subspecies <- single_epithet[single_epithet$accid != 0, ]
 
-
-# handle no-word names
-# incomplete_epithet
-
+# handle incomplete_epithet
 # handle multi-word names
-# multi_epithet
-
-# handle authors
+# handle authors, years
 
