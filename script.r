@@ -4,6 +4,30 @@ library(taxotools)
 # load data
 df <- read.csv('input/Tick Taxonomy NMNH - Sheet1.csv')
 
+containsTaxonomy <- function(x) ifelse(!is.na(x), 
+                                       grepl('domain', tolower(x), perl = TRUE) |
+                                       grepl('kingdom', tolower(x), perl = TRUE) |
+                                       grepl('regnum', tolower(x), perl = TRUE) |
+                                       grepl('phylum', tolower(x), perl = TRUE) |
+                                       grepl('class', tolower(x), perl = TRUE) |
+                                       grepl('legio', tolower(x), perl = TRUE) |
+                                       grepl('cohort', tolower(x), perl = TRUE) |
+                                       grepl('order', tolower(x), perl = TRUE) |
+                                       grepl('famil', tolower(x), perl = TRUE) |
+                                       grepl('trib', tolower(x), perl = TRUE) |
+                                       grepl('genus', tolower(x), perl = TRUE) |
+                                       grepl('species', tolower(x), perl = TRUE) |
+                                       grepl('sectio', tolower(x), perl = TRUE) |
+                                       grepl('variet', tolower(x), perl = TRUE) |
+                                       grepl('form', tolower(x), perl = TRUE) |
+                                       grepl('clade', tolower(x), perl = TRUE) |
+                                       grepl('series', tolower(x), perl = TRUE) |
+                                       grepl('author', tolower(x), perl = TRUE) |
+                                       grepl('publica', tolower(x), perl = TRUE) |
+                                       grepl('year', tolower(x), perl = TRUE)) 
+
+df <- df[ , -which(!(names(df) %in% names(which(sapply(names(df), containsTaxonomy) == TRUE))))] # remove columns that do not relate to taxonomy
+
 # select single-word specific_epithets
 name_length <- function(x) ifelse(!is.na(x), length(unlist(strsplit(x, ' '))), 0)
 no_epithet <- df[which(lapply(df$Species, name_length) == 0 | lapply(df$Genus, name_length) == 0),] # no-name species OR genus
@@ -59,6 +83,9 @@ single_epithet <- single_epithet[which(!duplicated(single_epithet$canonical)),] 
 # Watch for: Ornithodoros vunkeri; Ornithodoros yukeri; Ornithodoros yunkeri
 
 # synonymize subspecies example: Amblyomma triguttatum triguttatum = Amblyomma triguttatum
+synonymize_subspecies()
+
+
 
 # handle no-word names
 # no_epithet
