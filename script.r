@@ -54,51 +54,51 @@ colnames(df) <- convert2DwC(colnames(df)) # convert to DarwinCore terms
 
 # select single-word specific_epithets
 name_length <- function(x) ifelse(!is.na(x), length(unlist(strsplit(x, ' '))), 0)
-no_epithet <- df[which(lapply(df$Species, name_length) == 0 | lapply(df$Genus, name_length) == 0),] # no-name species OR genus
-single_epithet <- df[which(lapply(df$Species, name_length) == 1 & lapply(df$Genus, name_length) == 1),] # single-name species AND genus
-multi_epithet <- df[which(lapply(df$Species, name_length) > 1 | lapply(df$Genus, name_length) > 1),] # multi-name species OR genus
+incomplete_epithet <- df[which(lapply(df$species, name_length) == 0 | lapply(df$genus, name_length) == 0),] # no-name species OR genus
+single_epithet <- df[which(lapply(df$species, name_length) == 1 & lapply(df$genus, name_length) == 1),] # single-name species AND genus
+multi_epithet <- df[which(lapply(df$species, name_length) > 1 | lapply(df$genus, name_length) > 1),] # multi-name species OR genus
 
-multi_subsp <- single_epithet[which(lapply(single_epithet$Subspecies, name_length) > 1),] # multi-name subspecies
-single_epithet <- single_epithet[which(lapply(single_epithet$Subspecies, name_length) <= 1),] # single subspecific name OR no subspecies
+multi_subsp <- single_epithet[which(lapply(single_epithet$infraspecificEpithet, name_length) > 1),] # multi-name subspecies
+single_epithet <- single_epithet[which(lapply(single_epithet$infraspecificEpithet, name_length) <= 1),] # single subspecific name OR no subspecies
 
 # basic string cleaning functions
 toproper <- function(x) ifelse(!is.na(x), paste0(toupper(substr(x, 1, 1)), tolower(substring(x, 2))),NA) # fix capitalization
 removePunc <- function(x) ifelse(!is.na(x), gsub('[[:punct:] ]+','',x)) # remove punctuation (but not spaces)
 containsPunc <- function(x) ifelse(!is.na(x), grepl('[[:punct:]]', x, perl = TRUE))
 
-# fix capitalization for both Genus and Species
-single_epithet$Genus <- toproper(single_epithet$Genus)
-single_epithet$Species <- tolower(single_epithet$Species)
-single_epithet$Subspecies <- tolower(single_epithet$Subspecies)
+# fix capitalization for both genus and species
+single_epithet$genus <- toproper(single_epithet$genus)
+single_epithet$species <- tolower(single_epithet$species)
+single_epithet$infraspecificEpithet <- tolower(single_epithet$infraspecificEpithet)
 
 # strip spaces from ends of strings
-single_epithet$Genus <- lapply(single_epithet$Genus, trimws)
-single_epithet$Species <- lapply(single_epithet$Species, trimws)
-single_epithet$Subspecies <- lapply(single_epithet$Subspecies, trimws)
+single_epithet$genus <- lapply(single_epithet$genus, trimws)
+single_epithet$species <- lapply(single_epithet$species, trimws)
+single_epithet$infraspecificEpithet <- lapply(single_epithet$infraspecificEpithet, trimws)
 
 # test for names containing punctuation
-punctuated_species <- single_epithet[which(lapply(single_epithet$Genus, containsPunc) == TRUE |
-                                             lapply(single_epithet$Species, containsPunc) == TRUE |
-                                             lapply(single_epithet$Subspecies, containsPunc) == TRUE),]
-single_epithet <- single_epithet[which(lapply(single_epithet$Genus, containsPunc) == FALSE &
-                                         lapply(single_epithet$Species, containsPunc) == FALSE &
-                                         lapply(single_epithet$Subspecies, containsPunc) == FALSE),]
+punctuated_species <- single_epithet[which(lapply(single_epithet$genus, containsPunc) == TRUE |
+                                             lapply(single_epithet$species, containsPunc) == TRUE |
+                                             lapply(single_epithet$infraspecificEpithet, containsPunc) == TRUE),]
+single_epithet <- single_epithet[which(lapply(single_epithet$genus, containsPunc) == FALSE &
+                                         lapply(single_epithet$species, containsPunc) == FALSE &
+                                         lapply(single_epithet$infraspecificEpithet, containsPunc) == FALSE),]
 
 # remove sp's
-single_epithet <- single_epithet[which(single_epithet$Species != 'sp'), ]
+single_epithet <- single_epithet[which(single_epithet$species != 'sp'), ]
 
 # remove very short names for manual verification
-short_names_CHECK <- single_epithet[which(lapply(single_epithet$Species, nchar) < 4 |
-                         lapply(single_epithet$Genus, nchar) < 4),] # very short specific_epithet OR genus
-single_epithet <- single_epithet[which(lapply(single_epithet$Species, nchar) >= 4 &
-                                         lapply(single_epithet$Genus, nchar) >= 4),] 
+short_names_CHECK <- single_epithet[which(lapply(single_epithet$species, nchar) < 4 |
+                         lapply(single_epithet$genus, nchar) < 4),] # very short specific_epithet OR genus
+single_epithet <- single_epithet[which(lapply(single_epithet$species, nchar) >= 4 &
+                                         lapply(single_epithet$genus, nchar) >= 4),] 
 
 # generate canonical name
 single_epithet <- cast_canonical(single_epithet,
                                  canonical="canonical", 
-                                 genus = "Genus", 
-                                 species = "Species",
-                                 subspecies = "Subspecies")
+                                 genus = "genus", 
+                                 species = "species",
+                                 subspecies = "infraspecificEpithet")
 # check for duplicate names 
 duplicates <- single_epithet[which(duplicated(single_epithet$canonical)),]
 single_epithet <- single_epithet[which(!duplicated(single_epithet$canonical)),] # deduplicated list
@@ -112,7 +112,7 @@ synonymize_subspecies()
 
 
 # handle no-word names
-# no_epithet
+# incomplete_epithet
 
 # handle multi-word names
 # multi_epithet
