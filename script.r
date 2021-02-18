@@ -4,6 +4,8 @@ library(taxotools)
 # load data
 df <- read.csv('input/Tick Taxonomy NMNH - Sheet1.csv')
 
+colnames(df) <- tolower(colnames(df)) # lower case column names
+
 containsTaxonomy <- function(x) ifelse(!is.na(x), 
                                        grepl('domain', tolower(x), perl = TRUE) |
                                        grepl('kingdom', tolower(x), perl = TRUE) |
@@ -23,10 +25,32 @@ containsTaxonomy <- function(x) ifelse(!is.na(x),
                                        grepl('clade', tolower(x), perl = TRUE) |
                                        grepl('series', tolower(x), perl = TRUE) |
                                        grepl('author', tolower(x), perl = TRUE) |
-                                       grepl('publica', tolower(x), perl = TRUE) |
-                                       grepl('year', tolower(x), perl = TRUE)) 
+                                       grepl('publi', tolower(x), perl = TRUE) |
+                                       grepl('year', tolower(x), perl = TRUE) |
+                                       grepl('status', tolower(x), perl = TRUE) |
+                                       grepl('rank', tolower(x), perl = TRUE) |
+                                       grepl('name', tolower(x), perl = TRUE) |
+                                       grepl('epithet', tolower(x), perl = TRUE)) 
 
 df <- df[ , -which(!(names(df) %in% names(which(sapply(names(df), containsTaxonomy) == TRUE))))] # remove columns that do not relate to taxonomy
+
+# convert to DarwinCore terms
+convert2DwC <- function(df_colname) {
+                       x <- gsub('.*subspecies.*','infraspecificEpithet',df_colname)
+                       x <- gsub('.*rank.*','taxonRank',x)
+                       x <- gsub('.*author.*','scientificNameAuthorship',x)
+                       x <- gsub('.*year.*','namePublishedInYear',x)
+                       x
+                       } # this needs work
+
+colnames(df) <- convert2DwC(colnames(df)) # convert to DarwinCore terms
+
+# darwinCoreTaxonTerms <- c("kingdom", "phylum", "class", "order", "family",
+#                           "genus", "subgenus", "species", "specificEpithet", 
+#                           "scientificName", "infraspecificEpithet", "taxonRank",
+#                           "higherClassification", "namePublishedInYear", 
+#                           "scientificNameAuthorship", "taxonomicStatus", 
+#                           "nomenclaturalStatus", "namePublishedIn")
 
 # select single-word specific_epithets
 name_length <- function(x) ifelse(!is.na(x), length(unlist(strsplit(x, ' '))), 0)
