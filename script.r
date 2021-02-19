@@ -110,12 +110,45 @@ single_epithet <- cast_canonical(single_epithet,
                                  genus = "genus", 
                                  species = "species",
                                  subspecies = "infraspecificEpithet")
-# check for duplicate names 
-duplicates <- single_epithet[which(duplicated(single_epithet$canonical)),]
-single_epithet <- single_epithet[which(!duplicated(single_epithet$canonical)),] # deduplicated list
 
 # check Levenshtein's Distance (e.g., misspellings) [may need to do before canonical name generation]
 # Watch for: Ornithodoros vunkeri; Ornithodoros yukeri; Ornithodoros yunkeri
+library(stringdist)
+temp <- c()
+similar_names <-c()
+compared_names <- c()
+df2 <- c()
+io <- FALSE
+for(i in 1:length(single_epithet$canonical)){
+  if(!(single_epithet$canonical[i] %in% similar_names)){ # testing
+    for(j in 1:length(single_epithet$canonical)){
+      score <- stringdist(single_epithet$canonical[i], single_epithet$canonical[j], "dl")
+      temp <- c(temp, score)
+    }
+    if(any(temp %in% c(1:3))){
+      if(io){
+        df2 <- cbind(df2, temp)
+        wc = wc + 1
+      } else {
+        df2 <- as.data.frame(temp)
+        rownames(df2) <- single_epithet$canonical
+        io <- TRUE
+        wc <- 1
+      }
+      colnames(df2)[which(colnames(df2) == "temp")] <- single_epithet$canonical[i]
+      similar <- rownames(df2)[which(df2[,wc]==min(df2[,wc][which(df2[,wc]>0)]))]
+      comp_name <- rep(single_epithet$canonical[i], length(similar))
+      similar_names <- c(similar_names, similar)
+      compared_names <- c(compared_names, comp_name)
+    }
+    temp <- c()
+  }
+}
+check_mat <- as.data.frame(cbind(compared_names, similar_names))
+
+# check for duplicate names 
+duplicates <- single_epithet[which(duplicated(single_epithet$canonical)),]
+single_epithet <- single_epithet[which(!duplicated(single_epithet$canonical)),] # deduplicated list
 
 # synonymize subspecies example: Amblyomma triguttatum triguttatum = Amblyomma triguttatum
 single_epithet <- synonymize_subspecies(single_epithet)
