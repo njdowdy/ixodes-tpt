@@ -4,6 +4,9 @@ library(taxotools)
 # load data
 df <- read.csv('input/Tick Taxonomy NMNH - Sheet1.csv')
 
+# number of starting records for verification
+starting_records <- nrow(df)
+
 colnames(df) <- tolower(colnames(df)) # lower case column names
 
 containsTaxonomy <- function(x) ifelse(!is.na(x), 
@@ -96,6 +99,7 @@ single_epithet <- single_epithet[which(lapply(single_epithet$genus, containsPunc
                                          lapply(single_epithet$infraspecificEpithet, containsPunc) == FALSE),]
 
 # remove sp's
+removed_sp <- single_epithet[which(single_epithet$species == 'sp'), ]
 single_epithet <- single_epithet[which(single_epithet$species != 'sp'), ]
 
 # remove very short names for manual verification
@@ -104,60 +108,77 @@ short_names_CHECK <- single_epithet[which(lapply(single_epithet$species, nchar) 
 single_epithet <- single_epithet[which(lapply(single_epithet$species, nchar) >= 4 &
                                          lapply(single_epithet$genus, nchar) >= 4),] 
 
-# generate canonical name
-single_epithet <- cast_canonical(single_epithet,
-                                 canonical="canonical", 
-                                 genus = "genus", 
-                                 species = "species",
-                                 subspecies = "infraspecificEpithet")
-
-# check Levenshtein's Distance (e.g., misspellings) [may need to do before canonical name generation]
-# Watch for: Ornithodoros vunkeri; Ornithodoros yukeri; Ornithodoros yunkeri
-library(stringdist)
-temp <- c()
-similar_names <-c()
-compared_names <- c()
-df2 <- c()
-io <- FALSE
-for(i in 1:length(single_epithet$canonical)){
-  if(!(single_epithet$canonical[i] %in% similar_names)){ # testing
-    for(j in 1:length(single_epithet$canonical)){
-      score <- stringdist(single_epithet$canonical[i], single_epithet$canonical[j], "dl")
-      temp <- c(temp, score)
-    }
-    if(any(temp %in% c(1:3))){
-      if(io){
-        df2 <- cbind(df2, temp)
-        wc = wc + 1
-      } else {
-        df2 <- as.data.frame(temp)
-        rownames(df2) <- single_epithet$canonical
-        io <- TRUE
-        wc <- 1
-      }
-      colnames(df2)[which(colnames(df2) == "temp")] <- single_epithet$canonical[i]
-      similar <- rownames(df2)[which(df2[,wc]==min(df2[,wc][which(df2[,wc]>0)]))]
-      comp_name <- rep(single_epithet$canonical[i], length(similar))
-      similar_names <- c(similar_names, similar)
-      compared_names <- c(compared_names, comp_name)
-    }
-    temp <- c()
-  }
+# verify no records were lost
+verification_passed = FALSE
+if(starting_records != nrow(single_epithet) + 
+   nrow(punctuated_species) + 
+   nrow(multi_epithet) + 
+   nrow(multi_subsp) + 
+   nrow(incomplete_epithet) + 
+   nrow(removed_sp) +
+   nrow(short_names_CHECK)) {
+} else {
+  verification_passed = TRUE
 }
-check_mat <- as.data.frame(cbind(compared_names, similar_names))
 
-# check for duplicate names 
-duplicates <- single_epithet[which(duplicated(single_epithet$canonical)),]
-single_epithet <- single_epithet[which(!duplicated(single_epithet$canonical)),] # deduplicated list
-
-# synonymize subspecies example: Amblyomma triguttatum triguttatum = Amblyomma triguttatum
-single_epithet <- synonymize_subspecies(single_epithet)
-
-# number unique
-nominate_species <- single_epithet[single_epithet$accid == 0, ]
-subspecies <- single_epithet[single_epithet$accid != 0, ]
-
-# handle incomplete_epithet
-# handle multi-word names
-# handle authors, years
-
+if(verification_passed) {
+  
+  # generate canonical name
+  single_epithet <- cast_canonical(single_epithet,
+                                   canonical="canonical", 
+                                   genus = "genus", 
+                                   species = "species",
+                                   subspecies = "infraspecificEpithet")
+  
+  # check Levenshtein's Distance (e.g., misspellings) [may need to do before canonical name generation]
+  # Watch for: Ornithodoros vunkeri; Ornithodoros yukeri; Ornithodoros yunkeri
+  library(stringdist)
+  temp <- c()
+  similar_names <-c()
+  compared_names <- c()
+  df2 <- c()
+  io <- FALSE
+  for(i in 1:length(single_epithet$canonical)){
+    if(!(single_epithet$canonical[i] %in% similar_names)){ # testing
+      for(j in 1:length(single_epithet$canonical)){
+        score <- stringdist(single_epithet$canonical[i], single_epithet$canonical[j], "dl")
+        temp <- c(temp, score)
+      }
+      if(any(temp %in% c(1:3))){
+        if(io){
+          df2 <- cbind(df2, temp)
+          wc = wc + 1
+        } else {
+          df2 <- as.data.frame(temp)
+          rownames(df2) <- single_epithet$canonical
+          io <- TRUE
+          wc <- 1
+        }
+        colnames(df2)[which(colnames(df2) == "temp")] <- single_epithet$canonical[i]
+        similar <- rownames(df2)[which(df2[,wc]==min(df2[,wc][which(df2[,wc]>0)]))]
+        comp_name <- rep(single_epithet$canonical[i], length(similar))
+        similar_names <- c(similar_names, similar)
+        compared_names <- c(compared_names, comp_name)
+      }
+      temp <- c()
+    }
+  }
+  check_mat <- as.data.frame(cbind(compared_names, similar_names))
+  
+  # check for duplicate names 
+  duplicates <- single_epithet[which(duplicated(single_epithet$canonical)),]
+  single_epithet <- single_epithet[which(!duplicated(single_epithet$canonical)),] # deduplicated list
+  
+  # synonymize subspecies example: Amblyomma triguttatum triguttatum = Amblyomma triguttatum
+  single_epithet <- synonymize_subspecies(single_epithet)
+  
+  # number unique
+  nominate_species <- single_epithet[single_epithet$accid == 0, ]
+  subspecies <- single_epithet[single_epithet$accid != 0, ]
+  
+  # handle incomplete_epithet
+  # handle multi-word names
+  # handle authors, years
+} else {
+  print('Verification was not passed. Some records appear to have been lost. Script was terminated. Please address errors.')
+}
