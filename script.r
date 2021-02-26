@@ -108,23 +108,36 @@ short_names_CHECK <- single_epithet[which(lapply(single_epithet$species, nchar) 
 single_epithet <- single_epithet[which(lapply(single_epithet$species, nchar) >= 4 &
                                          lapply(single_epithet$genus, nchar) >= 4),] 
 
+# combine all rows requiring expert review
+if(all(unique(removed_sp$genus) %in% unique(single_epithet$genus))){
+  for_expert_review = rbind(incomplete_epithet, short_names_CHECK)
+  nrow_expert_review = nrow(for_expert_review) + nrow(removed_sp)
+} else {
+  for_expert_review = rbind(incomplete_epithet, short_names_CHECK, removed_sp)
+  nrow_expert_review = nrow(for_expert_review)
+}
+rm(incomplete_epithet, short_names_CHECK, removed_sp)
+
+# for additional parsing
+unparsed = rbind(multi_epithet, multi_subsp, punctuated_species)
+rm(multi_epithet, multi_subsp, punctuated_species)
+
+# successfully parsed
+parsed = single_epithet
+rm(single_epithet)
+
 # verify no records were lost
 verification_passed = FALSE
-if(starting_records != nrow(single_epithet) + 
-   nrow(punctuated_species) + 
-   nrow(multi_epithet) + 
-   nrow(multi_subsp) + 
-   nrow(incomplete_epithet) + 
-   nrow(removed_sp) +
-   nrow(short_names_CHECK)) {
+if(starting_records != nrow(parsed) + 
+   nrow(unparsed) + 
+   nrow_expert_review) {
 } else {
   verification_passed = TRUE
 }
 
 if(verification_passed) {
-  
   # generate canonical name
-  single_epithet <- cast_canonical(single_epithet,
+  parsed <- cast_canonical(parsed,
                                    canonical="canonical", 
                                    genus = "genus", 
                                    species = "species",
@@ -138,10 +151,10 @@ if(verification_passed) {
   compared_names <- c()
   df2 <- c()
   io <- FALSE
-  for(i in 1:length(single_epithet$canonical)){
-    if(!(single_epithet$canonical[i] %in% similar_names)){ # testing
-      for(j in 1:length(single_epithet$canonical)){
-        score <- stringdist(single_epithet$canonical[i], single_epithet$canonical[j], "dl")
+  for(i in 1:length(parsed$canonical)){
+    if(!(parsed$canonical[i] %in% similar_names)){ # testing
+      for(j in 1:length(parsed$canonical)){
+        score <- stringdist(parsed$canonical[i], parsed$canonical[j], "dl")
         temp <- c(temp, score)
       }
       if(any(temp %in% c(1:3))){
@@ -150,13 +163,13 @@ if(verification_passed) {
           wc = wc + 1
         } else {
           df2 <- as.data.frame(temp)
-          rownames(df2) <- single_epithet$canonical
+          rownames(df2) <- parsed$canonical
           io <- TRUE
           wc <- 1
         }
-        colnames(df2)[which(colnames(df2) == "temp")] <- single_epithet$canonical[i]
+        colnames(df2)[which(colnames(df2) == "temp")] <- parsed$canonical[i]
         similar <- rownames(df2)[which(df2[,wc]==min(df2[,wc][which(df2[,wc]>0)]))]
-        comp_name <- rep(single_epithet$canonical[i], length(similar))
+        comp_name <- rep(parsed$canonical[i], length(similar))
         similar_names <- c(similar_names, similar)
         compared_names <- c(compared_names, comp_name)
       }
@@ -166,15 +179,15 @@ if(verification_passed) {
   check_mat <- as.data.frame(cbind(compared_names, similar_names))
   
   # check for duplicate names 
-  duplicates <- single_epithet[which(duplicated(single_epithet$canonical)),]
-  single_epithet <- single_epithet[which(!duplicated(single_epithet$canonical)),] # deduplicated list
+  duplicates <- parsed[which(duplicated(parsed$canonical)),]
+  parsed <- parsed[which(!duplicated(parsed$canonical)),] # deduplicated list
   
   # synonymize subspecies example: Amblyomma triguttatum triguttatum = Amblyomma triguttatum
-  single_epithet <- synonymize_subspecies(single_epithet)
+  parsed <- synonymize_subspecies(parsed)
   
   # number unique
-  nominate_species <- single_epithet[single_epithet$accid == 0, ]
-  subspecies <- single_epithet[single_epithet$accid != 0, ]
+  nominate_species <- parsed[parsed$accid == 0, ]
+  subspecies <- parsed[parsed$accid != 0, ]
   
   # handle incomplete_epithet
   # handle multi-word names
