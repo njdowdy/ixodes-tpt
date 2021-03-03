@@ -216,6 +216,9 @@ if(verification_passed) {
   
   # number unique
   nominate_species <- parsed[parsed$accid == 0, ]
+  trinomial_nominate_names <- nominate_species[which(nominate_species$infraspecificepithet != ''),]
+  binomial_nominate_names <- nominate_species[which(nominate_species$infraspecificepithet == ''),]
+  rm(nominate_species)
   subspecies <- parsed[parsed$accid != 0, ]
   
   # handle incomplete_epithet
