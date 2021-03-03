@@ -218,7 +218,12 @@ if(verification_passed) {
   nominate_species <- parsed[parsed$accid == 0, ]
   trinomial_nominate_names <- nominate_species[which(nominate_species$infraspecificepithet != ''),]
   binomial_nominate_names <- nominate_species[which(nominate_species$infraspecificepithet == ''),]
-  rm(nominate_species)
+  if(nrow(trinomial_nominate_names) + 
+     nrow(binomial_nominate_names) == nrow(nominate_species)){
+    rm(nominate_species)
+  } else {
+    print("Please check your nominate_species data frame for issues.")
+  }
   subspecies <- parsed[parsed$accid != 0, ]
   
   # handle incomplete_epithet
