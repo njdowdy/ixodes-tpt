@@ -2,8 +2,8 @@
 library(taxotools)
 
 # load data
-df <- read.csv('input/Tick Taxonomy NMNH - Sheet1.csv')
-# df <- read.csv('input/Flea checklist-full taxonomy udpated 12.2019.csv')
+# df <- read.csv('input/Tick Taxonomy NMNH - Sheet1.csv')
+df <- read.csv('input/Flea checklist-full taxonomy udpated 12.2019.csv')
 
 # number of starting records for verification
 starting_records <- nrow(df)
@@ -63,8 +63,8 @@ containsPunc <- function(x) ifelse(!is.na(x), grepl('[[:punct:]]', x, perl = TRU
 removeEncoding <- function(x) ifelse(!is.na(x), gsub("\xa0", "", x))
 
 # siphonaptera dataset: remove '\xa0' chars from relevant fields
-df$superfamily <- t(data.frame(lapply(df$superfamily, removeEncoding)))
-df$genus <- t(data.frame(lapply(df$genus, removeEncoding)))
+df$superfamily <- array(as.character(unlist(lapply(df$superfamily, removeEncoding))))
+df$genus <- array(as.character(unlist(lapply(df$genus, removeEncoding))))
 
 # fix capitalization for both genus and species
 for(i in 1:ncol(df)) {
@@ -113,6 +113,10 @@ short_names_CHECK <- single_epithet[which(lapply(single_epithet$species, nchar) 
                          lapply(single_epithet$genus, nchar) < 4),] # very short specific_epithet OR genus
 single_epithet <- single_epithet[which(lapply(single_epithet$species, nchar) >= 4 &
                                          lapply(single_epithet$genus, nchar) >= 4),] 
+
+# insert some code to check that all "incomplete_epithet" higher taxonomy is present in "single_epithet"
+# if not do this: ???
+# !(unique(incomplete_epithet$genus) %in% unique(single_epithet$genus))
 
 # combine all rows requiring expert review
 if(all(unique(removed_sp$genus) %in% unique(single_epithet$genus))){
