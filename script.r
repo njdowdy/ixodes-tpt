@@ -115,8 +115,20 @@ single_epithet <- single_epithet[which(lapply(single_epithet$species, nchar) >= 
                                          lapply(single_epithet$genus, nchar) >= 4),] 
 
 # insert some code to check that all "incomplete_epithet" higher taxonomy is present in "single_epithet"
-# if not do this: ???
+# if not add that genus back into single_epithet with 'sp' for the epithet
 # !(unique(incomplete_epithet$genus) %in% unique(single_epithet$genus))
+incomplete_epithet_genera <- unique(incomplete_epithet$genus)
+incomplete_epithet_genera <- incomplete_epithet_genera[-which(incomplete_epithet_genera == '')] # remove any empty strings as genera
+single_epithet_genera <- array(as.character(unlist(unique(single_epithet$genus)))) # why doesn't unique(single_epithet$genus) work?
+missing_genera <- incomplete_epithet_genera[!(incomplete_epithet_genera %in% single_epithet_genera)]
+
+if(length(missing_genera) != 0){
+  missing_genera <- incomplete_epithet[incomplete_epithet$genus %in% missing_genera,]
+  missing_genera$species <- rep('sp', nrow(missing_genera)) # set species to 'sp'
+  missing_genera$infraspecificEpithet <- rep('sp', nrow(missing_genera)) # set subspecies to 'sp'
+  # single_epithet <- rbind(single_epithet, missing_genera) # not sure if we want to do this without checking first
+  # if the above line is approved, we may need to adjust the 'verification passed' check below
+}
 
 # combine all rows requiring expert review
 if(all(unique(removed_sp$genus) %in% unique(single_epithet$genus))){
