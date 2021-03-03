@@ -3,6 +3,7 @@ library(taxotools)
 
 # load data
 df <- read.csv('input/Tick Taxonomy NMNH - Sheet1.csv')
+# df <- read.csv('input/Flea checklist-full taxonomy udpated 12.2019.csv')
 
 # number of starting records for verification
 starting_records <- nrow(df)
@@ -59,6 +60,11 @@ colnames(df) <- convert2DwC(colnames(df)) # convert to DarwinCore terms
 toproper <- function(x) ifelse(!is.na(x), paste0(toupper(substr(x, 1, 1)), tolower(substring(x, 2))),NA) # fix capitalization
 removePunc <- function(x) ifelse(!is.na(x), gsub('[[:punct:]]+','',x)) # remove punctuation (but not spaces)
 containsPunc <- function(x) ifelse(!is.na(x), grepl('[[:punct:]]', x, perl = TRUE))
+removeEncoding <- function(x) ifelse(!is.na(x), gsub("\xa0", "", x))
+
+# siphonaptera dataset: remove '\xa0' chars from relevant fields
+df$superfamily <- t(data.frame(lapply(df$superfamily, removeEncoding)))
+df$genus <- t(data.frame(lapply(df$genus, removeEncoding)))
 
 # fix capitalization for both genus and species
 for(i in 1:ncol(df)) {
@@ -177,7 +183,7 @@ if(verification_passed) {
     }
   }
   check_mat <- as.data.frame(cbind(compared_names, similar_names))
-  
+
   # check for duplicate names 
   duplicates <- parsed[which(duplicated(parsed$canonical)),]
   parsed <- parsed[which(!duplicated(parsed$canonical)),] # deduplicated list
