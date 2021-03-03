@@ -175,7 +175,6 @@ if(verification_passed) {
   df2 <- c()
   io <- FALSE
   for(i in 1:length(parsed$canonical)){
-    #print(paste('Starting: ', parsed$canonical[i]))
     if(!(parsed$canonical[i] %in% similar_names)){ # testing
       for(j in 1:length(parsed$canonical)){
         score <- stringdist(parsed$canonical[i], parsed$canonical[j], "dl")
@@ -203,6 +202,7 @@ if(verification_passed) {
       print(paste('Completed iteration:', i, 'out of', length(parsed$canonical), 'iterations (', round(i/length(parsed$canonical),2)*100,'% DONE)'))
     }
   }
+  print('FINISHED!')
   check_mat <- as.data.frame(cbind(compared_names, similar_names))
 
   # check for duplicate names 
@@ -211,6 +211,8 @@ if(verification_passed) {
   
   # synonymize subspecies example: Amblyomma triguttatum triguttatum = Amblyomma triguttatum
   parsed <- synonymize_subspecies(parsed)
+  # parsed$genus <- array(as.character(unlist((parsed$genus)))) # sometimes needed to sort by variable in RStudio
+  # parsed$species <- array(as.character(unlist((parsed$species)))) # sometimes needed to sort by variable in RStudio
   
   # number unique
   nominate_species <- parsed[parsed$accid == 0, ]
