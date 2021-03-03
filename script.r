@@ -171,15 +171,17 @@ if(verification_passed) {
   temp <- c()
   similar_names <-c()
   compared_names <- c()
+  cutoff_distance <- 2
   df2 <- c()
   io <- FALSE
   for(i in 1:length(parsed$canonical)){
+    #print(paste('Starting: ', parsed$canonical[i]))
     if(!(parsed$canonical[i] %in% similar_names)){ # testing
       for(j in 1:length(parsed$canonical)){
         score <- stringdist(parsed$canonical[i], parsed$canonical[j], "dl")
         temp <- c(temp, score)
       }
-      if(any(temp %in% c(1:3))){
+      if(any(temp %in% c(1:cutoff_distance))){
         if(io){
           df2 <- cbind(df2, temp)
           wc = wc + 1
@@ -196,6 +198,9 @@ if(verification_passed) {
         compared_names <- c(compared_names, comp_name)
       }
       temp <- c()
+    }
+    if(i %% 10 == 0){
+      print(paste('Completed iteration:', i, 'out of', length(parsed$canonical), 'iterations (', round(i/length(parsed$canonical),2)*100,'% DONE)'))
     }
   }
   check_mat <- as.data.frame(cbind(compared_names, similar_names))
