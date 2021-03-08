@@ -3,7 +3,9 @@ library(taxotools)
 
 # load data
 # df <- read.csv('input/Tick Taxonomy NMNH - Sheet1.csv')
-df <- read.csv('input/Flea checklist-full taxonomy udpated 12.2019.csv')
+df <- read.csv('input/Flea checklist-full taxonomy udpated 12.2019.csv', encoding = 'UTF-8')
+
+# check encoding
 
 # number of starting records for verification
 starting_records <- nrow(df)
@@ -36,9 +38,10 @@ containsTaxonomy <- function(x) ifelse(!is.na(x),
                                        grepl('name', tolower(x), perl = TRUE) |
                                        grepl('epithet', tolower(x), perl = TRUE)) 
 
+nonTaxonomyColumns <- df[ , -which(!(names(df) %in% names(which(sapply(names(df), containsTaxonomy) == FALSE))))] # retain columns that do not relate to taxonomy
 df <- df[ , -which(!(names(df) %in% names(which(sapply(names(df), containsTaxonomy) == TRUE))))] # remove columns that do not relate to taxonomy
 
-# convert to DarwinCore terms
+# define DarwinCore conversion function
 convert2DwC <- function(df_colname) {
                        x <- gsub('.*subspecies.*','infraspecificEpithet',df_colname)
                        x <- gsub('.*rank.*','taxonRank',x)
@@ -48,6 +51,13 @@ convert2DwC <- function(df_colname) {
                        } # this needs work
 
 colnames(df) <- convert2DwC(colnames(df)) # convert to DarwinCore terms
+
+# ensure scientificNameAuthorship meets DarwinCore standard for ICZN
+# source: xxxx
+df$scientificNameAuthorship <- paste(df$scientificNameAuthorship,
+                                     df$namePublishedInYear, sep = ', ')
+# fix cases like: (Jordan & Rothschild), 1922
+# regex: [x.replace(')', '')+')' for x in df$scientificNameAuthorship if re.search(r'[a-z]),', '', x)]
 
 # darwinCoreTaxonTerms <- c("kingdom", "phylum", "class", "order", "family",
 #                           "genus", "subgenus", "species", "specificEpithet", 
@@ -66,7 +76,13 @@ removeEncoding <- function(x) ifelse(!is.na(x), gsub("\xa0", "", x))
 df$superfamily <- array(as.character(unlist(lapply(df$superfamily, removeEncoding))))
 df$genus <- array(as.character(unlist(lapply(df$genus, removeEncoding))))
 
+# NOTE: there are other encoding problems of accented characters
+# I am not familiar with this encoding style
+# search: '<e' in author names in particular
+
 # fix capitalization for both genus and species
+# ignore author, publication
+# toproper all other fields
 for(i in 1:ncol(df)) {
   name <- colnames(df)[i]
   if(grepl('infraspecificepithet', tolower(name), perl = TRUE)|
@@ -84,7 +100,12 @@ for(i in 1:ncol(df)) {
 
 # select single-word specific_epithets
 name_length <- function(x) ifelse(!is.na(x), length(unlist(strsplit(x, ' '))), 0)
-incomplete_epithet <- df[which(lapply(df$species, name_length) == 0 | lapply(df$genus, name_length) == 0),] # no-name species OR genus
+'%!in%' <- function(x,y)!('%in%'(x,y)) 
+no_genus_has_species <- df[which(lapply(df$species, name_length) != 0 & lapply(df$genus, name_length) == 0),] # no genus, but has species
+no_genus_has_subspecies <- df[which(lapply(df$infraspecificEpithet, name_length) != 0 & lapply(df$genus, name_length) == 0),] # no genus, but has subspecies
+no_species_has_subspecies <- df[which(lapply(df$species, name_length) == 0 & lapply(df$infraspecificEpithet, name_length) != 0),] # no species, but has subspecies
+incomplete_epithet <- rbind(no_genus_has_species, no_species_has_subspecies, no_genus_has_subspecies)
+# pull out higher taxa
 single_epithet <- df[which(lapply(df$species, name_length) == 1 & lapply(df$genus, name_length) == 1),] # single-name species AND genus
 multi_epithet <- df[which(lapply(df$species, name_length) > 1 | lapply(df$genus, name_length) > 1),] # multi-name species OR genus
 
@@ -96,6 +117,17 @@ single_epithet$genus <- lapply(single_epithet$genus, trimws)
 single_epithet$species <- lapply(single_epithet$species, trimws)
 single_epithet$infraspecificEpithet <- lapply(single_epithet$infraspecificEpithet, trimws)
 
+# remove sp's
+sp_wildcards <- c('sp', 'sp.', 'spp', 'spp.', 'sp.nov.', 'sp nov', 'sp. nov.', 
+                  'prob', 'prob.', 'probably', 'unid', 'unidentified',
+                  'spnov1')
+variable_sp1 <- paste('sp', as.character(c(0:9)), sep='')
+variable_sp2 <- paste('sp.', as.character(c(0:9)), sep='')
+variable_sp3 <- paste('sp. ', as.character(c(0:9)), sep='')
+sp_wildcards <- c(sp_wildcards, variable_sp1, variable_sp2, variable_sp3)
+removed_sp <- single_epithet[which(single_epithet$species %in% sp_wildcards), ]
+single_epithet <- single_epithet[which(single_epithet$species %!in% sp_wildcards), ]
+
 # test for names containing punctuation
 punctuated_species <- single_epithet[which(lapply(single_epithet$genus, containsPunc) == TRUE |
                                              lapply(single_epithet$species, containsPunc) == TRUE |
@@ -103,10 +135,6 @@ punctuated_species <- single_epithet[which(lapply(single_epithet$genus, contains
 single_epithet <- single_epithet[which(lapply(single_epithet$genus, containsPunc) == FALSE &
                                          lapply(single_epithet$species, containsPunc) == FALSE &
                                          lapply(single_epithet$infraspecificEpithet, containsPunc) == FALSE),]
-
-# remove sp's
-removed_sp <- single_epithet[which(single_epithet$species == 'sp'), ]
-single_epithet <- single_epithet[which(single_epithet$species != 'sp'), ]
 
 # remove very short names for manual verification
 short_names_CHECK <- single_epithet[which(lapply(single_epithet$species, nchar) < 4 |
@@ -228,7 +256,10 @@ if(verification_passed) {
   
   # handle incomplete_epithet
   # handle multi-word names
+  
   # handle authors, years
+  
+  
 } else {
   print('Verification was not passed. Some records appear to have been lost. Script was terminated. Please address errors.')
 }
