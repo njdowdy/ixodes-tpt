@@ -1,5 +1,6 @@
 # import libraries
 library(taxotools)
+library(stringdist)
 
 # load data with UTF-8 encoding
 # df <- read.csv('input/Tick Taxonomy NMNH - Sheet1.csv')
@@ -230,7 +231,7 @@ if(verification_passed) {
   
   # check Levenshtein's Distance (e.g., misspellings) [may need to do before canonical name generation]
   # Watch for: Ornithodoros vunkeri; Ornithodoros yukeri; Ornithodoros yunkeri
-  library(stringdist)
+  
   temp <- c()
   similar_names <-c()
   compared_names <- c()
