@@ -6,8 +6,8 @@ library(data.table)
 # load data with UTF-8 encoding
 # df <- read.csv('input/Tick Taxonomy NMNH - Sheet1.csv')
 # df <- read.csv('input/Flea checklist-full taxonomy udpated 12.2019.csv', encoding = 'UTF-8')
-df <- read.csv("~/GitHub/ixodes-tpt/input/Flea checklist-full taxonomy udpated 12 (version 1).csv", encoding="UTF-8")
-# df <- read.csv("~/GitHub/ixodes-tpt/input/Test Data.csv", encoding="UTF-8")
+# df <- read.csv("~/GitHub/ixodes-tpt/input/Flea checklist-full taxonomy udpated 12 (version 1).csv", encoding="UTF-8")
+df <- read.csv("~/GitHub/ixodes-tpt/input/Test Data.csv", encoding="UTF-8")
 
 # Begin prep df for cleaning
 
@@ -140,30 +140,41 @@ df[,c(cols_to_be_rectified) := lapply(.SD, removeEncoding), .SDcols = cols_to_be
 
 # Begin selecting records for review
 
-# Select single-word specific_epithets
+# define function: select single-word specific_epithets
 name_length <- function(x) ifelse(!is.na(x), length(unlist(strsplit(x, ' '))), 0)
-# define function - is not in
+# define function: is not in
 '%!in%' <- function(x,y)!('%in%'(x,y))
 
-# no genus, but has species
-no_genus_has_species <- df[which(lapply(df$specificepithet, name_length) != 0 & lapply(df$genus, name_length) == 0),]
-# no genus, but has subspecies
-no_genus_has_subspecies <- df[which(lapply(df$infraspecificEpithet, name_length) != 0 & lapply(df$genus, name_length) == 0),]
-# no species, but has subspecies
-no_species_has_subspecies <- df[which(lapply(df$specificEpithet, name_length) == 0 & lapply(df$infraspecificEpithet, name_length) != 0),]
-# remove rows that are missing terms to incomplete_epithet data frame
-incomplete_epithet <- rbind(no_genus_has_species, no_species_has_subspecies, no_genus_has_subspecies)
+# extract higher taxa
+higher_taxa <- df[which(lapply(df$infraspecificEpithet, name_length) == 0 & lapply(df$specificEpithet, name_length) == 0),] #lapply(df$genus, name_length) == 0 &
+df <- df[which(lapply(df$infraspecificEpithet, name_length) != 0 | lapply(df$specificEpithet, name_length) != 0),] # lapply(df$genus, name_length) != 0 | 
+# extract rows with missing information
+# extract rows with no genus, but has species
+missing_genus <- df[which(lapply(df$specificEpithet, name_length) != 0 & lapply(df$genus, name_length) == 0),]
+df <- df[which(lapply(df$genus, name_length) != 0),]
+# extract rows with no genus, but has subspecies, these get caught above
+# no_genus_has_subspecies <- df[which(lapply(df$infraspecificEpithet, name_length) != 0 & lapply(df$genus, name_length) == 0),]
+# extract rows with no species, but has subspecies
+missing_species <- df[which(lapply(df$specificEpithet, name_length) == 0 & lapply(df$infraspecificEpithet, name_length) != 0),]
+df <- df[which(lapply(df$specificEpithet, name_length) != 0 & lapply(df$infraspecificEpithet, name_length) != 0 | lapply(df$specificEpithet, name_length) != 0 & lapply(df$infraspecificEpithet, name_length) == 0)]
+# combine extracted rows that are missing terms to df_review data frame
+df_review <- rbind(missing_genus, missing_species)
 
-# pull out higher taxa
-# extract rows with a single-name in specificEpithet AND genus
-single_epithet <- df[which(lapply(df$specificEpithet, name_length) == 1 & lapply(df$genus, name_length) == 1),]
+
+# remove rows with a single-name in specificEpithet AND genus
+df <- df[which(lapply(df$specificEpithet, name_length) == 1 & lapply(df$genus, name_length) == 1),]
+
+# extract rows with unexpected data
 # extract rows with a multi-name specificEpithet OR genus
 multi_epithet <- df[which(lapply(df$specificEpithet, name_length) > 1 | lapply(df$genus, name_length) > 1),]
 # extract rows with a multi-name subspecificEpithet
-multi_subsp <- single_epithet[which(lapply(single_epithet$infraspecificEpithet, name_length) > 1),]
+multi_subsp <- df[which(lapply(df$infraspecificEpithet, name_length) > 1),]
+# combine extracted rows twith unexpected data to df_review data frame
+df_review <- rbind(df_review, multi_epithet, multi_subsp)
+
+
 # extract rows with a single subspecificEpithet OR no subspecificEpithet
-# warning should this df have a different name? 
-single_epithet <- single_epithet[which(lapply(single_epithet$infraspecificEpithet, name_length) <= 1),]
+df <- df[which(lapply(single_epithet$infraspecificEpithet, name_length) <= 1),]
 
 # remove sp's
 sp_wildcards <- c('sp', 'sp.', 'spp', 'spp.', 'sp.nov.', 'sp nov', 'sp. nov.', 
