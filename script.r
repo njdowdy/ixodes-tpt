@@ -6,6 +6,7 @@ library(stringdist)
 # df <- read.csv('input/Tick Taxonomy NMNH - Sheet1.csv')
 # df <- read.csv('input/Flea checklist-full taxonomy udpated 12.2019.csv', encoding = 'UTF-8')
 df <- read.csv("~/GitHub/ixodes-tpt/input/Flea checklist-full taxonomy udpated 12 (version 1).csv", encoding="UTF-8")
+# df <- read.csv("~/GitHub/ixodes-tpt/input/Test Data.csv", encoding="UTF-8")
 
 # Begin prep df for cleaning
 
@@ -116,17 +117,20 @@ for(i in 1:ncol(df)) {
 
 # strip spaces from ends of strings
 # warning - we should do this for ALL columns...see code below copied from https://stackoverflow.com/questions/20760547/removing-whitespace-from-a-whole-data-frame-in-r
-# library(data.table)
-# setDT(df)
-# cols_to_be_rectified <- names(df)[vapply(df, is.character, logical(1))]
-# df[,c(cols_to_be_rectified) := lapply(.SD, trimws), .SDcols = cols_to_be_rectified]
+library(data.table)
+setDT(df)
+cols_to_be_rectified <- names(df)[vapply(df, is.character, logical(1))]
+df[,c(cols_to_be_rectified) := lapply(.SD, trimws), .SDcols = cols_to_be_rectified]
 
-df$genus <- lapply(df$genus, trimws)
-df$species <- lapply(df$species, trimws)
-df$infraspecificEpithet <- lapply(df$infraspecificEpithet, trimws)
+# df$genus <- lapply(df$genus, trimws)
+# df$species <- lapply(df$species, trimws)
+# df$infraspecificEpithet <- lapply(df$infraspecificEpithet, trimws)
 
 # remove remove '\xa0' chars
-# df <- array(as.character(unlist(lapply(df, removeEncoding))))
+setDT(df)
+cols_to_be_rectified <- names(df)[vapply(df, is.character, logical(1))]
+df[,c(cols_to_be_rectified) := lapply(.SD, removeEncoding), .SDcols = cols_to_be_rectified]
+
 
 # siphonaptera dataset: remove '\xa0' chars from relevant fields
 # warning - can we just apply this to the whole df?
