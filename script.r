@@ -140,14 +140,15 @@ df[,c(cols_to_be_rectified) := lapply(.SD, removeEncoding), .SDcols = cols_to_be
 
 # Begin selecting records for review
 
-# define function: select single-word specific_epithets
+# define function: name length
 name_length <- function(x) ifelse(!is.na(x), length(unlist(strsplit(x, ' '))), 0)
 # define function: is not in
 '%!in%' <- function(x,y)!('%in%'(x,y))
 
 # extract higher taxa
-higher_taxa <- df[which(lapply(df$infraspecificEpithet, name_length) == 0 & lapply(df$specificEpithet, name_length) == 0),] #lapply(df$genus, name_length) == 0 &
-df <- df[which(lapply(df$infraspecificEpithet, name_length) != 0 | lapply(df$specificEpithet, name_length) != 0),] # lapply(df$genus, name_length) != 0 | 
+higher_taxa <- df[which(lapply(df$infraspecificEpithet, name_length) == 0 & lapply(df$specificEpithet, name_length) == 0),]
+df <- df[which(lapply(df$infraspecificEpithet, name_length) != 0 | lapply(df$specificEpithet, name_length) != 0),]
+
 # extract rows with missing information
 # extract rows with no genus, but has species
 missing_genus <- df[which(lapply(df$specificEpithet, name_length) != 0 & lapply(df$genus, name_length) == 0),]
@@ -159,24 +160,26 @@ missing_species <- df[which(lapply(df$specificEpithet, name_length) == 0 & lappl
 df <- df[which(lapply(df$specificEpithet, name_length) != 0 & lapply(df$infraspecificEpithet, name_length) != 0 | lapply(df$specificEpithet, name_length) != 0 & lapply(df$infraspecificEpithet, name_length) == 0)]
 # combine extracted rows that are missing terms to df_review data frame
 df_review <- rbind(missing_genus, missing_species)
+# add higher taxa back to df
+df <- rbind(higher_taxa, df)
 
-
-# remove rows with a single-name in specificEpithet AND genus
-df <- df[which(lapply(df$specificEpithet, name_length) == 1 & lapply(df$genus, name_length) == 1),]
+# Missing data check warning: add this back later
+#if(starting_records != nrow(df) + 
+#   nrow(df_review)){print('Some records appear to have been lost. Script was terminated. Please address errors.')
+#} else {
 
 # extract rows with unexpected data
-# extract rows with a multi-name specificEpithet OR genus
-multi_epithet <- df[which(lapply(df$specificEpithet, name_length) > 1 | lapply(df$genus, name_length) > 1),]
-# extract rows with a multi-name subspecificEpithet
-multi_subsp <- df[which(lapply(df$infraspecificEpithet, name_length) > 1),]
-# combine extracted rows twith unexpected data to df_review data frame
-df_review <- rbind(df_review, multi_epithet, multi_subsp)
+# extract rows with a multi-name genus, specificEpithet OR infraspecificEpithet
+multi_epithet <- df[which(lapply(df$specificEpithet, name_length) > 1 | lapply(df$genus, name_length) > 1 | lapply(df$infraspecificEpithet, name_length) > 1),]
+#more_epithet <- df[which(lapply(df$infraspecificEpithet, name_length) > 1),]
+df_review <- rbind(df_review, multi_epithet)
+# why doesn't this one-liner work?
+# df <- df[which(lapply(df$specificEpithet, name_length) <= 1 | lapply(df$genus, name_length) <= 1 | lapply(df$infraspecificEpithet, name_length) <= 1),]
+df <- df[which(lapply(df$specificEpithet, name_length) <= 1),]
+df <- df[which(lapply(df$infraspecificEpithet, name_length) <= 1),]
+df <- df[which(lapply(df$genus, name_length) <= 1),]
 
-
-# extract rows with a single subspecificEpithet OR no subspecificEpithet
-df <- df[which(lapply(single_epithet$infraspecificEpithet, name_length) <= 1),]
-
-# remove sp's
+# extract sp's in specificEpithet
 sp_wildcards <- c('sp', 'sp.', 'spp', 'spp.', 'sp.nov.', 'sp nov', 'sp. nov.', 
                   'prob', 'prob.', 'probably', 'unid', 'unidentified',
                   'spnov1')
@@ -184,26 +187,41 @@ variable_sp1 <- paste('sp', as.character(c(0:9)), sep='')
 variable_sp2 <- paste('sp.', as.character(c(0:9)), sep='')
 variable_sp3 <- paste('sp. ', as.character(c(0:9)), sep='')
 sp_wildcards <- c(sp_wildcards, variable_sp1, variable_sp2, variable_sp3)
-removed_sp <- single_epithet[which(single_epithet$species %in% sp_wildcards), ]
-# warning: this line wipes out the single_epithet dataframe
-single_epithet <- single_epithet[which(single_epithet$species %!in% sp_wildcards), ]
+removed_sp <- df[which(df$specificEpithet %in% sp_wildcards), ] 
+removed_spp <- df[(df$infraspecificEpithet %in% sp_wildcards), ]
 
-# test for names containing punctuation
-punctuated_species <- single_epithet[which(lapply(single_epithet$genus, containsPunc) == TRUE |
-                                             lapply(single_epithet$specificEpithet, containsPunc) == TRUE |
-                                             lapply(single_epithet$infraspecificEpithet, containsPunc) == TRUE),]
-single_epithet <- single_epithet[which(lapply(single_epithet$genus, containsPunc) == FALSE &
-                                         lapply(single_epithet$specificEpithet, containsPunc) == FALSE &
-                                         lapply(single_epithet$infraspecificEpithet, containsPunc) == FALSE),]
+# add extracted records to df_review
+df_review <- rbind(df_review, removed_sp, removed_spp)
 
-# remove very short names for manual verification
-short_names_CHECK <- single_epithet[which(lapply(single_epithet$specificEpithet, nchar) < 4 |
-                         lapply(single_epithet$genus, nchar) < 4),] # very short specific_epithet OR genus
-single_epithet <- single_epithet[which(lapply(single_epithet$specificEpithet, nchar) >= 4 &
-                                         lapply(single_epithet$genus, nchar) >= 4),] 
+# remove extracted records from df
+df <- df[which(df$specificEpithet %!in% sp_wildcards), ]
+df <- df[which(df$infraspecificEpithet %!in% sp_wildcards), ]
 
+# extract names containing punctuation
+# warning: we should check ALL names for punctuation
+punctuated_species <- df[which(lapply(df$genus, containsPunc) == TRUE |
+                                             lapply(df$specificEpithet, containsPunc) == TRUE |
+                                             lapply(df$infraspecificEpithet, containsPunc) == TRUE),]
+# add extracted names to df_review
+df_review <- rbind(df_review, punctuated_species)
+# remove punctuated names from df
+df <- df[which(lapply(df$genus, containsPunc) == FALSE &
+                                         lapply(df$specificEpithet, containsPunc) == FALSE &
+                                         lapply(df$infraspecificEpithet, containsPunc) == FALSE),]
+
+# warning: this is going to set us up to review way more than we want...
+# extract very short specific_epithet OR genus
+short_names_CHECK <- df[which(lapply(df$specificEpithet, nchar) < 4 |
+                         lapply(df$genus, nchar) < 4),]
+# add extracted rows to df_review
+df_review <- rbind(df_review, short_names_CHECK)
+# remove short names from df
+df <- df[which(lapply(df$specificEpithet, nchar) >= 4 &
+                                         lapply(df$genus, nchar) >= 4),] 
+
+# BEGIN NOT TESTED
 # insert some code to check that all "incomplete_epithet" higher taxonomy is present in "single_epithet"
-# if not add that genus back into single_epithet with 'sp' for the epithet
+# if not add that genus to suggested additions data frame
 # !(unique(incomplete_epithet$genus) %in% unique(single_epithet$genus))
 incomplete_epithet_genera <- unique(incomplete_epithet$genus)
 incomplete_epithet_genera <- incomplete_epithet_genera[-which(incomplete_epithet_genera == '')] # remove any empty strings as genera
@@ -218,40 +236,30 @@ if(length(missing_genera) != 0){
   # if the above line is approved, we may need to adjust the 'verification passed' check below
 }
 
-# combine all rows requiring expert review
-if(all(unique(removed_sp$genus) %in% unique(single_epithet$genus))){
-  for_expert_review = rbind(incomplete_epithet, short_names_CHECK)
-  nrow_expert_review = nrow(for_expert_review) + nrow(removed_sp)
-} else {
-  for_expert_review = rbind(incomplete_epithet, short_names_CHECK, removed_sp)
-  nrow_expert_review = nrow(for_expert_review)
-}
-rm(incomplete_epithet, short_names_CHECK, removed_sp)
-
-# for additional parsing
-unparsed = rbind(multi_epithet, multi_subsp, punctuated_species)
-rm(multi_epithet, multi_subsp, punctuated_species)
-
-# successfully parsed
-parsed = single_epithet
-rm(single_epithet)
+# END NOT TESTED
 
 # verify no records were lost
 verification_passed = FALSE
-if(starting_records != nrow(parsed) + 
-   nrow(unparsed) + 
-   nrow_expert_review) {
+if(starting_records != nrow(df) + 
+   nrow(df_review) + 
+   nrow(suggested_adds)) {
 } else {
   verification_passed = TRUE
 }
 
 if(verification_passed) {
   # generate canonical name
-  parsed <- cast_canonical(parsed,
+  df <- cast_canonical(df,
                                    canonical="canonical", 
                                    genus = "genus", 
-                                   species = "species",
+                                   species = "specificEpithet",
                                    subspecies = "infraspecificEpithet")
+  
+# extract duplicate names 
+duplicates <- df[which(duplicated(df$canonical)),]
+# deduplicated list
+df <- df[which(!duplicated(df$canonical)),]
+  
   
   # check Levenshtein's Distance (e.g., misspellings) [may need to do before canonical name generation]
   # Watch for: Ornithodoros vunkeri; Ornithodoros yukeri; Ornithodoros yunkeri
@@ -262,10 +270,10 @@ if(verification_passed) {
   cutoff_distance <- 2
   df2 <- c()
   io <- FALSE
-  for(i in 1:length(parsed$canonical)){
-    if(!(parsed$canonical[i] %in% similar_names)){ # testing
-      for(j in 1:length(parsed$canonical)){
-        score <- stringdist(parsed$canonical[i], parsed$canonical[j], "dl")
+  for(i in 1:length(df$canonical)){
+    if(!(df$canonical[i] %in% similar_names)){ # testing
+      for(j in 1:length(df$canonical)){
+        score <- stringdist(df$canonical[i], df$canonical[j], "dl")
         temp <- c(temp, score)
       }
       if(any(temp %in% c(1:cutoff_distance))){
@@ -274,13 +282,13 @@ if(verification_passed) {
           wc = wc + 1
         } else {
           df2 <- as.data.frame(temp)
-          rownames(df2) <- parsed$canonical
+          rownames(df2) <- df$canonical
           io <- TRUE
           wc <- 1
         }
-        colnames(df2)[which(colnames(df2) == "temp")] <- parsed$canonical[i]
+        colnames(df2)[which(colnames(df2) == "temp")] <- df$canonical[i]
         similar <- rownames(df2)[which(df2[,wc]==min(df2[,wc][which(df2[,wc]>0)]))]
-        comp_name <- rep(parsed$canonical[i], length(similar))
+        comp_name <- rep(df$canonical[i], length(similar))
         similar_names <- c(similar_names, similar)
         compared_names <- c(compared_names, comp_name)
       }
@@ -293,10 +301,7 @@ if(verification_passed) {
   print('FINISHED!')
   check_mat <- as.data.frame(cbind(compared_names, similar_names))
 
-  # check for duplicate names 
-  duplicates <- parsed[which(duplicated(parsed$canonical)),]
-  parsed <- parsed[which(!duplicated(parsed$canonical)),] # deduplicated list
-  
+
   # synonymize subspecies example: Amblyomma triguttatum triguttatum = Amblyomma triguttatum
   parsed <- synonymize_subspecies(parsed)
   # parsed$genus <- array(as.character(unlist((parsed$genus)))) # sometimes needed to sort by variable in RStudio
@@ -313,13 +318,9 @@ if(verification_passed) {
     print("Please check your nominate_species data frame for issues.")
   }
   subspecies <- parsed[parsed$accid != 0, ]
-  
-  # handle incomplete_epithet
-  # handle multi-word names
-  
-  # handle authors, years
-  
-  
+
+# End of data validation  
 } else {
   print('Verification was not passed. Some records appear to have been lost. Script was terminated. Please address errors.')
 }
+#} End of Missing data check 1
