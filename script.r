@@ -50,7 +50,7 @@ containsTaxonomy <- function(x) ifelse(!is.na(x),
 # Extract columns that do not relate to taxonomy
 nonTaxonomyColumns <- df[ , -which(!(names(df) %in% names(which(sapply(names(df), containsTaxonomy) == FALSE))))]
 
-# retain columns that relate to taxonomy
+# Retain only columns that relate to taxonomy
 df <- df[ , -which(!(names(df) %in% names(which(sapply(names(df), containsTaxonomy) == TRUE))))]
 
 # darwinCoreTaxonTerms <- c("kingdom", "phylum", "class", "order", "family",
@@ -115,10 +115,15 @@ for(i in 1:ncol(df)) {
 }
 
 # strip spaces from ends of strings
-# warning - we should do this for ALL columns...
-single_epithet$genus <- lapply(single_epithet$genus, trimws)
-single_epithet$species <- lapply(single_epithet$species, trimws)
-single_epithet$infraspecificEpithet <- lapply(single_epithet$infraspecificEpithet, trimws)
+# warning - we should do this for ALL columns...see code below copied from https://stackoverflow.com/questions/20760547/removing-whitespace-from-a-whole-data-frame-in-r
+# library(data.table)
+# setDT(df)
+# cols_to_be_rectified <- names(df)[vapply(df, is.character, logical(1))]
+# df[,c(cols_to_be_rectified) := lapply(.SD, trimws), .SDcols = cols_to_be_rectified]
+
+df$genus <- lapply(df$genus, trimws)
+df$species <- lapply(df$species, trimws)
+df$infraspecificEpithet <- lapply(df$infraspecificEpithet, trimws)
 
 # remove remove '\xa0' chars
 # df <- array(as.character(unlist(lapply(df, removeEncoding))))
