@@ -1,6 +1,7 @@
 # import libraries
 library(taxotools)
 library(stringdist)
+library(data.table)
 
 # load data with UTF-8 encoding
 # df <- read.csv('input/Tick Taxonomy NMNH - Sheet1.csv')
@@ -117,7 +118,6 @@ for(i in 1:ncol(df)) {
 
 # strip spaces from ends of strings
 # warning - we should do this for ALL columns...see code below copied from https://stackoverflow.com/questions/20760547/removing-whitespace-from-a-whole-data-frame-in-r
-library(data.table)
 setDT(df)
 cols_to_be_rectified <- names(df)[vapply(df, is.character, logical(1))]
 df[,c(cols_to_be_rectified) := lapply(.SD, trimws), .SDcols = cols_to_be_rectified]
@@ -130,12 +130,6 @@ df[,c(cols_to_be_rectified) := lapply(.SD, trimws), .SDcols = cols_to_be_rectifi
 setDT(df)
 cols_to_be_rectified <- names(df)[vapply(df, is.character, logical(1))]
 df[,c(cols_to_be_rectified) := lapply(.SD, removeEncoding), .SDcols = cols_to_be_rectified]
-
-
-# siphonaptera dataset: remove '\xa0' chars from relevant fields
-# warning - can we just apply this to the whole df?
-df$superfamily <- array(as.character(unlist(lapply(df$superfamily, removeEncoding))))
-df$genus <- array(as.character(unlist(lapply(df$genus, removeEncoding))))
 
 # NOTE: there are other encoding problems of accented characters
 # I am not familiar with this encoding style
