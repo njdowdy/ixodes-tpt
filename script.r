@@ -1,4 +1,4 @@
-# test comment
+# test comment EDITED
 # import libraries
 library(taxotools)
 library(stringdist)
