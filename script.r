@@ -15,6 +15,7 @@ df <- read.csv("~/GitHub/ixodes-tpt/input/Test Data.csv", encoding="UTF-8")
 starting_records <- nrow(df)
 
 # create unique ID for each row (use to match removed column data if needed?)
+df$number <- seq.int(nrow(df))
 
 # number of original columns for verification
 starting_columns <- ncol(df)
@@ -52,8 +53,8 @@ containsTaxonomy <- function(x) ifelse(!is.na(x),
 # Extract columns that do not relate to taxonomy
 nonTaxonomyColumns <- df[ , -which(!(names(df) %in% names(which(sapply(names(df), containsTaxonomy) == FALSE))))]
 
-# Retain only columns that relate to taxonomy
-df <- df[ , -which(!(names(df) %in% names(which(sapply(names(df), containsTaxonomy) == TRUE))))]
+# Retain only columns that relate to taxonomy plus number column
+df <- df[ , -which(!(names(df) %in% names(which(sapply(names(df), containsTaxonomy) == TRUE | names(df) == "number"))))]
 
 # darwinCoreTaxonTerms <- c("kingdom", "phylum", "class", "order", "family",
 #                           "genus", "subgenus", "species", "specificEpithet", 
@@ -79,7 +80,8 @@ colnames(df) <- convert2DwC(colnames(df))
 # ensure scientificNameAuthorship meets DarwinCore standard for ICZN
 # source: xxxx
 df$scientificNameAuthorship <- paste(df$scientificNameAuthorship,
-                                     df$namePublishedInYear, sep = ', ')
+                                       df$namePublishedInYear, sep = ', ')
+
 # warning - end up with ",NA" when there is no author or year
 # warning - fix cases like: (Jordan & Rothschild), 1922 need to make sure this is necessary
 # regex: [x.replace(')', '')+')' for x in df$scientificNameAuthorship if re.search(r'[a-z]),', '', x)]
@@ -152,11 +154,15 @@ df <- df[which(lapply(df$infraspecificEpithet, name_length) != 0 | lapply(df$spe
 # extract rows with missing information
 # extract rows with no genus, but has species
 missing_genus <- df[which(lapply(df$specificEpithet, name_length) != 0 & lapply(df$genus, name_length) == 0),]
+# add review reason column
+missing_genus$reason <- "missing genus"
 df <- df[which(lapply(df$genus, name_length) != 0),]
 # extract rows with no genus, but has subspecies, these get caught above
 # no_genus_has_subspecies <- df[which(lapply(df$infraspecificEpithet, name_length) != 0 & lapply(df$genus, name_length) == 0),]
 # extract rows with no species, but has subspecies
 missing_species <- df[which(lapply(df$specificEpithet, name_length) == 0 & lapply(df$infraspecificEpithet, name_length) != 0),]
+# add review reason column
+missing_species$reason <- "missing specificEpithet"
 df <- df[which(lapply(df$specificEpithet, name_length) != 0 & lapply(df$infraspecificEpithet, name_length) != 0 | lapply(df$specificEpithet, name_length) != 0 & lapply(df$infraspecificEpithet, name_length) == 0)]
 # combine extracted rows that are missing terms to df_review data frame
 df_review <- rbind(missing_genus, missing_species)
@@ -171,10 +177,15 @@ df <- rbind(higher_taxa, df)
 # extract rows with unexpected data
 # extract rows with a multi-name genus, specificEpithet OR infraspecificEpithet
 multi_epithet <- df[which(lapply(df$specificEpithet, name_length) > 1 | lapply(df$genus, name_length) > 1 | lapply(df$infraspecificEpithet, name_length) > 1),]
+# add review reason column
+multi_epithet$reason <- "multi term genus, specificEpithet or infraspecificEpithet"
 #more_epithet <- df[which(lapply(df$infraspecificEpithet, name_length) > 1),]
 df_review <- rbind(df_review, multi_epithet)
-# why doesn't this one-liner work?
+
+# warning: why doesn't this one-liner work? the three separate lines below get the job done
 # df <- df[which(lapply(df$specificEpithet, name_length) <= 1 | lapply(df$genus, name_length) <= 1 | lapply(df$infraspecificEpithet, name_length) <= 1),]
+
+# retain single term genus, species and subspecies rows
 df <- df[which(lapply(df$specificEpithet, name_length) <= 1),]
 df <- df[which(lapply(df$infraspecificEpithet, name_length) <= 1),]
 df <- df[which(lapply(df$genus, name_length) <= 1),]
@@ -188,8 +199,12 @@ variable_sp2 <- paste('sp.', as.character(c(0:9)), sep='')
 variable_sp3 <- paste('sp. ', as.character(c(0:9)), sep='')
 sp_wildcards <- c(sp_wildcards, variable_sp1, variable_sp2, variable_sp3)
 removed_sp <- df[which(df$specificEpithet %in% sp_wildcards), ] 
+# add review reason column
+removed_sp$reason <- "specificEpithet flagged"
 removed_spp <- df[(df$infraspecificEpithet %in% sp_wildcards), ]
 
+# add review reason column
+removed_spp$reason <- "infraspecificEpithet flagged"
 # add extracted records to df_review
 df_review <- rbind(df_review, removed_sp, removed_spp)
 
@@ -202,6 +217,8 @@ df <- df[which(df$infraspecificEpithet %!in% sp_wildcards), ]
 punctuated_species <- df[which(lapply(df$genus, containsPunc) == TRUE |
                                              lapply(df$specificEpithet, containsPunc) == TRUE |
                                              lapply(df$infraspecificEpithet, containsPunc) == TRUE),]
+# add review reason column
+punctuated_species$reason <- "contains punctuation"
 # add extracted names to df_review
 df_review <- rbind(df_review, punctuated_species)
 # remove punctuated names from df
@@ -210,22 +227,36 @@ df <- df[which(lapply(df$genus, containsPunc) == FALSE &
                                          lapply(df$infraspecificEpithet, containsPunc) == FALSE),]
 
 # warning: this is going to set us up to review way more than we want...
+# extract higher taxa
+higher_taxa <- df[which(lapply(df$infraspecificEpithet, name_length) == 0 & lapply(df$specificEpithet, name_length) == 0),]
+df <- df[which(lapply(df$infraspecificEpithet, name_length) != 0 | lapply(df$specificEpithet, name_length) != 0),]
+
 # extract very short specific_epithet OR genus
 short_names_CHECK <- df[which(lapply(df$specificEpithet, nchar) < 4 |
-                         lapply(df$genus, nchar) < 4),]
+                                lapply(df$genus, nchar) < 4),]
+# add review reason column
+short_names_CHECK$reason <- "short name"
+
 # add extracted rows to df_review
 df_review <- rbind(df_review, short_names_CHECK)
 # remove short names from df
 df <- df[which(lapply(df$specificEpithet, nchar) >= 4 &
                                          lapply(df$genus, nchar) >= 4),] 
 
+# Look for missing higher taxa (warning: don't forget to add back higher taxa later!)
+# Get unique list of genera
+unique_genera <- unique(df$genus)
+data.frame(t(sapply(unique_genera,c)))
+data.frame(Reduce(rbind, unique_genera))
+
 # BEGIN NOT TESTED
 # insert some code to check that all "incomplete_epithet" higher taxonomy is present in "single_epithet"
 # if not add that genus to suggested additions data frame
+# this needs work
 # !(unique(incomplete_epithet$genus) %in% unique(single_epithet$genus))
-incomplete_epithet_genera <- unique(incomplete_epithet$genus)
+incomplete_epithet_genera <- unique(df$genus)
 incomplete_epithet_genera <- incomplete_epithet_genera[-which(incomplete_epithet_genera == '')] # remove any empty strings as genera
-single_epithet_genera <- array(as.character(unlist(unique(single_epithet$genus)))) # why doesn't unique(single_epithet$genus) work?
+single_epithet_genera <- array(as.character(unlist(unique(df$genus))))
 missing_genera <- incomplete_epithet_genera[!(incomplete_epithet_genera %in% single_epithet_genera)]
 
 if(length(missing_genera) != 0){
