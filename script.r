@@ -56,6 +56,14 @@ nonTaxonomyColumns <- df[ , -which(!(names(df) %in% names(which(sapply(names(df)
 # Retain only columns that relate to taxonomy plus number column
 df <- df[ , -which(!(names(df) %in% names(which(sapply(names(df), containsTaxonomy) == TRUE | names(df) == "number"))))]
 
+# ensure scientificNameAuthorship meets DarwinCore standard for ICZN
+# source: xxxx
+df$scientificNameAuthorship <- paste(df$scientificNameAuthorship,
+                                     df$namePublishedInYear, sep = ', ')
+# fix cases like: (Jordan & Rothschild), 1922
+# regex: [x.replace(')', '')+')' for x in df$scientificNameAuthorship if re.search(r'[a-z]),', '', x)]
+fixAuth <- function(x) ifelse(grepl('[a-z]),',x), paste(gsub(')', '',x),')',sep=''),x)
+
 # darwinCoreTaxonTerms <- c("kingdom", "phylum", "class", "order", "family",
 #                           "genus", "subgenus", "species", "specificEpithet", 
 #                           "scientificName", "infraspecificEpithet", "taxonRank",
