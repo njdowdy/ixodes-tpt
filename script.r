@@ -61,6 +61,7 @@ df$scientificNameAuthorship <- paste(df$scientificNameAuthorship,
 fixAuth <- function(x) ifelse(grepl('[a-z]),',x), paste(gsub(')', '',x),')',sep=''),x)
 # hi Vijay!
 # hi teresa!
+# HI MAIN!
 
 # darwinCoreTaxonTerms <- c("kingdom", "phylum", "class", "order", "family",
 #                           "genus", "subgenus", "species", "specificEpithet", 
