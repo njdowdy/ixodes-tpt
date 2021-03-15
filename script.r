@@ -1,6 +1,3 @@
-
-# test comment EDITED
-
 # import libraries
 library(taxotools)
 library(stringdist)
@@ -60,15 +57,6 @@ nonTaxonomyColumns <- df[ , -which(!(names(df) %in% names(which(sapply(names(df)
 # Retain only columns that relate to taxonomy plus number column
 df <- df[ , -which(!(names(df) %in% names(which(sapply(names(df), containsTaxonomy) == TRUE | names(df) == "number"))))]
 
-# ensure scientificNameAuthorship meets DarwinCore standard for ICZN
-# source: xxxx
-df$scientificNameAuthorship <- paste(df$scientificNameAuthorship,
-                                     df$namePublishedInYear, sep = ', ')
-# fix cases like: (Jordan & Rothschild), 1922
-# regex: [x.replace(')', '')+')' for x in df$scientificNameAuthorship if re.search(r'[a-z]),', '', x)]
-fixAuth <- function(x) ifelse(grepl('[a-z]),',x), paste(gsub(')', '',x),')',sep=''),x)
-
-
 # darwinCoreTaxonTerms <- c("kingdom", "phylum", "class", "order", "family",
 #                           "genus", "subgenus", "species", "specificEpithet", 
 #                           "scientificName", "infraspecificEpithet", "taxonRank",
@@ -91,13 +79,13 @@ convert2DwC <- function(df_colname) {
 colnames(df) <- convert2DwC(colnames(df))
 
 # ensure scientificNameAuthorship meets DarwinCore standard for ICZN
-# source: xxxx
+# TODO - end up with ",NA" when there is no author or year
 df$scientificNameAuthorship <- paste(df$scientificNameAuthorship,
                                      df$namePublishedInYear, sep = ', ')
 
-# warning - end up with ",NA" when there is no author or year
-# warning - fix cases like: (Jordan & Rothschild), 1922 need to make sure this is necessary
-# regex: [x.replace(')', '')+')' for x in df$scientificNameAuthorship if re.search(r'[a-z]),', '', x)]
+# fix cases like: (Jordan & Rothschild), 1922 need to make sure this is necessary
+fixAuth <- function(x) ifelse(grepl('[a-z]),',x), paste(gsub(')', '',x),')',sep=''),x)
+# TODO apply to the data
 
 # End prep df for cleaning
 
@@ -137,16 +125,12 @@ setDT(df)
 cols_to_be_rectified <- names(df)[vapply(df, is.character, logical(1))]
 df[,c(cols_to_be_rectified) := lapply(.SD, trimws), .SDcols = cols_to_be_rectified]
 
-# df$genus <- lapply(df$genus, trimws)
-# df$species <- lapply(df$species, trimws)
-# df$infraspecificEpithet <- lapply(df$infraspecificEpithet, trimws)
-
 # remove remove '\xa0' chars
 setDT(df)
 cols_to_be_rectified <- names(df)[vapply(df, is.character, logical(1))]
 df[,c(cols_to_be_rectified) := lapply(.SD, removeEncoding), .SDcols = cols_to_be_rectified]
 
-# NOTE: there are other encoding problems of accented characters
+# TODO NOTE: there are other encoding problems of accented characters
 # I am not familiar with this encoding style
 # search: '<e' in author names in particular
 # I think this is fixed by loading data at UTF-8
@@ -195,10 +179,9 @@ multi_epithet$reason <- "multi term genus, specificEpithet or infraspecificEpith
 #more_epithet <- df[which(lapply(df$infraspecificEpithet, name_length) > 1),]
 df_review <- rbind(df_review, multi_epithet)
 
-# warning: why doesn't this one-liner work? the three separate lines below get the job done
-# df <- df[which(lapply(df$specificEpithet, name_length) <= 1 | lapply(df$genus, name_length) <= 1 | lapply(df$infraspecificEpithet, name_length) <= 1),]
-
 # retain single term genus, species and subspecies rows
+# TODO why doesn't this one-liner work? the three separate lines below get the job done
+# df <- df[which(lapply(df$specificEpithet, name_length) <= 1 | lapply(df$genus, name_length) <= 1 | lapply(df$infraspecificEpithet, name_length) <= 1),]
 df <- df[which(lapply(df$specificEpithet, name_length) <= 1),]
 df <- df[which(lapply(df$infraspecificEpithet, name_length) <= 1),]
 df <- df[which(lapply(df$genus, name_length) <= 1),]
@@ -215,7 +198,6 @@ removed_sp <- df[which(df$specificEpithet %in% sp_wildcards), ]
 # add review reason column
 removed_sp$reason <- "specificEpithet flagged"
 removed_spp <- df[(df$infraspecificEpithet %in% sp_wildcards), ]
-
 # add review reason column
 removed_spp$reason <- "infraspecificEpithet flagged"
 # add extracted records to df_review
@@ -241,7 +223,6 @@ df <- df[which(lapply(df$genus, containsPunc) == FALSE &
                  lapply(df$infraspecificEpithet, containsPunc) == FALSE),]
 
 
-# warning: this is going to set us up to review way more than we want...
 # extract higher taxa
 higher_taxa <- df[which(lapply(df$infraspecificEpithet, name_length) == 0 & lapply(df$specificEpithet, name_length) == 0),]
 df <- df[which(lapply(df$infraspecificEpithet, name_length) != 0 | lapply(df$specificEpithet, name_length) != 0),]
@@ -258,14 +239,13 @@ df_review <- rbind(df_review, short_names_CHECK)
 df <- df[which(lapply(df$specificEpithet, nchar) >= 4 &
                  lapply(df$genus, nchar) >= 4),] 
 
-
+# TODO BEGIN NOT TESTED
 # Look for missing higher taxa (warning: don't forget to add back higher taxa later!)
 # Get unique list of genera
 unique_genera <- unique(df$genus)
 data.frame(t(sapply(unique_genera,c)))
 data.frame(Reduce(rbind, unique_genera))
 
-# BEGIN NOT TESTED
 # insert some code to check that all "incomplete_epithet" higher taxonomy is present in "single_epithet"
 # if not add that genus to suggested additions data frame
 # this needs work
@@ -308,12 +288,6 @@ if(verification_passed) {
   df <- df[which(!duplicated(df$canonical)),]
   
 
-  
-# extract duplicate names 
-duplicates <- df[which(duplicated(df$canonical)),]
-# deduplicated list
-df <- df[which(!duplicated(df$canonical)),]
-  
   
   # check Levenshtein's Distance (e.g., misspellings) [may need to do before canonical name generation]
   # Watch for: Ornithodoros vunkeri; Ornithodoros yukeri; Ornithodoros yunkeri
