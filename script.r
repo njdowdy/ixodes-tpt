@@ -1,4 +1,6 @@
+
 # test comment EDITED
+
 # import libraries
 library(taxotools)
 library(stringdist)
@@ -51,6 +53,7 @@ containsTaxonomy <- function(x) ifelse(!is.na(x),
                                          grepl('name', tolower(x), perl = TRUE) |
                                          grepl('epithet', tolower(x), perl = TRUE)) 
 
+
 # Extract columns that do not relate to taxonomy
 nonTaxonomyColumns <- df[ , -which(!(names(df) %in% names(which(sapply(names(df), containsTaxonomy) == FALSE))))]
 
@@ -64,6 +67,7 @@ df$scientificNameAuthorship <- paste(df$scientificNameAuthorship,
 # fix cases like: (Jordan & Rothschild), 1922
 # regex: [x.replace(')', '')+')' for x in df$scientificNameAuthorship if re.search(r'[a-z]),', '', x)]
 fixAuth <- function(x) ifelse(grepl('[a-z]),',x), paste(gsub(')', '',x),')',sep=''),x)
+
 
 # darwinCoreTaxonTerms <- c("kingdom", "phylum", "class", "order", "family",
 #                           "genus", "subgenus", "species", "specificEpithet", 
@@ -226,6 +230,7 @@ df <- df[which(df$infraspecificEpithet %!in% sp_wildcards), ]
 punctuated_species <- df[which(lapply(df$genus, containsPunc) == TRUE |
                                  lapply(df$specificEpithet, containsPunc) == TRUE |
                                  lapply(df$infraspecificEpithet, containsPunc) == TRUE),]
+
 # add review reason column
 punctuated_species$reason <- "contains punctuation"
 # add extracted names to df_review
@@ -234,6 +239,7 @@ df_review <- rbind(df_review, punctuated_species)
 df <- df[which(lapply(df$genus, containsPunc) == FALSE &
                  lapply(df$specificEpithet, containsPunc) == FALSE &
                  lapply(df$infraspecificEpithet, containsPunc) == FALSE),]
+
 
 # warning: this is going to set us up to review way more than we want...
 # extract higher taxa
@@ -251,6 +257,7 @@ df_review <- rbind(df_review, short_names_CHECK)
 # remove short names from df
 df <- df[which(lapply(df$specificEpithet, nchar) >= 4 &
                  lapply(df$genus, nchar) >= 4),] 
+
 
 # Look for missing higher taxa (warning: don't forget to add back higher taxa later!)
 # Get unique list of genera
@@ -300,6 +307,13 @@ if(verification_passed) {
   # deduplicated list
   df <- df[which(!duplicated(df$canonical)),]
   
+
+  
+# extract duplicate names 
+duplicates <- df[which(duplicated(df$canonical)),]
+# deduplicated list
+df <- df[which(!duplicated(df$canonical)),]
+  
   
   # check Levenshtein's Distance (e.g., misspellings) [may need to do before canonical name generation]
   # Watch for: Ornithodoros vunkeri; Ornithodoros yukeri; Ornithodoros yunkeri
@@ -340,8 +354,10 @@ if(verification_passed) {
   }
   print('FINISHED!')
   check_mat <- as.data.frame(cbind(compared_names, similar_names))
+
   
   
+
   # synonymize subspecies example: Amblyomma triguttatum triguttatum = Amblyomma triguttatum
   parsed <- synonymize_subspecies(parsed)
   # parsed$genus <- array(as.character(unlist((parsed$genus)))) # sometimes needed to sort by variable in RStudio
@@ -360,6 +376,7 @@ if(verification_passed) {
   subspecies <- parsed[parsed$accid != 0, ]
   
   # End of data validation  
+
 } else {
   print('Verification was not passed. Some records appear to have been lost. Script was terminated. Please address errors.')
 }
