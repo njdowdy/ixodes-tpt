@@ -1,5 +1,6 @@
-# where is this going?
-# test change
+
+# test comment EDITED
+
 # import libraries
 library(taxotools)
 library(stringdist)
@@ -52,11 +53,21 @@ containsTaxonomy <- function(x) ifelse(!is.na(x),
                                          grepl('name', tolower(x), perl = TRUE) |
                                          grepl('epithet', tolower(x), perl = TRUE)) 
 
+
 # Extract columns that do not relate to taxonomy
 nonTaxonomyColumns <- df[ , -which(!(names(df) %in% names(which(sapply(names(df), containsTaxonomy) == FALSE))))]
 
 # Retain only columns that relate to taxonomy plus number column
 df <- df[ , -which(!(names(df) %in% names(which(sapply(names(df), containsTaxonomy) == TRUE | names(df) == "number"))))]
+
+# ensure scientificNameAuthorship meets DarwinCore standard for ICZN
+# source: xxxx
+df$scientificNameAuthorship <- paste(df$scientificNameAuthorship,
+                                     df$namePublishedInYear, sep = ', ')
+# fix cases like: (Jordan & Rothschild), 1922
+# regex: [x.replace(')', '')+')' for x in df$scientificNameAuthorship if re.search(r'[a-z]),', '', x)]
+fixAuth <- function(x) ifelse(grepl('[a-z]),',x), paste(gsub(')', '',x),')',sep=''),x)
+
 
 # darwinCoreTaxonTerms <- c("kingdom", "phylum", "class", "order", "family",
 #                           "genus", "subgenus", "species", "specificEpithet", 
@@ -82,7 +93,7 @@ colnames(df) <- convert2DwC(colnames(df))
 # ensure scientificNameAuthorship meets DarwinCore standard for ICZN
 # source: xxxx
 df$scientificNameAuthorship <- paste(df$scientificNameAuthorship,
-                                       df$namePublishedInYear, sep = ', ')
+                                     df$namePublishedInYear, sep = ', ')
 
 # warning - end up with ",NA" when there is no author or year
 # warning - fix cases like: (Jordan & Rothschild), 1922 need to make sure this is necessary
@@ -217,16 +228,18 @@ df <- df[which(df$infraspecificEpithet %!in% sp_wildcards), ]
 # extract names containing punctuation
 # warning: we should check ALL names for punctuation
 punctuated_species <- df[which(lapply(df$genus, containsPunc) == TRUE |
-                                             lapply(df$specificEpithet, containsPunc) == TRUE |
-                                             lapply(df$infraspecificEpithet, containsPunc) == TRUE),]
+                                 lapply(df$specificEpithet, containsPunc) == TRUE |
+                                 lapply(df$infraspecificEpithet, containsPunc) == TRUE),]
+
 # add review reason column
 punctuated_species$reason <- "contains punctuation"
 # add extracted names to df_review
 df_review <- rbind(df_review, punctuated_species)
 # remove punctuated names from df
 df <- df[which(lapply(df$genus, containsPunc) == FALSE &
-                                         lapply(df$specificEpithet, containsPunc) == FALSE &
-                                         lapply(df$infraspecificEpithet, containsPunc) == FALSE),]
+                 lapply(df$specificEpithet, containsPunc) == FALSE &
+                 lapply(df$infraspecificEpithet, containsPunc) == FALSE),]
+
 
 # warning: this is going to set us up to review way more than we want...
 # extract higher taxa
@@ -243,7 +256,8 @@ short_names_CHECK$reason <- "short name"
 df_review <- rbind(df_review, short_names_CHECK)
 # remove short names from df
 df <- df[which(lapply(df$specificEpithet, nchar) >= 4 &
-                                         lapply(df$genus, nchar) >= 4),] 
+                 lapply(df$genus, nchar) >= 4),] 
+
 
 # Look for missing higher taxa (warning: don't forget to add back higher taxa later!)
 # Get unique list of genera
@@ -283,10 +297,17 @@ if(starting_records != nrow(df) +
 if(verification_passed) {
   # generate canonical name
   df <- cast_canonical(df,
-                                   canonical="canonical", 
-                                   genus = "genus", 
-                                   species = "specificEpithet",
-                                   subspecies = "infraspecificEpithet")
+                       canonical="canonical", 
+                       genus = "genus", 
+                       species = "specificEpithet",
+                       subspecies = "infraspecificEpithet")
+  
+  # extract duplicate names 
+  duplicates <- df[which(duplicated(df$canonical)),]
+  # deduplicated list
+  df <- df[which(!duplicated(df$canonical)),]
+  
+
   
 # extract duplicate names 
 duplicates <- df[which(duplicated(df$canonical)),]
@@ -334,6 +355,8 @@ df <- df[which(!duplicated(df$canonical)),]
   print('FINISHED!')
   check_mat <- as.data.frame(cbind(compared_names, similar_names))
 
+  
+  
 
   # synonymize subspecies example: Amblyomma triguttatum triguttatum = Amblyomma triguttatum
   parsed <- synonymize_subspecies(parsed)
@@ -351,8 +374,9 @@ df <- df[which(!duplicated(df$canonical)),]
     print("Please check your nominate_species data frame for issues.")
   }
   subspecies <- parsed[parsed$accid != 0, ]
+  
+  # End of data validation  
 
-# End of data validation  
 } else {
   print('Verification was not passed. Some records appear to have been lost. Script was terminated. Please address errors.')
 }
