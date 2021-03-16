@@ -2,6 +2,7 @@
 library(taxotools)
 library(stringdist)
 library(data.table)
+library(stringi)
 
 # load data with UTF-8 encoding
 # df <- read.csv('input/Tick Taxonomy NMNH - Sheet1.csv')
@@ -166,9 +167,10 @@ df_review <- rbind(missing_genus, missing_species)
 # add higher taxa back to df
 df <- rbind(higher_taxa, df)
 
-# Missing data check warning: add this back later
+# Missing data check
+# TODO add this back later
 #if(starting_records != nrow(df) + 
-#   nrow(df_review)){print('Some records appear to have been lost. Script was terminated. Please address errors.')
+#   nrow(df_review) + nrow(duplicates)){print('Some records appear to have been lost. Script was terminated. Please address errors.')
 #} else {
 
 # extract rows with unexpected data
@@ -224,11 +226,72 @@ df <- df[which(lapply(df$genus, containsPunc) == FALSE &
 
 
 # extract higher taxa
+# TODO add back higher_taxa later!
 higher_taxa <- df[which(lapply(df$infraspecificEpithet, name_length) == 0 & lapply(df$specificEpithet, name_length) == 0),]
 df <- df[which(lapply(df$infraspecificEpithet, name_length) != 0 | lapply(df$specificEpithet, name_length) != 0),]
 
+# Look for missing higher taxa
+# TODO can we streamline this process and make sure it repeats for all columns in higher_taxa?
+suggested_adds <- data.frame (taxonName  = c(),
+                                    taxonRank = c()
+)
+missing_taxa <- data.frame (taxonName  = c(),
+                              taxonRank = c()
+)
+
+# Genus
+# Get unique list of genera from df and higher_taxa
+unique_df <- unique(df$genus) # unique genera in the working data frame
+unique_ht <- unique(higher_taxa$genus) # unique genera in the higher taxa data frame
+unique_ht <- stri_remove_empty(unique_ht, na_empty = FALSE) # remove empty values from higher_taxa
+# compare the two lists and return any names in the working data frame, but not in higher_taxa. These are higher level taxa that we suggest adding.
+missing_taxa <- unique_df[!unique_df %in% unique_ht] # there is not a unique genus entry for these genera
+taxa_not_used <- unique_ht[!unique_ht %in% unique_df] # there is a genus taxon, but no species for it
+suggested_append <- as.data.frame(missing_taxa) # create data frame for suggested adds
+suggested_append$taxonRank <- "genus"
+suggested_adds <- rbind(suggested_adds,suggested_append)
+missing_taxa <- as.data.frame(taxa_not_used) # create data frame for suggested adds
+missing_taxa$taxonRank <- "genus"
+missing_taxa <- rbind(missing_taxa, missing_append)
+# End Genus
+
+# Family
+# Get unique list of families from df and higher_taxa
+unique_df <- unique(df$family) # unique genera in the working data frame
+unique_ht <- unique(higher_taxa$family) # unique genera in the higher taxa data frame
+unique_ht <- stri_remove_empty(unique_ht, na_empty = FALSE) # remove empty values from higher_taxa
+# compare the two lists and return any names in the working data frame, but not in higher_taxa. These are higher level taxa that we suggest adding.
+missing_taxa <- unique_df[!unique_df %in% unique_ht] # there is not a unique genus entry for these genera
+taxa_not_used <- unique_ht[!unique_ht %in% unique_df] # there is a genus taxon, but no species for it
+suggested_append <- as.data.frame(missing_taxa) # create data frame for suggested adds
+suggested_append$taxonRank <- "family"
+suggested_adds <- rbind(suggested_adds,suggested_append)
+missing_append <- as.data.frame(taxa_not_used) # create data frame for suggested adds
+missing_append$taxonRank <- "family"
+missing_taxa <- rbind(missing_taxa, missing_append)
+# End Family
+
+# Order
+# Get unique list of orders from df and higher_taxa
+unique_df <- unique(df$order) # unique genera in the working data frame
+unique_ht <- unique(higher_taxa$order) # unique genera in the higher taxa data frame
+unique_ht <- stri_remove_empty(unique_ht, na_empty = FALSE) # remove empty values from higher_taxa
+# compare the two lists and return any names in the working data frame, but not in higher_taxa. These are higher level taxa that we suggest adding.
+missing_taxa <- unique_df[!unique_df %in% unique_ht] # there is not a unique genus entry for these genera
+taxa_not_used <- unique_ht[!unique_ht %in% unique_df] # there is a genus taxon, but no species for it
+suggested_append <- as.data.frame(missing_taxa) # create data frame for suggested adds
+suggested_append$taxonRank <- "order"
+suggested_adds <- rbind(suggested_adds,suggested_append)
+missing_append <- as.data.frame(taxa_not_used) # create data frame for suggested adds
+missing_append$taxonRank <- "order"
+missing_taxa <- rbind(missing_taxa, missing_append)
+# End order
+
+# add higher taxa back to df
+df <- rbind(higher_taxa, df)
+
 # extract very short specific_epithet OR genus
-short_names_CHECK <- df[which(lapply(df$specificEpithet, nchar) < 4 |
+short_names_CHECK <- df[which(lapply(df$infraspecificEpithet, nchar) < 4 | lapply(df$specificEpithet, nchar) < 4 |
                                 lapply(df$genus, nchar) < 4),]
 # add review reason column
 short_names_CHECK$reason <- "short name"
@@ -236,40 +299,14 @@ short_names_CHECK$reason <- "short name"
 # add extracted rows to df_review
 df_review <- rbind(df_review, short_names_CHECK)
 # remove short names from df
-df <- df[which(lapply(df$specificEpithet, nchar) >= 4 &
-                 lapply(df$genus, nchar) >= 4),] 
-
-# TODO BEGIN NOT TESTED
-# Look for missing higher taxa (warning: don't forget to add back higher taxa later!)
-# Get unique list of genera
-unique_genera <- unique(df$genus)
-data.frame(t(sapply(unique_genera,c)))
-data.frame(Reduce(rbind, unique_genera))
-
-# insert some code to check that all "incomplete_epithet" higher taxonomy is present in "single_epithet"
-# if not add that genus to suggested additions data frame
-# this needs work
-# !(unique(incomplete_epithet$genus) %in% unique(single_epithet$genus))
-incomplete_epithet_genera <- unique(df$genus)
-incomplete_epithet_genera <- incomplete_epithet_genera[-which(incomplete_epithet_genera == '')] # remove any empty strings as genera
-single_epithet_genera <- array(as.character(unlist(unique(df$genus))))
-missing_genera <- incomplete_epithet_genera[!(incomplete_epithet_genera %in% single_epithet_genera)]
-
-if(length(missing_genera) != 0){
-  missing_genera <- incomplete_epithet[incomplete_epithet$genus %in% missing_genera,]
-  missing_genera$species <- rep('sp', nrow(missing_genera)) # set species to 'sp'
-  missing_genera$infraspecificEpithet <- rep('sp', nrow(missing_genera)) # set subspecies to 'sp'
-  # single_epithet <- rbind(single_epithet, missing_genera) # not sure if we want to do this without checking first
-  # if the above line is approved, we may need to adjust the 'verification passed' check below
-}
-
-# END NOT TESTED
+df <- df[which(lapply(df$infraspecificEpithet, nchar) >= 4),]
+df <- df[which(lapply(df$specificEpithet, nchar) >= 4),]
+df <- df[which(lapply(df$genus, nchar) >= 4),] 
 
 # verify no records were lost
 verification_passed = FALSE
 if(starting_records != nrow(df) + 
-   nrow(df_review) + 
-   nrow(suggested_adds)) {
+   nrow(df_review)) {
 } else {
   verification_passed = TRUE
 }
@@ -286,9 +323,10 @@ if(verification_passed) {
   duplicates <- df[which(duplicated(df$canonical)),]
   # deduplicated list
   df <- df[which(!duplicated(df$canonical)),]
-  
+}
+#} End of Missing data check 1
 
-  
+# TODO this isn't working - what did I break?
   # check Levenshtein's Distance (e.g., misspellings) [may need to do before canonical name generation]
   # Watch for: Ornithodoros vunkeri; Ornithodoros yukeri; Ornithodoros yunkeri
   
@@ -323,14 +361,11 @@ if(verification_passed) {
       temp <- c()
     }
     if(i %% 10 == 0){
-      print(paste('Completed iteration:', i, 'out of', length(parsed$canonical), 'iterations (', round(i/length(parsed$canonical),2)*100,'% DONE)'))
+      print(paste('Completed iteration:', i, 'out of', length(df$canonical), 'iterations (', round(i/length(df$canonical),2)*100,'% DONE)'))
     }
   }
   print('FINISHED!')
   check_mat <- as.data.frame(cbind(compared_names, similar_names))
-
-  
-  
 
   # synonymize subspecies example: Amblyomma triguttatum triguttatum = Amblyomma triguttatum
   parsed <- synonymize_subspecies(parsed)
@@ -354,4 +389,31 @@ if(verification_passed) {
 } else {
   print('Verification was not passed. Some records appear to have been lost. Script was terminated. Please address errors.')
 }
+
+# write output
+write.csv(df,"~/GitHub/ixodes-tpt/output/taxa_no_issues.csv", row.names = FALSE) # these should be good to go
+write.csv(df_review,"~/GitHub/ixodes-tpt/output/taxa_need_review.csv", row.names = FALSE) # these need review
+write.csv(duplicates,"~/GitHub/ixodes-tpt/output/taxa_need_review.csv", row.names = FALSE) # these were removed as duplicates
+write.csv(suggested_adds,"~/GitHub/ixodes-tpt/output/suggested_adds.csv", row.names = FALSE) # these are higher taxa that probably need to be added
+write.csv(missing_taxa,"~/GitHub/ixodes-tpt/output/higher_taxa_not_used.csv", row.names = FALSE) # these higher taxa are in the file, but not used by any children
+write.csv(check_mat,"~/GitHub/ixodes-tpt/output/higher_taxa_not_used.csv", row.names = FALSE) # these names seem awful alike
+
 #} End of Missing data check 1
+
+# insert some code to check that all "incomplete_epithet" higher taxonomy is present in "single_epithet"
+# if not add that genus to suggested additions data frame
+# TODO Teresa has no idea what is going on here. this needs work
+# !(unique(incomplete_epithet$genus) %in% unique(single_epithet$genus))
+# incomplete_epithet_genera <- unique(df$genus)
+# incomplete_epithet_genera <- incomplete_epithet_genera[-which(incomplete_epithet_genera == '')] # remove any empty strings as genera
+# single_epithet_genera <- array(as.character(unlist(unique(df$genus))))
+# missing_genera <- incomplete_epithet_genera[!(incomplete_epithet_genera %in% single_epithet_genera)]
+
+# if(length(missing_genera) != 0){
+#  missing_genera <- incomplete_epithet[incomplete_epithet$genus %in% missing_genera,]
+#  missing_genera$species <- rep('sp', nrow(missing_genera)) # set species to 'sp'
+#  missing_genera$infraspecificEpithet <- rep('sp', nrow(missing_genera)) # set subspecies to 'sp'
+# single_epithet <- rbind(single_epithet, missing_genera) # not sure if we want to do this without checking first
+# if the above line is approved, we may need to adjust the 'verification passed' check below
+# }
+# colnames(suggested_adds)[colnames(suggested_adds) == "missing_taxa"] <- "genus" # change column name to genus
