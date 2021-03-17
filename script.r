@@ -230,6 +230,19 @@ df <- df[which(lapply(df$genus, containsPunc) == FALSE &
 higher_taxa <- df[which(lapply(df$infraspecificEpithet, name_length) == 0 & lapply(df$specificEpithet, name_length) == 0),]
 df <- df[which(lapply(df$infraspecificEpithet, name_length) != 0 | lapply(df$specificEpithet, name_length) != 0),]
 
+# extract very short specific_epithet OR genus
+short_names_CHECK <- df[which(lapply(df$infraspecificEpithet, nchar) < 4 | lapply(df$specificEpithet, nchar) < 4 |
+                                lapply(df$genus, nchar) < 4),]
+# add review reason column
+short_names_CHECK$reason <- "short name"
+
+# add extracted rows to df_review
+df_review <- rbind(df_review, short_names_CHECK)
+# remove short names from df
+df <- df[which(lapply(df$infraspecificEpithet, nchar) >= 4),]
+df <- df[which(lapply(df$specificEpithet, nchar) >= 4),]
+df <- df[which(lapply(df$genus, nchar) >= 4),] 
+
 # Look for missing higher taxa
 # TODO can we streamline this process and make sure it repeats for all columns in higher_taxa?
 suggested_adds <- data.frame (taxonName  = c(),
@@ -250,7 +263,7 @@ taxa_not_used <- unique_ht[!unique_ht %in% unique_df] # there is a genus taxon, 
 suggested_append <- as.data.frame(missing_taxa) # create data frame for suggested adds
 suggested_append$taxonRank <- "genus"
 suggested_adds <- rbind(suggested_adds,suggested_append)
-missing_taxa <- as.data.frame(taxa_not_used) # create data frame for suggested adds
+missing_taxa <- as.data.frame(taxa_not_used) # create data frame for suggested removals
 missing_taxa$taxonRank <- "genus"
 missing_taxa <- rbind(missing_taxa, missing_append)
 # End Genus
@@ -289,19 +302,6 @@ missing_taxa <- rbind(missing_taxa, missing_append)
 
 # add higher taxa back to df
 df <- rbind(higher_taxa, df)
-
-# extract very short specific_epithet OR genus
-short_names_CHECK <- df[which(lapply(df$infraspecificEpithet, nchar) < 4 | lapply(df$specificEpithet, nchar) < 4 |
-                                lapply(df$genus, nchar) < 4),]
-# add review reason column
-short_names_CHECK$reason <- "short name"
-
-# add extracted rows to df_review
-df_review <- rbind(df_review, short_names_CHECK)
-# remove short names from df
-df <- df[which(lapply(df$infraspecificEpithet, nchar) >= 4),]
-df <- df[which(lapply(df$specificEpithet, nchar) >= 4),]
-df <- df[which(lapply(df$genus, nchar) >= 4),] 
 
 # verify no records were lost
 verification_passed = FALSE
