@@ -393,10 +393,10 @@ if(verification_passed) {
 # write output
 write.csv(df,"~/GitHub/ixodes-tpt/output/taxa_no_issues.csv", row.names = FALSE) # these should be good to go
 write.csv(df_review,"~/GitHub/ixodes-tpt/output/taxa_need_review.csv", row.names = FALSE) # these need review
-write.csv(duplicates,"~/GitHub/ixodes-tpt/output/taxa_need_review.csv", row.names = FALSE) # these were removed as duplicates
+write.csv(duplicates,"~/GitHub/ixodes-tpt/output/duplicates.csv", row.names = FALSE) # these were removed as duplicates
 write.csv(suggested_adds,"~/GitHub/ixodes-tpt/output/suggested_adds.csv", row.names = FALSE) # these are higher taxa that probably need to be added
 write.csv(missing_taxa,"~/GitHub/ixodes-tpt/output/higher_taxa_not_used.csv", row.names = FALSE) # these higher taxa are in the file, but not used by any children
-write.csv(check_mat,"~/GitHub/ixodes-tpt/output/higher_taxa_not_used.csv", row.names = FALSE) # these names seem awful alike
+write.csv(check_mat,"~/GitHub/ixodes-tpt/output/similar_names.csv", row.names = FALSE) # these names seem awful alike
 
 #} End of Missing data check 1
 
