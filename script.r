@@ -157,21 +157,16 @@ higher_taxa <- df[which(lapply(df$infraspecificEpithet, name_length) == 0 & lapp
 df <- df[which(lapply(df$infraspecificEpithet, name_length) != 0 | lapply(df$specificEpithet, name_length) != 0),]
 
 # extract rows with missing information
-# extract rows with no genus, but has species
-missing_genus <- df[which(lapply(df$specificEpithet, name_length) != 0 & lapply(df$genus, name_length) == 0),]
+missing_genus <- df[which(lapply(df$specificEpithet, name_length) != 0 & lapply(df$genus, name_length) == 0),] # select rows with no genus, but has species
 missing_genus$reason <- "missing genus" # add review reason column
-df <- df[which(lapply(df$genus, name_length) != 0),]
+df <- df[which(lapply(df$genus, name_length) != 0),] # extract rows with no genus, but has species from working dataframe
 # extract rows with no genus, but has subspecies, these get caught above
 # no_genus_has_subspecies <- df[which(lapply(df$infraspecificEpithet, name_length) != 0 & lapply(df$genus, name_length) == 0),]
-# extract rows with no species, but has subspecies
-missing_species <- df[which(lapply(df$specificEpithet, name_length) == 0 & lapply(df$infraspecificEpithet, name_length) != 0),]
-# add review reason column
-missing_species$reason <- "missing specificEpithet"
-df <- df[which(lapply(df$specificEpithet, name_length) != 0 & lapply(df$infraspecificEpithet, name_length) != 0 | lapply(df$specificEpithet, name_length) != 0 & lapply(df$infraspecificEpithet, name_length) == 0)]
-# combine extracted rows that are missing terms to df_review data frame
-df_review <- rbind(missing_genus, missing_species)
-# add higher taxa back to df
-df <- rbind(higher_taxa, df)
+missing_species <- df[which(lapply(df$specificEpithet, name_length) == 0 & lapply(df$infraspecificEpithet, name_length) != 0),] # extract rows with no species, but has subspecies
+missing_species$reason <- "missing specificEpithet" # add review reason column
+df <- df[which(lapply(df$specificEpithet, name_length) != 0 & lapply(df$infraspecificEpithet, name_length) != 0 | lapply(df$specificEpithet, name_length) != 0 & lapply(df$infraspecificEpithet, name_length) == 0)] # extract rows with no species, but has subspecies from working dataframe
+df_review <- rbind(missing_genus, missing_species) # combine extracted rows that are missing terms to df_review data frame
+df <- rbind(higher_taxa, df) # add higher taxa back to working data frame
 
 # Missing data check
 # TODO add this back later
