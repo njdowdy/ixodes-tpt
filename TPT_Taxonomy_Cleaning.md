@@ -3,12 +3,12 @@
 The R script in this repository was created to clean the various taxonomic classification sources received from Terrestrial Parasite Tracker (TPT) participants to be added to the TPT Taxonomy Reource. This document describes the process completed by the script.
 
 ## Library Import
-The following libraries will be installed in R:
+The following R packages will be installed by the script:
 
-taxotools - [ReadMe](https://github.com/vijaybarve/taxotools/commit/7dfa7a0fbde290966482bf8741b042c80efbff19?branch=7dfa7a0fbde290966482bf8741b042c80efbff19&diff=unified&short_path=b335630#diff-b335630551682c19a781afebcf4d07bf978fb1f8ac04c6bf87428ed5106870f5)
-stringdist
-data.table
-stringi
+ - taxotools - [ReadMe](https://github.com/vijaybarve/taxotools/commit/7dfa7a0fbde290966482bf8741b042c80efbff19?branch=7dfa7a0fbde290966482bf8741b042c80efbff19&diff=unified&short_path=b335630#diff-b335630551682c19a781afebcf4d07bf978fb1f8ac04c6bf87428ed5106870f5)
+ - stringdist
+ - data.table
+ - stringi
 
 ## Preparation
 These steps prepare the file for the processing that will follow:
