@@ -2,7 +2,7 @@
 
 The R script in this repository was created to clean the various taxonomic classification sources received from Terrestrial Parasite Tracker (TPT) participants to be added to the TPT Taxonomy Reource. This document describes the process completed by the script.
 
-# Library Import
+## Library Import
 The following libraries will be installed in R:
 
 taxotools - [ReadMe](https://github.com/vijaybarve/taxotools/commit/7dfa7a0fbde290966482bf8741b042c80efbff19?branch=7dfa7a0fbde290966482bf8741b042c80efbff19&diff=unified&short_path=b335630#diff-b335630551682c19a781afebcf4d07bf978fb1f8ac04c6bf87428ed5106870f5)
@@ -28,3 +28,11 @@ domain, kingdom, regnum, phylum, class, legio, cohort, order, famil, trib, genus
 kingdom, phylum, class, order, family, genus, subgenus, species, specificEpithet, scientificName, infraspecificEpithet, taxonRank, higherClassification, namePublishedInYear, scientificNameAuthorship, taxonomicStatus, nomenclaturalStatus, namePublishedIn
 
 7. Convert <a href="https://dwc.tdwg.org/terms/#dwc:scientificNameAuthorship" class="external">scientificNameAuthorship to DarwinCore standard</a> for ICZN
+
+## Basic Cleaning
+These steps complete some basic data cleanup.
+
+1. Apply "Proper" capitalization to all classification terms except specific epithet and infraspecific epithet.
+2. Strip spaces from beginning and ends of strings
+3. Remove all '\xa0' chars
+
