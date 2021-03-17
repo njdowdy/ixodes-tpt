@@ -36,3 +36,15 @@ These steps complete some basic data cleanup.
 2. Strip spaces from beginning and ends of strings
 3. Remove all '\xa0' chars
 
+## Extract data that needs review
+The following data will be removed from the working file and placed in the output file taxa_need_review.csv for further review.
+
+1. Rows that include specificEpithet or infraspecificEpithet but genus is blank.
+2. Rows that include infraspecificEpithet but specificEpithet is blank.
+3. Rows with more than one term in genus, specificEpithet, or infraspecificEpithet.
+5. Rows with any of the following in specificEpithet or infraspecificEpithet.
+
+### Questionable name terms
+sp, sp., spp, spp., sp.nov., sp nov, sp. nov., prob, prob., probably, unid, unidentified, spnov plus a number, sp plus a number
+
+6. Rows that include any classification term with punctuation (excluding scientificNameAuthorship)
