@@ -16,6 +16,7 @@ Input is required to be csv and is expected to include at least the following co
  - taxon published year
 
 Other information may be included in the file, including ranks between the standard ranks listed above and subspecific epithets.
+**NOTE** All taxonomy fields are expected to include a single term, "species" is really "specific epithet" and "subspecies" is really "infraspecific epithet".
 
 ### Output
 Running the script will produce the following outputs in csv:
