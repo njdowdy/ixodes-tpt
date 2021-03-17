@@ -56,7 +56,7 @@ In order to ensure the entirety of the taxon tree of interest is included. A lis
 ## Suggest taxa to remove
 If a higher taxon name is included in the file, but is NOT used as a higher taxon in any lower taxa, it will be listed in the output file higher_taxa_not_used.csv. These terms may be missing from the working file or they may be included but misspelled. A thourough review of this list as compared to the working file is encourged. If it is determined that a term from the list should be removed, then the term along with all of it's associated higher taxa, authorship, etc. should be removed to the taxa_no_issues.csv output file for further processing.
 
-## Remove duplicate names
+## Remove duplicate names for review
 1. Generate "canonical name" - Construct canonical names using Genus, Species and Subspecies fields. See [taxotools](https://github.com/vijaybarve/taxotools/blob/master/man/cast_canonical.Rd).
 2. Remove one of any duplicate canonical names to the output file duplicates.csv for review. A comparison of the removed term with the one in the working file is suggested to ensure that the removed rows are duplicates.
 
