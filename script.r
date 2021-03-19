@@ -7,7 +7,7 @@ library(stringi)
 # load data with UTF-8 encoding
 # df <- read.csv('input/Tick Taxonomy NMNH - Sheet1.csv')
 # df <- read.csv('input/Flea checklist-full taxonomy udpated 12.2019.csv', encoding = 'UTF-8')
-# df <- read.csv("~/GitHub/ixodes-tpt/input/Flea checklist-full taxonomy udpated 12 (version 1).csv", encoding="UTF-8")
+df <- read.csv("~/GitHub/ixodes-tpt/input/Flea checklist-full taxonomy udpated 12 (version 1).csv", encoding="UTF-8")
 df <- read.csv("~/GitHub/ixodes-tpt/input/Test Data.csv", encoding="UTF-8")
 
 # Begin prep df for cleaning
@@ -156,16 +156,17 @@ name_length <- function(x) ifelse(!is.na(x), length(unlist(strsplit(x, ' '))), 0
 higher_taxa <- df[which(lapply(df$infraspecificEpithet, name_length) == 0 & lapply(df$specificEpithet, name_length) == 0),]
 df <- df[which(lapply(df$infraspecificEpithet, name_length) != 0 | lapply(df$specificEpithet, name_length) != 0),]
 
-# extract rows with missing information
+# extract rows with missing information to review file
 missing_genus <- df[which(lapply(df$specificEpithet, name_length) != 0 & lapply(df$genus, name_length) == 0),] # select rows with no genus, but has species
 missing_genus$reason <- "missing genus" # add review reason column
 df <- df[which(lapply(df$genus, name_length) != 0),] # extract rows with no genus, but has species from working dataframe
-# extract rows with no genus, but has subspecies, these get caught above
-# no_genus_has_subspecies <- df[which(lapply(df$infraspecificEpithet, name_length) != 0 & lapply(df$genus, name_length) == 0),]
 missing_species <- df[which(lapply(df$specificEpithet, name_length) == 0 & lapply(df$infraspecificEpithet, name_length) != 0),] # extract rows with no species, but has subspecies
 missing_species$reason <- "missing specificEpithet" # add review reason column
-df <- df[which(lapply(df$specificEpithet, name_length) != 0 & lapply(df$infraspecificEpithet, name_length) != 0 | lapply(df$specificEpithet, name_length) != 0 & lapply(df$infraspecificEpithet, name_length) == 0)] # extract rows with no species, but has subspecies from working dataframe
 df_review <- rbind(missing_genus, missing_species) # combine extracted rows that are missing terms to df_review data frame
+# retain only rows with complete information in working file
+df <- df[which(lapply(df$specificEpithet, name_length) != 0 &
+                 lapply(df$infraspecificEpithet, name_length) != 0 | 
+                 lapply(df$specificEpithet, name_length) != 0 & lapply(df$infraspecificEpithet, name_length) == 0)] # extract rows with no species, but has subspecies from working dataframe
 df <- rbind(higher_taxa, df) # add higher taxa back to working data frame
 
 # Missing data check
@@ -174,20 +175,16 @@ df <- rbind(higher_taxa, df) # add higher taxa back to working data frame
 #   nrow(df_review) + nrow(duplicates)){print('Some records appear to have been lost. Script was terminated. Please address errors.')
 #} else {
 
-# extract rows with unexpected data
-# extract rows with a multi-name genus, specificEpithet OR infraspecificEpithet
-multi_epithet <- df[which(lapply(df$specificEpithet, name_length) > 1 | lapply(df$genus, name_length) > 1 | lapply(df$infraspecificEpithet, name_length) > 1),]
-# add review reason column
-multi_epithet$reason <- "multi term genus, specificEpithet or infraspecificEpithet"
-#more_epithet <- df[which(lapply(df$infraspecificEpithet, name_length) > 1),]
+# extract rows with unexpected data to review file
+multi_epithet <- df[which(lapply(df$specificEpithet, name_length) > 1 | lapply(df$genus, name_length) > 1 | lapply(df$infraspecificEpithet, name_length) > 1),] # extract rows with a multi-name genus, specificEpithet OR infraspecificEpithet
+multi_epithet$reason <- "multi term genus, specificEpithet or infraspecificEpithet" # add review reason column
 df_review <- rbind(df_review, multi_epithet)
-
-# retain single term genus, species and subspecies rows
+# retain only single term genus, species and subspecies rows in working file
 df <- df[which(lapply(df$specificEpithet, name_length) <= 1),]
 df <- df[which(lapply(df$infraspecificEpithet, name_length) <= 1),]
 df <- df[which(lapply(df$genus, name_length) <= 1),]
 
-# extract sp's in specificEpithet
+# extract sp's in specificEpithet and infraspecificEpithet
 sp_wildcards <- c('sp', 'sp.', 'spp', 'spp.', 'sp.nov.', 'sp nov', 'sp. nov.', 
                   'prob', 'prob.', 'probably', 'unid', 'unidentified',
                   'spnov1')
@@ -221,13 +218,20 @@ higher_taxa <- df[which(lapply(df$infraspecificEpithet, name_length) == 0 & lapp
 df <- df[which(lapply(df$infraspecificEpithet, name_length) != 0 | lapply(df$specificEpithet, name_length) != 0),]
 
 # extract very short specific_epithet OR genus
-short_names_CHECK <- df[which(lapply(df$infraspecificEpithet, nchar) < 4 | lapply(df$specificEpithet, nchar) < 4 |
-                                lapply(df$genus, nchar) < 4),]
-short_names_CHECK$reason <- "short name" # add review reason column
-df_review <- rbind(df_review, short_names_CHECK) # add extracted rows to df_review
-df <- df[which(lapply(df$infraspecificEpithet, nchar) >= 4),] # remove short infraspecificEpithets from df
-df <- df[which(lapply(df$specificEpithet, nchar) >= 4),] # remove short specificEpithets from df
+short_genus <- df[which(lapply(df$genus, nchar) < 4),]
+short_genus$reason <- "short name" # add review reason column
 df <- df[which(lapply(df$genus, nchar) >= 4),] # remove short genera from df
+df_review <- rbind(df_review, short_genus) # add extracted rows to df_review
+short_specific <- df[which(lapply(df$specificEpithet, nchar) < 4),]
+short_specific$reason <- "short name" # add review reason column
+df <- df[which(lapply(df$specificEpithet, nchar) >= 4),] # remove short specificEpithets from df
+df_review <- rbind(df_review, short_specific) # add extracted rows to df_review
+short_infra <- df[which(lapply(df$infraspecificEpithet, nchar) != 0 & 
+                                lapply(df$infraspecificEpithet, nchar) < 4),]
+short_infra$reason <- "short name" # add review reason column
+df <- df[which(lapply(df$infraspecificEpithet, nchar) == 0 | 
+                 lapply(df$infraspecificEpithet, nchar) >= 4),] # remove short infraspecificEpithets from df
+df_review <- rbind(df_review, short_infra) # add extracted rows to df_review
 
 # Look for missing higher taxa
 # TODO can we streamline this process and make sure it repeats for all columns in higher_taxa?
@@ -303,8 +307,9 @@ if(verification_passed) {
                        species = "specificEpithet",
                        subspecies = "infraspecificEpithet")
   # TODO higher_taxa$canonical <- get the lowest ranking term and put it here!
+  higher_taxa$canonical <- "" # add canonical column for merging with working file
   
-  # extract duplicate names 
+    # extract duplicate names 
   duplicates <- df[which(duplicated(df$canonical)),]
   # deduplicated list
   df <- df[which(!duplicated(df$canonical)),]
@@ -318,43 +323,43 @@ df <- rbind(higher_taxa, df)
 # TODO this isn't working - what did I break?
   # check Levenshtein's Distance (e.g., misspellings) [may need to do before canonical name generation]
   # Watch for: Ornithodoros vunkeri; Ornithodoros yukeri; Ornithodoros yunkeri
-  
-  temp <- c()
-  similar_names <-c()
-  compared_names <- c()
-  cutoff_distance <- 2
-  df2 <- c()
-  io <- FALSE
-  for(i in 1:length(df$canonical)){
-    if(!(df$canonical[i] %in% similar_names)){ # testing
-      for(j in 1:length(df$canonical)){
-        score <- stringdist(df$canonical[i], df$canonical[j], "dl")
-        temp <- c(temp, score)
-      }
-      if(any(temp %in% c(1:cutoff_distance))){
-        if(io){
-          df2 <- cbind(df2, temp)
-          wc = wc + 1
-        } else {
-          df2 <- as.data.frame(temp)
-          rownames(df2) <- df$canonical
-          io <- TRUE
-          wc <- 1
-        }
-        colnames(df2)[which(colnames(df2) == "temp")] <- df$canonical[i]
-        similar <- rownames(df2)[which(df2[,wc]==min(df2[,wc][which(df2[,wc]>0)]))]
-        comp_name <- rep(df$canonical[i], length(similar))
-        similar_names <- c(similar_names, similar)
-        compared_names <- c(compared_names, comp_name)
-      }
-      temp <- c()
+
+temp <- c()
+similar_names <-c()
+compared_names <- c()
+cutoff_distance <- 2
+df2 <- c()
+io <- FALSE
+for(i in 1:length(df$canonical)){
+  if(!(df$canonical[i] %in% similar_names)){ # testing
+    for(j in 1:length(df$canonical)){
+      score <- stringdist(df$canonical[i], df$canonical[j], "dl")
+      temp <- c(temp, score)
     }
-    if(i %% 10 == 0){
-      print(paste('Completed iteration:', i, 'out of', length(df$canonical), 'iterations (', round(i/length(df$canonical),2)*100,'% DONE)'))
+    if(any(temp %in% c(1:cutoff_distance))){
+      if(io){
+        df2 <- cbind(df2, temp)
+        wc = wc + 1
+      } else {
+        df2 <- as.data.frame(temp)
+        rownames(df2) <- df$canonical
+        io <- TRUE
+        wc <- 1
+      }
+      colnames(df2)[which(colnames(df2) == "temp")] <- df$canonical[i]
+      similar <- rownames(df2)[which(df2[,wc]==min(df2[,wc][which(df2[,wc]>0)]))]
+      comp_name <- rep(df$canonical[i], length(similar))
+      similar_names <- c(similar_names, similar)
+      compared_names <- c(compared_names, comp_name)
     }
+    temp <- c()
   }
-  print('FINISHED!')
-  check_mat <- as.data.frame(cbind(compared_names, similar_names))
+  if(i %% 10 == 0){
+    print(paste('Completed iteration:', i, 'out of', length(df$canonical), 'iterations (', round(i/length(df$canonical),2)*100,'% DONE)'))
+  }
+}
+print('FINISHED!')
+check_mat <- as.data.frame(cbind(compared_names, similar_names))
 
   # synonymize subspecies example: Amblyomma triguttatum triguttatum = Amblyomma triguttatum
   parsed <- synonymize_subspecies(parsed)
