@@ -7,8 +7,8 @@ library(stringi)
 # load data with UTF-8 encoding
 # df <- read.csv('input/Tick Taxonomy NMNH - Sheet1.csv')
 # df <- read.csv('input/Flea checklist-full taxonomy udpated 12.2019.csv', encoding = 'UTF-8')
-df <- read.csv("~/GitHub/ixodes-tpt/input/Flea checklist-full taxonomy udpated 12 (version 1).csv", encoding="UTF-8")
-df <- read.csv("~/GitHub/ixodes-tpt/input/Test Data.csv", encoding="UTF-8")
+# df <- read.csv("~/GitHub/ixodes-tpt/input/Flea checklist-full taxonomy udpated 12 (version 1).csv", encoding="UTF-8")
+# df <- read.csv("~/GitHub/ixodes-tpt/input/Test Data.csv", encoding="UTF-8")
 df <- read.csv("~/GitHub/ixodes-tpt/input/nmnhsearch-20200320142359.csv", encoding="UTF-8")
 
 # Begin prep df for cleaning
