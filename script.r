@@ -15,7 +15,7 @@ df <- read.csv("~/GitHub/ixodes-tpt/input/nmnhsearch-20200320142359.csv", encodi
 
 starting_records <- nrow(df) # number of original records for verification
 df$number <- seq.int(nrow(df)) # create unique ID for each row (use to match removed column data if needed)
-starting_columns <- ncol(df) # number of original columns for verification
+ starting_columns <- ncol(df) # number of original columns for verification
 colnames(df) <- tolower(colnames(df))# lower case all column names
 
 # define function: Select columns that contain taxonomy
