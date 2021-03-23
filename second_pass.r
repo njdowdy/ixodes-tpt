@@ -9,182 +9,12 @@ library(stringi)
 # df <- read.csv('input/Flea checklist-full taxonomy udpated 12.2019.csv', encoding = 'UTF-8')
 # df <- read.csv("~/GitHub/ixodes-tpt/input/Flea checklist-full taxonomy udpated 12 (version 1).csv", encoding="UTF-8")
 # df <- read.csv("~/GitHub/ixodes-tpt/input/Test Data.csv", encoding="UTF-8")
-df <- read.csv("~/GitHub/ixodes-tpt/input/nmnhsearch-20200320142359.csv", encoding="UTF-8")
+df <- read.csv("~/GitHub/ixodes-tpt/input/nmnhsearch-20200320142359_v2.csv", encoding="UTF-8")
 
 # Begin prep df for cleaning
 
 starting_records <- nrow(df) # number of original records for verification
-df$number <- seq.int(nrow(df)) # create unique ID for each row (use to match removed column data if needed)
 starting_columns <- ncol(df) # number of original columns for verification
-colnames(df) <- tolower(colnames(df))# lower case all column names
-
-# define function: Select columns that contain taxonomy
-containsTaxonomy <- function(x) ifelse(!is.na(x), 
-                                       grepl('domain', tolower(x), perl = TRUE) |
-                                         grepl('kingdom', tolower(x), perl = TRUE) |
-                                         grepl('regnum', tolower(x), perl = TRUE) |
-                                         grepl('phylum', tolower(x), perl = TRUE) |
-                                         grepl('class', tolower(x), perl = TRUE) |
-                                         grepl('legio', tolower(x), perl = TRUE) |
-                                         grepl('cohort', tolower(x), perl = TRUE) |
-                                         grepl('order', tolower(x), perl = TRUE) |
-                                         grepl('famil', tolower(x), perl = TRUE) |
-                                         grepl('trib', tolower(x), perl = TRUE) |
-                                         grepl('genus', tolower(x), perl = TRUE) |
-                                         grepl('species', tolower(x), perl = TRUE) |
-                                         grepl('sectio', tolower(x), perl = TRUE) |
-                                         grepl('variet', tolower(x), perl = TRUE) |
-                                         grepl('form', tolower(x), perl = TRUE) |
-                                         grepl('clade', tolower(x), perl = TRUE) |
-                                         grepl('series', tolower(x), perl = TRUE) |
-                                         grepl('author', tolower(x), perl = TRUE) |
-                                         grepl('publi', tolower(x), perl = TRUE) |
-                                         grepl('year', tolower(x), perl = TRUE) |
-                                         grepl('status', tolower(x), perl = TRUE) |
-                                         grepl('rank', tolower(x), perl = TRUE) |
-                                         grepl('name', tolower(x), perl = TRUE) |
-                                         grepl('epithet', tolower(x), perl = TRUE)) 
-
-
-nonTaxonomyColumns <- df[ , -which(!(names(df) %in% names(which(sapply(names(df), containsTaxonomy) == FALSE))))] # Extract columns that do not relate to taxonomy to review file
-df <- df[ , -which(!(names(df) %in% names(which(sapply(names(df), containsTaxonomy) == TRUE | names(df) == "number"))))] # Retain only columns that relate to taxonomy plus number column in working file
-
-# darwinCoreTaxonTerms <- c("kingdom", "phylum", "class", "order", "family",
-#                           "genus", "subgenus", "species", "specificEpithet", 
-#                           "scientificName", "infraspecificEpithet", "taxonRank",
-#                           "higherClassification", "namePublishedInYear", 
-#                           "scientificNameAuthorship", "taxonomicStatus", 
-#                           "nomenclaturalStatus", "namePublishedIn")
-
-# define function: DarwinCore column name conversion function
-# TODO - this needs work see issue with order in flea file
-convert2DwC <- function(df_colname) {
-  x <- gsub('.*subspecies.*','infraspecificEpithet',df_colname)
-  x <- gsub('.*species.*','specificEpithet',x)
-  x <- gsub('.*rank.*','taxonRank',x)
-  x <- gsub('.*author.*','scientificNameAuthorship',x) # note - this is really only part of scientificNameAuthorship, which should also include namePublishedInYear will be corrected later
-  x <- gsub('.*year.*','namePublishedInYear',x)
-  x <- gsub('.*scientific.*','scientificName',x)
-  x
-}
-
-colnames(df) <- convert2DwC(colnames(df)) # convert column headers to DarwinCore terms
-
-# if no genus, but scientificName need to parse scientificName
-# TODO someone please write this if statement!
-df <- melt_scientificname (df,
-                           sciname = "scientificName",
-                           genus = "genus",
-                           species = "specificEpithet",
-                           subspecies = "infraspecificEpithet",
-                           author = "scientificNameAuthorship")
-
-cast_scientificname <- function(dat=NULL,sciname="scientificname", genus="", 
-                                subgenus="", species="",
-                                subspecies="", author="", 
-                                verbose=FALSE){
-  if(is.null(dat) ){
-    warning("No data supplied to process. Nothing to do...")
-    return(NULL)  
-  }
-  newdat <- as.data.frame(dat)
-  newdat$sciname_ <- NA
-  if(is.empty(sciname)){
-    warning("sciname not provided. Using default scientificname")
-    sciname <- "scientificname"
-  }
-  if(genus==""){
-    warning("genus field not specified")
-    return(NULL)
-  } else {
-    newdat <- rename_column(newdat,genus,"genus_")
-  }
-  if(species==""){
-    warning("species field not specified")
-    return(NULL)
-  } else {
-    newdat <- rename_column(newdat,species,"species_")
-  }
-  if(subgenus!=""){
-    newdat <- rename_column(newdat,subgenus,"subgenus_")
-  } else {
-    warning("subgenus field not specified. Assuming empty")
-    newdat$subgenus_ <- NA
-  }
-  if(subspecies!=""){
-    newdat <- rename_column(newdat,subspecies,"subspecies_")
-  } else {
-    warning("subspecies field not specified. Assuming empty")
-    newdat$subspecies_ <- NA
-  }
-  if(author!=""){
-    newdat <- rename_column(newdat,author,"author_")
-  } else {
-    warning("author field not specified. Assuming empty")
-    newdat$author_ <- NA
-  }
-  if(verbose){pb = txtProgressBar(min = 0, max = nrow(newdat), initial = 0)}
-  for(i in 1:nrow(newdat)){
-    if(!is.empty(newdat$genus_[i])){
-      scn <- toproper(newdat$genus_[i])
-    }
-    if(!is.empty(newdat$subgenus_[i])){
-      scn <- paste(scn," (",toproper(newdat$genus_[i]),") ",sep = "")
-    }
-    if(!is.empty(newdat$species_[i])){
-      scn <- paste(scn,newdat$species_[i])
-    }
-    if(!is.empty(newdat$subspecies_[i])){
-      scn <- paste(scn,newdat$subspecies_[i])
-    }
-    if(!is.empty(newdat$author_[i])){
-      scn <- paste(scn,trimws(newdat$author_[i]))
-    }
-    newdat$sciname_[i] <- scn
-    if(verbose){setTxtProgressBar(pb,i)}
-  }
-  if(verbose){cat("\n")}
-  newdat <- rename_column(newdat,"genus_",genus)
-  newdat <- rename_column(newdat,"species_",species)
-  if(subgenus!=""){
-    newdat <- rename_column(newdat,"subgenus_",subgenus)
-  } else {
-    newdat <- newdat[ , !(names(newdat) %in% c("subgenus_"))]
-  }
-  if(subspecies!=""){
-    newdat <- rename_column(newdat,"subspecies_",subspecies)
-  } else {
-    newdat <- newdat[ , !(names(newdat) %in% c("subspecies_"))]
-  }
-  if(author!=""){
-    newdat <- rename_column(newdat,"author_",author)
-  } else {
-    newdat <- newdat[ , !(names(newdat) %in% c("author_"))]
-  }
-  if((sciname == "scientificname") & ("scientificname" %in% names(newdat))){
-    newdat$sciname <- newdat$sciname_
-    newdat <- newdat[ , !(names(newdat) %in% c("sciname_"))]
-  } else {
-    if(sciname %in% names(newdat)){
-      newdat <- newdat[ , !(names(newdat) %in% sciname)]
-    }
-    newdat <- rename_column(newdat,"sciname_",sciname)
-  }
-  return(newdat)
-}
-
-df <- cast_scientificname (df,
-                           sciname="scientificName", 
-                           genus="genus", 
-                           subgenus="subgenus", 
-                           species="specificEpithet", 
-                           subspecies="infraspecificEpithet", 
-                           author="scientificNameAuthorship", 
-                           verbose=FALSE)
-
-df$scientificNameAuthorship <- paste(df$scientificNameAuthorship,
-                                     df$namePublishedInYear, sep = ', ') # format scientificNameAuthorship to DarwinCore standard for ICZN
-
 # define functions: remove 'NA , NA' chars
 removeNA1 <- function(x) ifelse(!is.na(x), gsub("NA, NA", "", x))
 removeNA2 <- function(x) ifelse(!is.na(x), gsub("NA, ", "", x))
@@ -211,12 +41,117 @@ setDT(df)
 cols_to_be_rectified <- names(df)[vapply(df, is.character, logical(1))]
 df[,c(cols_to_be_rectified) := lapply(.SD, removeNA4), .SDcols = cols_to_be_rectified]
 
-# define function: fix parentheses in author names
-fixAuth <- function(x) ifelse(grepl('[a-z]),',x), paste(gsub(')', '',x),')',sep=''),x)
-df$scientificNameAuthorship <- fixAuth(df$scientificNameAuthorship) # fix cases like: (Jordan & Rothschild), 1922
+#Begin basic cleaning of df
 
-# End prep df for cleaning
+# basic string cleaning functions
+# define function: remove punctuation except spaces
+removePunc <- function(x) ifelse(!is.na(x), gsub('[[:punct:]]+','',x))
+# define function: find stuff with punctuation
+containsPunc <- function(x) ifelse(!is.na(x), grepl('[[:punct:]]', x, perl = TRUE))
+# define function: remove '\xa0' chars
+removeEncoding <- function(x) ifelse(!is.na(x), gsub("\xa0", "", x))
 
+# strip spaces from ends of strings
+# warning - we should do this for ALL columns...see code below copied from https://stackoverflow.com/questions/20760547/removing-whitespace-from-a-whole-data-frame-in-r
+setDT(df)
+cols_to_be_rectified <- names(df)[vapply(df, is.character, logical(1))]
+df[,c(cols_to_be_rectified) := lapply(.SD, trimws), .SDcols = cols_to_be_rectified]
+
+# remove remove '\xa0' chars
+setDT(df)
+cols_to_be_rectified <- names(df)[vapply(df, is.character, logical(1))]
+df[,c(cols_to_be_rectified) := lapply(.SD, removeEncoding), .SDcols = cols_to_be_rectified]
+
+# End basic cleaning of df
+
+# Begin selecting records for review
+
+# define function: name length
+name_length <- function(x) ifelse(!is.na(x), length(unlist(strsplit(x, ' '))), 0)
+# define function: is not in
+'%!in%' <- function(x,y)!('%in%'(x,y))
+
+# extract higher taxa
+higher_taxa <- df[which(lapply(df$infraspecificEpithet, name_length) == 0 & lapply(df$specificEpithet, name_length) == 0),]
+df <- df[which(lapply(df$infraspecificEpithet, name_length) != 0 | lapply(df$specificEpithet, name_length) != 0),]
+
+# extract rows with missing information to review file
+missing_genus <- df[which(lapply(df$specificEpithet, name_length) != 0 & lapply(df$genus, name_length) == 0),] # select rows with no genus, but has species
+missing_genus$reason <- "missing genus" # add review reason column
+df <- df[which(lapply(df$genus, name_length) != 0),] # extract rows with no genus, but has species from working dataframe
+missing_species <- df[which(lapply(df$specificEpithet, name_length) == 0 & lapply(df$infraspecificEpithet, name_length) != 0),] # extract rows with no species, but has subspecies
+missing_species$reason <- "missing specificEpithet" # add review reason column
+df_review <- rbind(missing_genus, missing_species) # combine extracted rows that are missing terms to df_review data frame
+# retain only rows with complete information in working file
+df <- df[which(lapply(df$specificEpithet, name_length) != 0 &
+                 lapply(df$infraspecificEpithet, name_length) != 0 | 
+                 lapply(df$specificEpithet, name_length) != 0 & lapply(df$infraspecificEpithet, name_length) == 0)] # extract rows with no species, but has subspecies from working dataframe
+df <- rbind(higher_taxa, df) # add higher taxa back to working data frame
+
+# # Missing data check 1
+# if(starting_records != nrow(df) + 
+#    nrow(df_review)) {print('Some records appear to have been lost. Script was terminated. Please address errors.')
+#   } else {
+  
+    # extract rows with unexpected data to review file
+    multi_epithet <- df[which(lapply(df$specificEpithet, name_length) > 1 | lapply(df$genus, name_length) > 1 | lapply(df$infraspecificEpithet, name_length) > 1),] # extract rows with a multi-name genus, specificEpithet OR infraspecificEpithet
+    multi_epithet$reason <- "multi term genus, specificEpithet or infraspecificEpithet" # add review reason column
+    df_review <- rbind(df_review, multi_epithet)
+    # retain only single term genus, species and subspecies rows in working file
+    df <- df[which(lapply(df$specificEpithet, name_length) <= 1),]
+    df <- df[which(lapply(df$infraspecificEpithet, name_length) <= 1),]
+    df <- df[which(lapply(df$genus, name_length) <= 1),]
+  
+    # extract sp's in specificEpithet and infraspecificEpithet
+    sp_wildcards <- c('sp', 'sp.', 'spp', 'spp.', 'sp.nov.', 'sp nov', 'sp. nov.', 
+                      'prob', 'prob.', 'probably', 'unid', 'unidentified',
+                      'spnov1')
+    variable_sp1 <- paste('sp', as.character(c(0:9)), sep='')
+    variable_sp2 <- paste('sp.', as.character(c(0:9)), sep='')
+    variable_sp3 <- paste('sp. ', as.character(c(0:9)), sep='')
+    sp_wildcards <- c(sp_wildcards, variable_sp1, variable_sp2, variable_sp3)
+    removed_sp <- df[which(df$specificEpithet %in% sp_wildcards), ] 
+    removed_sp$reason <- "specificEpithet flagged" # add review reason column
+    removed_spp <- df[(df$infraspecificEpithet %in% sp_wildcards), ]
+    removed_spp$reason <- "infraspecificEpithet flagged" # add review reason column
+    df_review <- rbind(df_review, removed_sp, removed_spp) # add extracted records to df_review
+    df <- df[which(df$specificEpithet %!in% sp_wildcards), ] # remove extracted spcificEpithet records from df
+    df <- df[which(df$infraspecificEpithet %!in% sp_wildcards), ] # remove extracted infraspecificEpithet records from df
+  
+    # extract names containing punctuation
+    # TODO we should check ALL names for punctuation
+    punctuated_species <- df[which(lapply(df$genus, containsPunc) == TRUE |
+                                     lapply(df$specificEpithet, containsPunc) == TRUE |
+                                     lapply(df$infraspecificEpithet, containsPunc) == TRUE),]
+    
+    punctuated_species$reason <- "contains punctuation" # add review reason column
+    df_review <- rbind(df_review, punctuated_species) # add extracted names to df_review
+    # remove punctuated names from df
+    df <- df[which(lapply(df$genus, containsPunc) == FALSE &
+                     lapply(df$specificEpithet, containsPunc) == FALSE &
+                     lapply(df$infraspecificEpithet, containsPunc) == FALSE),]
+    
+    # extract higher taxa for next set of review
+    higher_taxa <- df[which(lapply(df$infraspecificEpithet, name_length) == 0 & lapply(df$specificEpithet, name_length) == 0),]
+    df <- df[which(lapply(df$infraspecificEpithet, name_length) != 0 | lapply(df$specificEpithet, name_length) != 0),]
+      
+    # extract very short specific_epithet OR genus
+    short_genus <- df[which(lapply(df$genus, nchar) < 4),]
+    short_genus$reason <- "short name" # add review reason column
+    df <- df[which(lapply(df$genus, nchar) >= 4),] # remove short genera from df
+    df_review <- rbind(df_review, short_genus) # add extracted rows to df_review
+    short_specific <- df[which(lapply(df$specificEpithet, nchar) < 4),]
+    short_specific$reason <- "short name" # add review reason column
+    df <- df[which(lapply(df$specificEpithet, nchar) >= 4),] # remove short specificEpithets from df
+    df_review <- rbind(df_review, short_specific) # add extracted rows to df_review
+    short_infra <- df[which(lapply(df$infraspecificEpithet, nchar) != 0 & 
+                              lapply(df$infraspecificEpithet, nchar) < 4),]
+    short_infra$reason <- "short name" # add review reason column
+    df <- df[which(lapply(df$infraspecificEpithet, nchar) == 0 | 
+                     is.na(df$infraspecificEpithet) | 
+                     lapply(df$infraspecificEpithet, nchar) >= 4),] # remove short infraspecificEpithets from df
+    df_review <- rbind(df_review, short_infra) # add extracted rows to df_review
+    
     # Look for missing higher taxa
     # TODO can we streamline this process and make sure it repeats for all columns in higher_taxa?
     suggested_adds <- data.frame (taxonName  = c(),
