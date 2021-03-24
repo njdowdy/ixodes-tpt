@@ -13,7 +13,7 @@ containsPunc <- function(x) ifelse(!is.na(x), grepl('[[:punct:]]', x, perl = TRU
 removeEncoding <- function(x) ifelse(!is.na(x), gsub("\xa0", "", x))
 
 # fix capitalization for both genus and species
-# ignore author, publication
+# ignore author, publication, scientificName, and TPTID
 # toproper all other fields
 for(i in 1:ncol(df)) {
   name <- colnames(df)[i]
@@ -24,7 +24,9 @@ for(i in 1:ncol(df)) {
   ) {
     df[,i] <- sapply(df[,i], tolower)
   } else if(grepl('author', tolower(name), perl = TRUE) |
-            grepl('publi', tolower(name), perl = TRUE)) {
+            grepl('publi', tolower(name), perl = TRUE) | 
+            grepl('TPTID', tolower(name), perl = TRUE) | 
+            grepl('scient', perl = TRUE)) {
   } else {
     df[,i] <- sapply(df[,i], toproper)
   }
@@ -39,3 +41,5 @@ df[,c(cols_to_be_rectified) := lapply(.SD, trimws), .SDcols = cols_to_be_rectifi
 setDT(df)
 cols_to_be_rectified <- names(df)[vapply(df, is.character, logical(1))]
 df[,c(cols_to_be_rectified) := lapply(.SD, removeEncoding), .SDcols = cols_to_be_rectified]
+
+# proceed to tpt_names_for_review script
