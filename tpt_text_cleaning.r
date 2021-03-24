@@ -39,3 +39,5 @@ df[,c(cols_to_be_rectified) := lapply(.SD, trimws), .SDcols = cols_to_be_rectifi
 setDT(df)
 cols_to_be_rectified <- names(df)[vapply(df, is.character, logical(1))]
 df[,c(cols_to_be_rectified) := lapply(.SD, removeEncoding), .SDcols = cols_to_be_rectified]
+
+# proceed to tpt_names_for_review script
