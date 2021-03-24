@@ -1,6 +1,6 @@
 # Terrestrial Parasite Tracker Taxonomy Cleaning
 
-The R script in this repository was created to clean the various taxonomic classification sources received from Terrestrial Parasite Tracker (TPT) participants to be added to the TPT Taxonomy Reource. This document describes the process completed by the script.
+The R script in this repository was created to clean the various taxonomic classification sources received from Terrestrial Parasite Tracker (TPT) participants to be added to the TPT Taxonomy Resource. This document describes the process completed by the script.
 
 ## Library Import
 The following R packages will be installed by the script:
@@ -20,7 +20,7 @@ These steps prepare the file for the processing that will follow:
 5. Remove all columns that do not contain taxonomy except the unique ID created above. 
 
 ### columns with names including terms like the following will remain in the working file:
-domain, kingdom, regnum, phylum, class, legio, cohort, order, famil, trib, genus, species, sectio, variet, form, clade, series, author, publi, year, status, rank, name, epithet
+domain, kingdom, regnum, phylum, class, legio\*, cohort, order, famil\*, trib\*, genus, species, sectio\*, variet\*, form, clade, series, author, publi\*, year, status, rank, name, epithet
 
 6. Convert column headers to align with <a href="https://dwc.tdwg.org/terms/#taxon" class="external">Darwin Core (DwC) Taxon terms</a>. Terms not in this list will be handled by the cleaning process, but may not be included by any resource that adheres to DwC.
 
@@ -34,7 +34,7 @@ These steps complete some basic data cleanup.
 
 1. Apply "Proper" capitalization to all classification terms except specificEpithet and infraspecificEpithet.
 2. Strip spaces from beginning and ends of strings
-3. Remove all '\xa0' chars
+3. Remove all '\\xa0' characters
 
 ## Extract data that needs review
 The following data will be removed from the working file and placed in the output file taxa_need_review.csv for further review.
@@ -51,7 +51,7 @@ sp, sp., spp, spp., sp.nov., sp nov, sp. nov., prob, prob., probably, unid, unid
 7. Rows that include names shorter than four letters.
 
 ## Suggest taxa to add
-In order to ensure the entirety of the taxon tree of interest is included. A list of all higher taxa that are used in the working file as part of a classification but that are NOT included as their own row in the file will be generated in the suggested_adds.csv file. These terms may be missing from the working file or they may be included but misspelled. A thourough review of this list as compared to the working file is encourged. If it is determined that a term from the list should be added, then the term along with all of it's associated higher taxa, authorship, etc. should be added to the taxa_no_issues.csv output file for further processing.
+In order to ensure the entirety of the taxon tree of interest is included. A list of all higher taxa that are used in the working file as part of a classification but that are NOT included as their own row in the file will be generated in the suggested_adds.csv file. These terms may be missing from the working file or they may be included but misspelled. A thorough review of this list as compared to the working file is encouraged. If it is determined that a term from the list should be added, then the term along with all of it's associated higher taxa, authorship, etc. should be added to the taxa_no_issues.csv output file for further processing.
 
 ## Suggest taxa to remove
 If a higher taxon name is included in the file, but is NOT used as a higher taxon in any lower taxa, it will be listed in the output file higher_taxa_not_used.csv. These terms may be missing from the working file or they may be included but misspelled. A thourough review of this list as compared to the working file is encourged. If it is determined that a term from the list should be removed, then the term along with all of it's associated higher taxa, authorship, etc. should be removed to the taxa_no_issues.csv output file for further processing.
