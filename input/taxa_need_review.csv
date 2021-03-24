@@ -1,57 +1,57 @@
 TPTID,taxonID,scientificNameID,acceptedNameUsageID,parentNameUsageID,originalNameUsageID,nameAccordingToID,namePublishedInID,taxonConceptID,scientificName,acceptedNameUsage,parentNameUsage,originalNameUsage,nameAccordingTo,namePublishedIn,namePublishedInYear,higherClassification,kingdom,phylum,class,order,family,genus,subgenus,specificEpithet,infraspecificEpithet,taxonRank,verbatimTaxonRank,scientificNameAuthorship,vernacularName,nomenclaturalCode,taxonomicStatus,nomenclaturalStatus,taxonRemarks,infraorder,superfamily,subfamily
-Byusyn254,,,,,,,,,"Atyphoceras felix jordan, 1933",Atyphloceras multidentatus multidentatus (c. fox 1909),,,,,,,,,,,,Atyphoceras,,felix,,,,"Jordan, 1933",,,,,Recte atyphloceras,,,
-Byusyn4,,,,,,,,,"Cheetopsylla kakhetiana savenko, 1949","Chaetopsylla rothschildi kohaut, 1903",,,,,,,,,,,,Cheetopsylla,,kakhetiana,,,,"Savenko, 1949",,,,,"[sic] savenko, 1949",,,
-Col128720,128720,,128710,,,,,,"Opisodasys jellisoni (female) fox, 1941",,,,,,,,,,,,,Opisodasys,,jellisoni,,Species,,,,Iczn,Synonym,,,,,
-Col130150,130150,,130110,,,,,,"Ctenonotus jellisoni (male) (fox, 1941)",,,,,,,,,,,,,Ctenonotus,,jellisoni,,Species,,,,Iczn,Synonym,,,,,
-Col124680,124680,,124630,,,,,,"Ceratopsyllus rhipisoides (female) (li & wang, 1964)",,,,,,,,,,,,,Ceratopsyllus,,rhipisoides,,Species,,,,Iczn,Synonym,,,,,
-Col136880,136880,,136870,,,,,,"Ischnopsyllus schmitzi (male) oudemans, 1909",,,,,,,,,,,,,Ischnopsyllus,,schmitzi,,Species,,,,Iczn,Synonym,,,,,
-Col136730,136730,,136720,,,,,,"Ischnopsyllus schmitzi (female) oudemans, 1909",,,,,,,,,,,,,Ischnopsyllus,,schmitzi,,Species,,,,Iczn,Synonym,,,,,
-Col114500,114500,,114490,,,,,,"Palaeopsylla makaluensis (female) brelich, 1975",,,,,,,,,,,,,Palaeopsylla,,makaluensis,,Species,,,,Iczn,Synonym,,,,,
-Byu2079,,,,,,,,,"Zyx notabilis smit, 1953",,,,,,1953,,,,,Siphonaptera,Stivaliidae,Zyx,,notabilis,,,,"Smit, 1953",,,,,,Pygiopsyllomorpha,Pygiopsylloidea,
-Col109520,109520,,,Xe6,,,,,"Zyx notabilis smit, 1953",,,,,,,,,,,,,Zyx,,notabilis,,Species,,,,Iczn,Accepted,,,,,
-Byu347,,,,,,,,,"Rhadinopsylla li li argyropulo, 1941",,,,,,1941,,,,,Siphonaptera,Ctenophthalmidae,Rhadinopsylla,,li,li,,,"Argyropulo, 1941",,,,,,Hystrichopsyllomorpha,Hystrichopsylloidea,Rhadinopsyllinae
-Byu409,,,,,,,,,"Rhadinopsylla li murium ioff & tiflov, 1946",,,,,,1946,,,,,Siphonaptera,Ctenophthalmidae,Rhadinopsylla,,li,murium,,,"Ioff & Tiflov, 1946",,,,,,Hystrichopsyllomorpha,Hystrichopsylloidea,Rhadinopsyllinae
-Byu652,,,,,,,,,"Rhadinopsylla li transbaikalica ioff & tiflov, 1947",,,,,,1947,,,,,Siphonaptera,Ctenophthalmidae,Rhadinopsylla,,li,transbaikalica,,,"Ioff & Tiflov, 1947",,,,,,Hystrichopsyllomorpha,Hystrichopsylloidea,Rhadinopsyllinae
-Byu687,,,,,,,,,"Rhadinopsylla li ventricosa ioff & tiflov, 1946",,,,,,1946,,,,,Siphonaptera,Ctenophthalmidae,Rhadinopsylla,,li,ventricosa,,,"Ioff & Tiflov, 1946",,,,,,Hystrichopsyllomorpha,Hystrichopsylloidea,Rhadinopsyllinae
-Byu1302,,,,,,,,,"Ctenophthalmus dux jordan & rothschild, 1915",,,,,,1915,,,,,Siphonaptera,Ctenophthalmidae,Ctenophthalmus,,dux,,,,"Jordan & Rothschild, 1915",,,,,,Hystrichopsyllomorpha,Hystrichopsylloidea,Ctenophthalminae
-Byu1610,,,,,,,,,"Nycteridopsylla iae beaucournu & kock, 1992",,,,,,1992,,,,,Siphonaptera,Ischnopsyllidae,Nycteridopsylla,,iae,,,,"Beaucournu & Kock, 1992",,,,,,Ceratophyllomorpha,Ceratophylloidea,Ischnopsyllinae
-Byu1642,,,,,,,,,"Peromyscopsylla ino nakagawa & sakaguti, 1959",,,,,,1959,,,,,Siphonaptera,Leptopsyllidae,Peromyscopsylla,,ino,,,,"Nakagawa & Sakaguti, 1959",,,,,,Ceratophyllomorpha,Ceratophylloidea,Leptopsyllinae
-Byu1805,,,,,,,,,Rhadinopsylla li,,,,,,,,,,,Siphonaptera,Ctenophthalmidae,Rhadinopsylla,,li,,,,,,,,,,Hystrichopsyllomorpha,Hystrichopsylloidea,Rhadinopsyllinae
-Byu1862,,,,,,,,,"Cratynius lui gong & lei, 1988",,,,,,1988,,,,,Siphonaptera,Leptopsyllidae,Cratynius,,lui,,,,"Gong & Lei, 1988",,,,,,Ceratophyllomorpha,Ceratophylloidea,Leptopsyllinae
-Byu1863,,,,,,,,,"Ctenophthalmus lui hsieh & jameson, 1971",,,,,,1971,,,,,Siphonaptera,Ctenophthalmidae,Ctenophthalmus,,lui,,,,"Hsieh & Jameson, 1971",,,,,,Hystrichopsyllomorpha,Hystrichopsylloidea,Ctenophthalminae
-Byu1864,,,,,,,,,"Syngenopsyllus lui li, 1995",,,,,,1995,,,,,Siphonaptera,Ceratophyllidae,Syngenopsyllus,,lui,,,,"Li, 1995",,,,,,Ceratophyllomorpha,Ceratophylloidea,Ceratophyllinae
-Byu1893,,,,,,,,,"Palaeopsylla mai liu & chen, 2006",,,,,,2006,,,,,Siphonaptera,Ctenophthalmidae,Palaeopsylla,,mai,,,,"Liu & Chen, 2006",,,,,,Hystrichopsyllomorpha,Hystrichopsylloidea,Ctenophthalminae
-Byu2371,,,,,,,,,"Ctenidiosomus rex johnson, 1957",,,,,,1957,,,,,Siphonaptera,Stivaliidae,Ctenidiosomus,,rex,,,,"Johnson, 1957",,,,,,Pygiopsyllomorpha,Pygiopsylloidea,
-Byu2864,,,,,,,,,"Ceratophyllus wui wang & liu, 1996",,,,,,1996,,,,,Siphonaptera,Ceratophyllidae,Ceratophyllus,,wui,,,,"Wang & Liu, 1996",,,,,,Ceratophyllomorpha,Ceratophylloidea,Ceratophyllinae
-Byu2865,,,,,,,,,"Stenischia wui xie & lin, 1989",,,,,,1989,,,,,Siphonaptera,Ctenophthalmidae,Stenischia,,wui,,,,"Xie & Lin, 1989",,,,,,Hystrichopsyllomorpha,Hystrichopsylloidea,Rhadinopsyllinae
-Byu2868,,,,,,,,,"Ctenophthalmus xei gong & duan, 1992",,,,,,1992,,,,,Siphonaptera,Ctenophthalmidae,Ctenophthalmus,,xei,,,,"Gong & Duan, 1992",,,,,,Hystrichopsyllomorpha,Hystrichopsylloidea,Ctenophthalminae
-Byu2875,,,,,,,,,"Callopsylla xui wu, guo & liu, 1996",,,,,,1996,,,,,Siphonaptera,Ceratophyllidae,Callopsylla,,xui,,,,"Wu, Guo & Liu, 1996",,,,,,Ceratophyllomorpha,Ceratophylloidea,Ceratophyllinae
-Byu2880,,,,,,,,,"Callopsylla yui ye & jiang, 1990",,,,,,1990,,,,,Siphonaptera,Ceratophyllidae,Callopsylla,,yui,,,,"ye & Jiang, 1990",,,,,,Ceratophyllomorpha,Ceratophylloidea,Ceratophyllinae
-Byu2893,,,,,,,,,"Hystrichopsylla zii gong, 1992",,,,,,1992,,,,,Siphonaptera,Hystrichopsyllidae,Hystrichopsylla,,zii,,,,"Gong, 1992",,,,,,Hystrichopsyllomorpha,Hystrichopsylloidea,Hystrichopsyllinae
-Byusyn168,,,,,,,,,"Ischnopsyllus wui hsü, 1935","Nycteridopsylla galba dampf, 1910",,,,,,,,,,,,Ischnopsyllus,,wui,,,,"Hsü, 1935",,,,,,,,
-Col132170,132170,,,X34,,,,,"Cratynius lui gong zhengda & lei yamin, 1988",,,,,,,,,,,,,Cratynius,,lui,,Species,,,,Iczn,Accepted,,,,,
-Col133040,133040,,,X46,,,,,"Peromyscopsylla ino nakagawa & sakaguti, 1959",,,,,,,,,,,,,Peromyscopsylla,,ino,,Species,,,,Iczn,Accepted,,,,,
-Col130080,130080,,,Xk2,,,,,"Syngenopsyllus lui li kuei-chen, 1995",,,,,,,,,,,,,Syngenopsyllus,,lui,,Species,,,,Iczn,Accepted,,,,,
-Col123390,123390,,,Xh6,,,,,"Callopsylla yui ye ruiyu & jiang wanwu, 1990",,,,,,,,,,,,,Callopsylla,,yui,,Species,,,,Iczn,Accepted,,,,,
-Col123380,123380,,,Xh6,,,,,"Callopsylla xui wu hou-yong, guo tian-yu & liu quan, 1996",,,,,,,,,,,,,Callopsylla,,xui,,Species,,,,Iczn,Accepted,,,,,
-Col138830,138830,,,X6g,,,,,"Ceratophyllus wui wang & liu, 1996",,,,,,,,,,,,,Ceratophyllus,,wui,,Species,,,,Iczn,Accepted,,,,,
-Col137730,137730,,,X4a,,,,,"Nycteridopsylla iae beaucournu & kock, 1992",,,,,,,,,,,,,Nycteridopsylla,,iae,,Species,,,,Iczn,Accepted,,,,,
-Col137720,137720,,137710,,,,,,"Typhlopsylla wui hsu, 1935",,,,,,,,,,,,,Typhlopsylla,,wui,,Species,,,,Iczn,Synonym,,,,,
-Col107620,107620,,,Xbs,,,,,"Ctenidiosomus rex johnson, 1957",,,,,,,,,,,,,Ctenidiosomus,,rex,,Species,,,,Iczn,Accepted,,,,,
-Col115900,115900,,,Xf2,,,,,"Doratopsylla jii xie baoqi & tian jie, 1991",,,,,,,,,,,,,Doratopsylla,,jii,,Species,,,,Iczn,Accepted,,,,,
-Col119840,119840,,,X62,,,,,"Stenischia wui xie baoqi & lia jiabing, 1989",,,,,,,,,,,,,Stenischia,,wui,,Species,,,,Iczn,Accepted,,,,,
-Col120970,120970,,,X5q,,,,,"Hystrichopsylla zii gong zhengda, 1992",,,,,,,,,,,,,Hystrichopsylla,,zii,,Species,,,,Iczn,Accepted,,,,,
-Col111610,111610,,,X4q,,,,,"Ctenophthalmus dux jordan & rothschild, 1915",,,,,,,,,,,,,Ctenophthalmus,,dux,,Species,,,,Iczn,Accepted,,,,,
-Col114210,114210,,,X4q,,,,,"Ctenophthalmus lui hsieh & jameson, 1971, 1971",,,,,,,,,,,,,Ctenophthalmus,,lui,,Species,,,,Iczn,Accepted,,,,,
-Col119500,119500,,,X52,,,,,"Rhadinopsylla li argyropulo, 1941",,,,,,,,,,,,,Rhadinopsylla,,li,,Species,,,,Iczn,Accepted,,,,,
-Col119520,119520,,,119500,,,,,"Rhadinopsylla li murium ioff & tiflov, 1946",,,,,,,,,,,,,Rhadinopsylla,,li,murium,Infraspecific_name,,,,Iczn,Accepted,,,,,
-Col119540,119540,,,119500,,,,,"Rhadinopsylla li ventricosa ioff & tiflov, 1946",,,,,,,,,,,,,Rhadinopsylla,,li,ventricosa,Infraspecific_name,,,,Iczn,Accepted,,,,,
-Col119530,119530,,,119500,,,,,"Rhadinopsylla li transbaikalica ioff & tiflov, 1947",,,,,,,,,,,,,Rhadinopsylla,,li,transbaikalica,Infraspecific_name,,,,Iczn,Accepted,,,,,
-Col119510,119510,,,119500,,,,,"Rhadinopsylla li li argyropulo, 1941",,,,,,,,,,,,,Rhadinopsylla,,li,li,Infraspecific_name,,,,Iczn,Accepted,,,,,
-Gbif1417946,1417946,,1417946,,,,,,"Peromyscopsylla ino nakagawa & sakaguti, 1959","Peromyscopsylla ino nakagawa & sakaguti, 1959",,,,,,,Animalia,Arthropoda,Insecta,Siphonaptera,Leptopsyllidae,Peromyscopsylla,,ino,,Species,,"Nakagawa & Sakaguti, 1959",,,,,,,,
-Gbif5050705,5050705,,5050705,,,,,,"Ctenophthalmus lui hsieh & jameson, 1971","Ctenophthalmus lui hsieh & jameson, 1971",,,,,,,Animalia,Arthropoda,Insecta,Siphonaptera,Hystrichopsyllidae,Ctenophthalmus,,lui,,Species,,"Hsieh & Jameson, 1971",,,,,,,,
-Byu263,,,,,,,,,"Frontopsylla frontalis gud argyropulo, 1935",,,,,,1935,,,,,Siphonaptera,Leptopsyllidae,Frontopsylla,,frontalis,gud,,,"Argyropulo, 1935",,,,,,Ceratophyllomorpha,Ceratophylloidea,Amphipsyllinae
-Byusyn228,,,,,,,,,"Rhadinopsylla acuminata ioff & tiflov, 1946","Rhadinopsylla li transbaikalica ioff & tiflov, 1947",,,,,,,,,,,,Rhadinopsylla,,acuminata,,,,"Ioff & Tiflov, 1946",,,,,Suppressed by iczn,,,
-Byusyn381,,,,,,,,,"Monopsyllus indages lis ono, 1958","Monopsyllus indages rothschild, 1908",,,,,,,,,,,,Monopsyllus,,indages,lis,,,"Ono, 1958",,,,,,,,
-Col134610,134610,,,134530,,,,,"Frontopsylla frontalis gud argyropulo, 1935",,,,,,,,,,,,,Frontopsylla,,frontalis,gud,Infraspecific_name,,,,Iczn,Accepted,,,,,
-Col124900,124900,,124870,,,,,,"Ceratophyllus indages lis (ono, 1958)",,,,,,,,,,,,,Ceratophyllus,,indages,lis,Subspecies,,,,Iczn,Synonym,,,,,
+BYUSYN254,,,,,,,,,"Atyphoceras felix Jordan, 1933",Atyphloceras multidentatus multidentatus (C. Fox 1909),,,,,,,,,,,,Atyphoceras,,felix,,,,"Jordan, 1933",,,,,recte Atyphloceras,,,
+BYUSYN4,,,,,,,,,"Cheetopsylla kakhetiana Savenko, 1949","Chaetopsylla rothschildi Kohaut, 1903",,,,,,,,,,,,Cheetopsylla,,kakhetiana,,,,"Savenko, 1949",,,,,"[sic] Savenko, 1949",,,
+CoL128720,128720,,128710,,,,,,"Opisodasys jellisoni Fox, 1941",,,,,,,,,,,,,Opisodasys,,jellisoni,,SPECIES,,,,ICZN,SYNONYM,,,,,
+CoL130150,130150,,130110,,,,,,"Ctenonotus jellisoni (Fox, 1941)",,,,,,,,,,,,,Ctenonotus,,jellisoni,,SPECIES,,,,ICZN,SYNONYM,,,,,
+CoL124680,124680,,124630,,,,,,"Ceratopsyllus rhipisoides (Li & Wang, 1964)",,,,,,,,,,,,,Ceratopsyllus,,rhipisoides,,SPECIES,,,,ICZN,SYNONYM,,,,,
+CoL136880,136880,,136870,,,,,,"Ischnopsyllus schmitzi Oudemans, 1909",,,,,,,,,,,,,Ischnopsyllus,,schmitzi,,SPECIES,,,,ICZN,SYNONYM,,,,,
+CoL136730,136730,,136720,,,,,,"Ischnopsyllus schmitzi Oudemans, 1909",,,,,,,,,,,,,Ischnopsyllus,,schmitzi,,SPECIES,,,,ICZN,SYNONYM,,,,,
+CoL114500,114500,,114490,,,,,,"Palaeopsylla makaluensis Brelich, 1975",,,,,,,,,,,,,Palaeopsylla,,makaluensis,,SPECIES,,,,ICZN,SYNONYM,,,,,
+BYU2079,,,,,,,,,"Zyx notabilis Smit, 1953",,,,,,1953,,,,,Siphonaptera,Stivaliidae,Zyx,,notabilis,,,,"Smit, 1953",,,,,,Pygiopsyllomorpha,Pygiopsylloidea,
+CoL109520,109520,,,xE6,,,,,"Zyx notabilis Smit, 1953",,,,,,,,,,,,,Zyx,,notabilis,,SPECIES,,,,ICZN,ACCEPTED,,,,,
+BYU347,,,,,,,,,"Rhadinopsylla li li Argyropulo, 1941",,,,,,1941,,,,,Siphonaptera,Ctenophthalmidae,Rhadinopsylla,,li,li,,,"Argyropulo, 1941",,,,,,Hystrichopsyllomorpha,Hystrichopsylloidea,Rhadinopsyllinae
+BYU409,,,,,,,,,"Rhadinopsylla li murium Ioff & Tiflov, 1946",,,,,,1946,,,,,Siphonaptera,Ctenophthalmidae,Rhadinopsylla,,li,murium,,,"Ioff & Tiflov, 1946",,,,,,Hystrichopsyllomorpha,Hystrichopsylloidea,Rhadinopsyllinae
+BYU652,,,,,,,,,"Rhadinopsylla li transbaikalica Ioff & Tiflov, 1947",,,,,,1947,,,,,Siphonaptera,Ctenophthalmidae,Rhadinopsylla,,li,transbaikalica,,,"Ioff & Tiflov, 1947",,,,,,Hystrichopsyllomorpha,Hystrichopsylloidea,Rhadinopsyllinae
+BYU687,,,,,,,,,"Rhadinopsylla li ventricosa Ioff & Tiflov, 1946",,,,,,1946,,,,,Siphonaptera,Ctenophthalmidae,Rhadinopsylla,,li,ventricosa,,,"Ioff & Tiflov, 1946",,,,,,Hystrichopsyllomorpha,Hystrichopsylloidea,Rhadinopsyllinae
+BYU1302,,,,,,,,,"Ctenophthalmus dux Jordan & Rothschild, 1915",,,,,,1915,,,,,Siphonaptera,Ctenophthalmidae,Ctenophthalmus,,dux,,,,"Jordan & Rothschild, 1915",,,,,,Hystrichopsyllomorpha,Hystrichopsylloidea,Ctenophthalminae
+BYU1610,,,,,,,,,"Nycteridopsylla iae Beaucournu & Kock, 1992",,,,,,1992,,,,,Siphonaptera,Ischnopsyllidae,Nycteridopsylla,,iae,,,,"Beaucournu & Kock, 1992",,,,,,Ceratophyllomorpha,Ceratophylloidea,Ischnopsyllinae
+BYU1642,,,,,,,,,"Peromyscopsylla ino Nakagawa & Sakaguti, 1959",,,,,,1959,,,,,Siphonaptera,Leptopsyllidae,Peromyscopsylla,,ino,,,,"Nakagawa & Sakaguti, 1959",,,,,,Ceratophyllomorpha,Ceratophylloidea,Leptopsyllinae
+BYU1805,,,,,,,,,Rhadinopsylla li,,,,,,,,,,,Siphonaptera,Ctenophthalmidae,Rhadinopsylla,,li,,,,,,,,,,Hystrichopsyllomorpha,Hystrichopsylloidea,Rhadinopsyllinae
+BYU1862,,,,,,,,,"Cratynius lui Gong & Lei, 1988",,,,,,1988,,,,,Siphonaptera,Leptopsyllidae,Cratynius,,lui,,,,"Gong & Lei, 1988",,,,,,Ceratophyllomorpha,Ceratophylloidea,Leptopsyllinae
+BYU1863,,,,,,,,,"Ctenophthalmus lui Hsieh & Jameson, 1971",,,,,,1971,,,,,Siphonaptera,Ctenophthalmidae,Ctenophthalmus,,lui,,,,"Hsieh & Jameson, 1971",,,,,,Hystrichopsyllomorpha,Hystrichopsylloidea,Ctenophthalminae
+BYU1864,,,,,,,,,"Syngenopsyllus lui Li, 1995",,,,,,1995,,,,,Siphonaptera,Ceratophyllidae,Syngenopsyllus,,lui,,,,"Li, 1995",,,,,,Ceratophyllomorpha,Ceratophylloidea,Ceratophyllinae
+BYU1893,,,,,,,,,"Palaeopsylla mai Liu & Chen, 2006",,,,,,2006,,,,,Siphonaptera,Ctenophthalmidae,Palaeopsylla,,mai,,,,"Liu & Chen, 2006",,,,,,Hystrichopsyllomorpha,Hystrichopsylloidea,Ctenophthalminae
+BYU2371,,,,,,,,,"Ctenidiosomus rex Johnson, 1957",,,,,,1957,,,,,Siphonaptera,Stivaliidae,Ctenidiosomus,,rex,,,,"Johnson, 1957",,,,,,Pygiopsyllomorpha,Pygiopsylloidea,
+BYU2864,,,,,,,,,"Ceratophyllus wui Wang & Liu, 1996",,,,,,1996,,,,,Siphonaptera,Ceratophyllidae,Ceratophyllus,,wui,,,,"Wang & Liu, 1996",,,,,,Ceratophyllomorpha,Ceratophylloidea,Ceratophyllinae
+BYU2865,,,,,,,,,"Stenischia wui Xie & Lin, 1989",,,,,,1989,,,,,Siphonaptera,Ctenophthalmidae,Stenischia,,wui,,,,"Xie & Lin, 1989",,,,,,Hystrichopsyllomorpha,Hystrichopsylloidea,Rhadinopsyllinae
+BYU2868,,,,,,,,,"Ctenophthalmus xei Gong & Duan, 1992",,,,,,1992,,,,,Siphonaptera,Ctenophthalmidae,Ctenophthalmus,,xei,,,,"Gong & Duan, 1992",,,,,,Hystrichopsyllomorpha,Hystrichopsylloidea,Ctenophthalminae
+BYU2875,,,,,,,,,"Callopsylla xui Wu, Guo & Liu, 1996",,,,,,1996,,,,,Siphonaptera,Ceratophyllidae,Callopsylla,,xui,,,,"Wu, Guo & Liu, 1996",,,,,,Ceratophyllomorpha,Ceratophylloidea,Ceratophyllinae
+BYU2880,,,,,,,,,"Callopsylla yui ye & Jiang, 1990",,,,,,1990,,,,,Siphonaptera,Ceratophyllidae,Callopsylla,,yui,,,,"ye & Jiang, 1990",,,,,,Ceratophyllomorpha,Ceratophylloidea,Ceratophyllinae
+BYU2893,,,,,,,,,"Hystrichopsylla zii Gong, 1992",,,,,,1992,,,,,Siphonaptera,Hystrichopsyllidae,Hystrichopsylla,,zii,,,,"Gong, 1992",,,,,,Hystrichopsyllomorpha,Hystrichopsylloidea,Hystrichopsyllinae
+BYUSYN168,,,,,,,,,"Ischnopsyllus wui Hsü, 1935","Nycteridopsylla galba Dampf, 1910",,,,,,,,,,,,Ischnopsyllus,,wui,,,,"Hsü, 1935",,,,,,,,
+CoL132170,132170,,,x34,,,,,"Cratynius lui Gong Zhengda & Lei Yamin, 1988",,,,,,,,,,,,,Cratynius,,lui,,SPECIES,,,,ICZN,ACCEPTED,,,,,
+CoL133040,133040,,,x46,,,,,"Peromyscopsylla ino Nakagawa & Sakaguti, 1959",,,,,,,,,,,,,Peromyscopsylla,,ino,,SPECIES,,,,ICZN,ACCEPTED,,,,,
+CoL130080,130080,,,xK2,,,,,"Syngenopsyllus lui Li Kuei-chen, 1995",,,,,,,,,,,,,Syngenopsyllus,,lui,,SPECIES,,,,ICZN,ACCEPTED,,,,,
+CoL123390,123390,,,xH6,,,,,"Callopsylla yui Ye Ruiyu & Jiang Wanwu, 1990",,,,,,,,,,,,,Callopsylla,,yui,,SPECIES,,,,ICZN,ACCEPTED,,,,,
+CoL123380,123380,,,xH6,,,,,"Callopsylla xui Wu Hou-yong, Guo Tian-yu & Liu Quan, 1996",,,,,,,,,,,,,Callopsylla,,xui,,SPECIES,,,,ICZN,ACCEPTED,,,,,
+CoL138830,138830,,,x6G,,,,,"Ceratophyllus wui Wang & Liu, 1996",,,,,,,,,,,,,Ceratophyllus,,wui,,SPECIES,,,,ICZN,ACCEPTED,,,,,
+CoL137730,137730,,,x4A,,,,,"Nycteridopsylla iae Beaucournu & Kock, 1992",,,,,,,,,,,,,Nycteridopsylla,,iae,,SPECIES,,,,ICZN,ACCEPTED,,,,,
+CoL137720,137720,,137710,,,,,,"Typhlopsylla wui Hsu, 1935",,,,,,,,,,,,,Typhlopsylla,,wui,,SPECIES,,,,ICZN,SYNONYM,,,,,
+CoL107620,107620,,,xBS,,,,,"Ctenidiosomus rex Johnson, 1957",,,,,,,,,,,,,Ctenidiosomus,,rex,,SPECIES,,,,ICZN,ACCEPTED,,,,,
+CoL115900,115900,,,xF2,,,,,"Doratopsylla jii Xie Baoqi & Tian Jie, 1991",,,,,,,,,,,,,Doratopsylla,,jii,,SPECIES,,,,ICZN,ACCEPTED,,,,,
+CoL119840,119840,,,x62,,,,,"Stenischia wui Xie Baoqi & Lia Jiabing, 1989",,,,,,,,,,,,,Stenischia,,wui,,SPECIES,,,,ICZN,ACCEPTED,,,,,
+CoL120970,120970,,,x5Q,,,,,"Hystrichopsylla zii Gong Zhengda, 1992",,,,,,,,,,,,,Hystrichopsylla,,zii,,SPECIES,,,,ICZN,ACCEPTED,,,,,
+CoL111610,111610,,,x4Q,,,,,"Ctenophthalmus dux Jordan & Rothschild, 1915",,,,,,,,,,,,,Ctenophthalmus,,dux,,SPECIES,,,,ICZN,ACCEPTED,,,,,
+CoL114210,114210,,,x4Q,,,,,"Ctenophthalmus lui Hsieh & Jameson, 1971, 1971",,,,,,,,,,,,,Ctenophthalmus,,lui,,SPECIES,,,,ICZN,ACCEPTED,,,,,
+CoL119500,119500,,,x52,,,,,"Rhadinopsylla li Argyropulo, 1941",,,,,,,,,,,,,Rhadinopsylla,,li,,SPECIES,,,,ICZN,ACCEPTED,,,,,
+CoL119520,119520,,,119500,,,,,"Rhadinopsylla li murium Ioff & Tiflov, 1946",,,,,,,,,,,,,Rhadinopsylla,,li,murium,INFRASPECIFIC_NAME,,,,ICZN,ACCEPTED,,,,,
+CoL119540,119540,,,119500,,,,,"Rhadinopsylla li ventricosa Ioff & Tiflov, 1946",,,,,,,,,,,,,Rhadinopsylla,,li,ventricosa,INFRASPECIFIC_NAME,,,,ICZN,ACCEPTED,,,,,
+CoL119530,119530,,,119500,,,,,"Rhadinopsylla li transbaikalica Ioff & Tiflov, 1947",,,,,,,,,,,,,Rhadinopsylla,,li,transbaikalica,INFRASPECIFIC_NAME,,,,ICZN,ACCEPTED,,,,,
+CoL119510,119510,,,119500,,,,,"Rhadinopsylla li li Argyropulo, 1941",,,,,,,,,,,,,Rhadinopsylla,,li,li,INFRASPECIFIC_NAME,,,,ICZN,ACCEPTED,,,,,
+GBIF1417946,1417946,,1417946,,,,,,"Peromyscopsylla ino Nakagawa & Sakaguti, 1959","Peromyscopsylla ino Nakagawa & Sakaguti, 1959",,,,,,,Animalia,Arthropoda,Insecta,Siphonaptera,Leptopsyllidae,Peromyscopsylla,,ino,,SPECIES,,"Nakagawa & Sakaguti, 1959",,,,,,,,
+GBIF5050705,5050705,,5050705,,,,,,"Ctenophthalmus lui Hsieh & Jameson, 1971","Ctenophthalmus lui Hsieh & Jameson, 1971",,,,,,,Animalia,Arthropoda,Insecta,Siphonaptera,Hystrichopsyllidae,Ctenophthalmus,,lui,,SPECIES,,"Hsieh & Jameson, 1971",,,,,,,,
+BYU263,,,,,,,,,"Frontopsylla frontalis gud Argyropulo, 1935",,,,,,1935,,,,,Siphonaptera,Leptopsyllidae,Frontopsylla,,frontalis,gud,,,"Argyropulo, 1935",,,,,,Ceratophyllomorpha,Ceratophylloidea,Amphipsyllinae
+BYUSYN228,,,,,,,,,"Rhadinopsylla acuminata Ioff & Tiflov, 1946","Rhadinopsylla li transbaikalica Ioff & Tiflov, 1947",,,,,,,,,,,,Rhadinopsylla,,acuminata,,,,"Ioff & Tiflov, 1946",,,,,suppressed by ICZN,,,
+BYUSYN381,,,,,,,,,"Monopsyllus indages lis Ono, 1958","Monopsyllus indages Rothschild, 1908",,,,,,,,,,,,Monopsyllus,,indages,lis,,,"Ono, 1958",,,,,,,,
+CoL134610,134610,,,134530,,,,,"Frontopsylla frontalis gud Argyropulo, 1935",,,,,,,,,,,,,Frontopsylla,,frontalis,gud,INFRASPECIFIC_NAME,,,,ICZN,ACCEPTED,,,,,
+CoL124900,124900,,124870,,,,,,"Ceratophyllus indages lis (Ono, 1958)",,,,,,,,,,,,,Ceratophyllus,,indages,lis,SUBSPECIES,,,,ICZN,SYNONYM,,,,,
