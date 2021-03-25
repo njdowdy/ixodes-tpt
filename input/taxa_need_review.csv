@@ -1,6 +1,6 @@
 TPTID,taxonID,scientificNameID,acceptedNameUsageID,parentNameUsageID,originalNameUsageID,nameAccordingToID,namePublishedInID,taxonConceptID,scientificName,acceptedNameUsage,parentNameUsage,originalNameUsage,nameAccordingTo,namePublishedIn,namePublishedInYear,higherClassification,kingdom,phylum,class,order,family,genus,subgenus,specificEpithet,infraspecificEpithet,taxonRank,verbatimTaxonRank,scientificNameAuthorship,vernacularName,nomenclaturalCode,taxonomicStatus,nomenclaturalStatus,taxonRemarks,infraorder,superfamily,subfamily
-BYUSYN254,,,,,,,,,"Atyphoceras felix Jordan, 1933",Atyphloceras multidentatus multidentatus (C. Fox 1909),,,,,,,,,,,,Atyphoceras,,felix,,,,"Jordan, 1933",,,,,recte Atyphloceras,,,
-BYUSYN4,,,,,,,,,"Cheetopsylla kakhetiana Savenko, 1949","Chaetopsylla rothschildi Kohaut, 1903",,,,,,,,,,,,Cheetopsylla,,kakhetiana,,,,"Savenko, 1949",,,,,"[sic] Savenko, 1949",,,
+BYUSYN254,,,,,,,,,"Atyphoceras felix Jordan, 1933",Atyphloceras multidentatus multidentatus (c. fox 1909),,,,,,,,,,,,Atyphoceras,,felix,,,,"Jordan, 1933",,,,,Recte atyphloceras,,,
+BYUSYN4,,,,,,,,,"Cheetopsylla kakhetiana Savenko, 1949","Chaetopsylla rothschildi kohaut, 1903",,,,,,,,,,,,Cheetopsylla,,kakhetiana,,,,"Savenko, 1949",,,,,"[sic] savenko, 1949",,,
 BYU2079,,,,,,,,,"Zyx notabilis Smit, 1953",,,,,,1953,,,,,Siphonaptera,Stivaliidae,Zyx,,notabilis,,,,"Smit, 1953",,,,,,Pygiopsyllomorpha,Pygiopsylloidea,
 BYU347,,,,,,,,,"Rhadinopsylla li li Argyropulo, 1941",,,,,,1941,,,,,Siphonaptera,Ctenophthalmidae,Rhadinopsylla,,li,li,,,"Argyropulo, 1941",,,,,,Hystrichopsyllomorpha,Hystrichopsylloidea,Rhadinopsyllinae
 BYU409,,,,,,,,,"Rhadinopsylla li murium Ioff & Tiflov, 1946",,,,,,1946,,,,,Siphonaptera,Ctenophthalmidae,Rhadinopsylla,,li,murium,,,"Ioff & Tiflov, 1946",,,,,,Hystrichopsyllomorpha,Hystrichopsylloidea,Rhadinopsyllinae
@@ -21,7 +21,7 @@ BYU2868,,,,,,,,,"Ctenophthalmus xei Gong & Duan, 1992",,,,,,1992,,,,,Siphonapter
 BYU2875,,,,,,,,,"Callopsylla xui Wu, Guo & Liu, 1996",,,,,,1996,,,,,Siphonaptera,Ceratophyllidae,Callopsylla,,xui,,,,"Wu, Guo & Liu, 1996",,,,,,Ceratophyllomorpha,Ceratophylloidea,Ceratophyllinae
 BYU2880,,,,,,,,,"Callopsylla yui ye & Jiang, 1990",,,,,,1990,,,,,Siphonaptera,Ceratophyllidae,Callopsylla,,yui,,,,"ye & Jiang, 1990",,,,,,Ceratophyllomorpha,Ceratophylloidea,Ceratophyllinae
 BYU2893,,,,,,,,,"Hystrichopsylla zii Gong, 1992",,,,,,1992,,,,,Siphonaptera,Hystrichopsyllidae,Hystrichopsylla,,zii,,,,"Gong, 1992",,,,,,Hystrichopsyllomorpha,Hystrichopsylloidea,Hystrichopsyllinae
-BYUSYN168,,,,,,,,,"Ischnopsyllus wui Hsü, 1935","Nycteridopsylla galba Dampf, 1910",,,,,,,,,,,,Ischnopsyllus,,wui,,,,"Hsü, 1935",,,,,,,,
+BYUSYN168,,,,,,,,,"Ischnopsyllus wui Hsü, 1935","Nycteridopsylla galba dampf, 1910",,,,,,,,,,,,Ischnopsyllus,,wui,,,,"Hsü, 1935",,,,,,,,
 BYU263,,,,,,,,,"Frontopsylla frontalis gud Argyropulo, 1935",,,,,,1935,,,,,Siphonaptera,Leptopsyllidae,Frontopsylla,,frontalis,gud,,,"Argyropulo, 1935",,,,,,Ceratophyllomorpha,Ceratophylloidea,Amphipsyllinae
-BYUSYN228,,,,,,,,,"Rhadinopsylla acuminata Ioff & Tiflov, 1946","Rhadinopsylla li transbaikalica Ioff & Tiflov, 1947",,,,,,,,,,,,Rhadinopsylla,,acuminata,,,,"Ioff & Tiflov, 1946",,,,,suppressed by ICZN,,,
-BYUSYN381,,,,,,,,,"Monopsyllus indages lis Ono, 1958","Monopsyllus indages Rothschild, 1908",,,,,,,,,,,,Monopsyllus,,indages,lis,,,"Ono, 1958",,,,,,,,
+BYUSYN228,,,,,,,,,"Rhadinopsylla acuminata Ioff & Tiflov, 1946","Rhadinopsylla li transbaikalica ioff & tiflov, 1947",,,,,,,,,,,,Rhadinopsylla,,acuminata,,,,"Ioff & Tiflov, 1946",,,,,Suppressed by iczn,,,
+BYUSYN381,,,,,,,,,"Monopsyllus indages lis Ono, 1958","Monopsyllus indages rothschild, 1908",,,,,,,,,,,,Monopsyllus,,indages,lis,,,"Ono, 1958",,,,,,,,
