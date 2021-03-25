@@ -25,8 +25,9 @@ for(i in 1:ncol(df)) {
     df[,i] <- sapply(df[,i], tolower)
   } else if(grepl('author', tolower(name), perl = TRUE) |
             grepl('publi', tolower(name), perl = TRUE) | 
-            grepl('TPTID', tolower(name), perl = TRUE) | 
-            grepl('scient', perl = TRUE)) {
+            grepl('tptid', tolower(name), perl = TRUE) | 
+            grepl('scientific', tolower(name), perl = TRUE) |
+            grepl('accepted', tolower(name), perl = TRUE)) {
   } else {
     df[,i] <- sapply(df[,i], toproper)
   }
