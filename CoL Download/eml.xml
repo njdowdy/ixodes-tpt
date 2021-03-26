@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<eml:eml xmlns:eml="eml://ecoinformatics.org/eml-2.1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="eml://ecoinformatics.org/eml-2.1.1 http://rs.gbif.org/schema/eml-gbif-profile/1.1/eml.xsd"
+        packageId="col-clb-1022"  system="http://catalogueoflife.org" scope="system"
+  xml:lang="en">
+
+
+<dataset>
+  <title>Parhost World Database of Fleas</title>
+  <creator>
+    <individualName>
+      <givenName>S.</givenName>
+      <surName>Medvedev</surName>
+    </individualName>
+  </creator>
+  <associatedParty>
+    <organizationName>Zoological Institute</organizationName>
+  </associatedParty>
+  <associatedParty>
+    <organizationName>Russian Academy of Sciences</organizationName>
+  </associatedParty>
+  <associatedParty>
+    <organizationName>St Petersburg</organizationName>
+  </associatedParty>
+  <associatedParty>
+    <organizationName>Russia</organizationName>
+  </associatedParty>
+  <associatedParty>
+    <individualName>
+      <givenName>A.</givenName>
+      <surName>Lobanov</surName>
+    </individualName>
+    <role>author</role>
+  </associatedParty>
+  <associatedParty>
+    <individualName>
+      <givenName>I.</givenName>
+      <surName>Lyangouzov</surName>
+    </individualName>
+    <role>author</role>
+  </associatedParty>
+    <pubDate>2005-11-14</pubDate>
+  <language>english</language>
+  <abstract>
+    <para>The Parhost World Database of Fleas is a complete electronic taxonomic checklist of order Siphonaptera. This is part of the original analytical system PARHOST, which contains extensive data on flea morphology, parasite–host associations, and geographical distribution.</para>
+  </abstract>
+  <distribution scope="document">
+    <online>
+      <url function="information">http://www.zin.ru/Animalia/Siphonaptera</url>
+    </online>
+  </distribution>
+  <contact>
+    <individualName>
+      <surName>S Medvedev, A Lobanov</surName>
+    </individualName>
+  </contact>
+</dataset>
+
+<additionalMetadata>
+  <metadata>
+    <gbif>
+      <resourceLogoUrl>https://github.com/Sp2000/colplus-repo/raw/master/logos/Parhost.png</resourceLogoUrl>
+    </gbif>
+    <col>
+      <completeness>99</completeness>
+      <confidence>4</confidence>
+    </col>
+  </metadata>
+</additionalMetadata>
+
+</eml:eml>
