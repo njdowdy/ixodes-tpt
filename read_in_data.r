@@ -22,19 +22,20 @@ BYU <- nrow(BYU_Siphonaptera) +
   nrow(BYU_Siphonaptera_Synonyms)# number of original records in BYU Sources
 # COL <- nrow(CoL_Siphonaptera) # number of original records in CoL Source
 FMNH <- nrow(FMNH_Siphonaptera) # number of original records in FMNH Source
-# GBIF <- nrow(GBIF_Siphonaptera) # number of original records in GBIF Source
+GBIF <- nrow(GBIF_Siphonaptera) # number of original records in GBIF Source
 # ITIS <- nrow(ITIS_Siphonaptera) # number of original records in ITIS Source
 NMNH <- nrow(NMNH_Siphonaptera) # number of original records in NMNH Source
 TOTAL <- nrow(BYU_Siphonaptera) + 
   nrow(BYU_Siphonaptera_Synonyms) + 
   nrow(FMNH_Siphonaptera) + 
+  nrow(GBIF_Siphonaptera) +
   nrow(NMNH_Siphonaptera) # number of original records in all sources
-source_code <- c("BYU", "FMNH", "NMNH", "Total")
-original_name_count <- c(BYU, FMNH, NMNH, TOTAL)
+source_code <- c("BYU", "FMNH", "GBIF", "NMNH", "Total")
+original_name_count <- c(BYU, FMNH, GBIF, NMNH, TOTAL)
 source_summary <- data.frame(source_code, original_name_count)
 
 # combine all sources for cleaning
-df <- rbind(BYU_Siphonaptera,BYU_Siphonaptera_Synonyms, FMNH_Siphonaptera, NMNH_Siphonaptera)
+df <- rbind(BYU_Siphonaptera, BYU_Siphonaptera_Synonyms, FMNH_Siphonaptera, GBIF_Siphonaptera, NMNH_Siphonaptera)
 # df <- rbind(BYU_Siphonaptera,BYU_Siphonaptera_Synonyms, CoL_Siphonaptera, FMNH_Siphonaptera, GBIF_Siphonaptera, ITIS_Siphonaptera, NMNH_Siphonaptera)
 
 # verify number of names

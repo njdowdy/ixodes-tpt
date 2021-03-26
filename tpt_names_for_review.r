@@ -96,16 +96,8 @@ if(TOTAL != nrow(df) +
    nrow(df_review)) {print('Some records appear to have been lost. Script was terminated. Please address errors.')
 } else {
   write.csv(df_review,"~/GitHub/ixodes-tpt/output/taxa_need_review.csv", row.names = FALSE) # these need review
-  print('all records accounted for, review records in df_review, make changes, remove reason column and save in input folder')
+  print('all records accounted for, review records in df_review, make changes, remove reason column and save in input folder.
+        If any rows should be removed, save them in the input folder as df_removed')
 } # End of Missing data check 2
 
-# read in cleaned review file
-df_review <- read.csv("~/GitHub/ixodes-tpt/input/taxa_need_review.csv", encoding="UTF-8")
-df <- rbind(df, df_review)
 
-# Missing data check 3
-if(TOTAL != nrow(df)){
-  print('Some records appear to have been lost. Script was terminated. Please address errors.')
-} else {
-    print('all records accounted for, proceed to de-duplication script')
-} # End of Missing data check 3
