@@ -38,3 +38,4 @@ for(i in 1:length(df$canonicalName)){
 print('FINISHED!')
 check_mat <- as.data.frame(cbind(compared_names, similar_names)) # create matched names data frame
 write.csv(check_mat,"~/GitHub/ixodes-tpt/output/matched_names_review.csv", row.names = FALSE) # write out matched names for review
+print('proceed to missing higher taxa')

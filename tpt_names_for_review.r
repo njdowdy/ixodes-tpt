@@ -56,18 +56,18 @@ df_review <- rbind(df_review, removed_sp, removed_spp) # add extracted records t
 df <- df[which(df$specificEpithet %!in% sp_wildcards), ] # remove extracted spcificEpithet records from df
 df <- df[which(df$infraspecificEpithet %!in% sp_wildcards), ] # remove extracted infraspecificEpithet records from df
 
-# extract names containing punctuation
-# TODO we should check ALL names for punctuation
-punctuated_species <- df[which(lapply(df$genus, containsPunc) == TRUE |
-                                 lapply(df$specificEpithet, containsPunc) == TRUE |
-                                 lapply(df$infraspecificEpithet, containsPunc) == TRUE),]
-
-punctuated_species$reason <- "contains punctuation" # add review reason column
-df_review <- rbind(df_review, punctuated_species) # add extracted names to df_review
-# remove punctuated names from df
-df <- df[which(lapply(df$genus, containsPunc) == FALSE &
-                 lapply(df$specificEpithet, containsPunc) == FALSE &
-                 lapply(df$infraspecificEpithet, containsPunc) == FALSE),]
+# # extract names containing punctuation - this was removed earlier
+# # TODO we should check ALL names for punctuation
+# punctuated_species <- df[which(lapply(df$genus, containsPunc) == TRUE |
+#                                  lapply(df$specificEpithet, containsPunc) == TRUE |
+#                                  lapply(df$infraspecificEpithet, containsPunc) == TRUE),]
+# 
+# punctuated_species$reason <- "contains punctuation" # add review reason column
+# df_review <- rbind(df_review, punctuated_species) # add extracted names to df_review
+# # remove punctuated names from df
+# df <- df[which(lapply(df$genus, containsPunc) == FALSE &
+#                  lapply(df$specificEpithet, containsPunc) == FALSE &
+#                  lapply(df$infraspecificEpithet, containsPunc) == FALSE),]
 
 # extract higher taxa for next set of review
 higher_taxa <- df[which(lapply(df$infraspecificEpithet, name_length) == 0 & lapply(df$specificEpithet, name_length) == 0),]
@@ -97,7 +97,5 @@ if(TOTAL != nrow(df) +
 } else {
   write.csv(df_review,"~/GitHub/ixodes-tpt/output/taxa_need_review.csv", row.names = FALSE) # these need review
   print('all records accounted for, review records in df_review, make changes, remove reason column and save in input folder.
-        If any rows should be removed, save them in the input folder as df_removed')
+        If any rows should be removed, save them in the input folder as df_removed and proceed to canonical name add')
 } # End of Missing data check 2
-
-

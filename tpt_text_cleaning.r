@@ -6,10 +6,14 @@ library(stringr)
 
 # define function: make capitalization proper case
 toproper <- function(x) ifelse(!is.na(x), paste0(toupper(substr(x, 1, 1)), tolower(substring(x, 2))),NA)
-# define function: remove punctuation except spaces
-removePunc <- function(x) ifelse(!is.na(x), str_extract(x, "[[:punct:]]"), )
-# define function: remove '\xa0' chars
-removeEncoding <- function(x) ifelse(!is.na(x), str_extract(x, "[^[:print:]]"), )
+# define function: remove '\xa0' chars and non-conforming punctuation
+phrase_clean <- function(x) gsub("[^[:alnum:][:blank:]&,()]", "", x)
+
+# "[^[:alnum:][:blank:]?&/\\-]"
+# This grammar means: remove everything but:
+# [:alnum:] Alphanumeric characters: 0-9 a-Z
+# [:blank:] spaces and tabs
+# ?&/\\- Specific characters you want to save for some reason. Punctuation signs can be saved here
 
 # fix capitalization for both genus and species
 # ignore author, publication, scientificName, and TPTID
@@ -36,12 +40,7 @@ for(i in 1:ncol(df)) {
 # remove remove '\xa0' chars
 setDT(df)
 cols_to_be_rectified <- names(df)[vapply(df, is.character, logical(1))]
-df[,c(cols_to_be_rectified) := lapply(.SD, removeEncoding), .SDcols = cols_to_be_rectified]
-
-# remove punctuation this messes up author names that include parens
-# setDT(df)
-# cols_to_be_rectified <- names(df)[vapply(df, is.character, logical(1))]
-# df[,c(cols_to_be_rectified) := lapply(.SD, removePunc), .SDcols = cols_to_be_rectified]
+df[,c(cols_to_be_rectified) := lapply(.SD, phrase_clean), .SDcols = cols_to_be_rectified]
 
 # strip spaces from ends of strings
 setDT(df)

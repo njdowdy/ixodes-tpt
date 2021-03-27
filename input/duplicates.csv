@@ -1,0 +1,17 @@
+﻿TPTdataset,taxonID,scientificNameID,acceptedNameUsageID,parentNameUsageID,originalNameUsageID,nameAccordingToID,namePublishedInID,taxonConceptID,scientificName,acceptedNameUsage,parentNameUsage,originalNameUsage,nameAccordingTo,namePublishedIn,namePublishedInYear,higherClassification,kingdom,phylum,class,order,family,genus,subgenus,specificEpithet,infraspecificEpithet,taxonRank,verbatimTaxonRank,scientificNameAuthorship,vernacularName,nomenclaturalCode,taxonomicStatus,nomenclaturalStatus,taxonRemarks,infraorder,superfamily,subfamily,canonicalName,dupe_dataset
+BYUSYN,109,,,,,,,,"Chiastopsylla caffrarica DeMeillon, 1940",Chiastopsylla rossi (Waterston 1909),,,,,,,,,,,,Chiastopsylla,,caffrarica,,,,1940,,,,,,,,,Chiastopsylla caffrarica,BYU
+BYU,2962,,,,,,,,Ctenophthalmus,,,,,,,,,,,Siphonaptera,Ctenophthalmidae,Ctenophthalmus,,,,,,,,,,,,Hystrichopsyllomorpha,Hystrichopsylloidea,,Ctenophthalmus,BYU
+BYU,764,,,,,,,,Ctenophthalmus agyrtes,,,,,,,,,,,Siphonaptera,Ctenophthalmidae,Ctenophthalmus,,agyrtes,,,,,,,,,,Hystrichopsyllomorpha,Hystrichopsylloidea,Ctenophthalminae,Ctenophthalmus agyrtes,BYU
+BYUSYN,394,,,,,,,,"Ctenophthalmus agyrtes jordanianus Peus, 1950","Ctenophthalmus agyrtes graecus Jordan, 1926",,,,,,,,,,,,Ctenophthalmus,,agyrtes,jordanianus,,,"Peus, 1950",,,,,,,,,Ctenophthalmus agyrtes jordanianus,BYU
+NMNH,624,,,,,,,,Dinopsyllus (Dinopsyllus),,,,,,,,,,Insecta,Siphonaptera,Hystrichopsyllidae,Dinopsyllus,Dinopsyllus,,,,,,,,,,,,,,Dinopsyllus,NMNH
+BYUSYN,342,,,,,,,,"Megabothris rhipisoides Li & Wang, 1964","Ceratophyllus garei Rothschild, 1902",,,,,,,,,,,,Megabothris,,rhipisoides,,,,"Li & Wang, 1964",,,,,,,,,Megabothris rhipisoides,BYU
+BYUSYN,332,,,,,,,,"Neopsylla marleaneae Lewis, 1971","Neopsylla stevensi stevensi Rothschild, 1915",,,,,,,,,,,,Neopsylla,,marleaneae,,,,"Lewis, 1971",,,,,,,,,Neopsylla marleaneae,BYU
+BYUSYN,76,,,,,,,,"Nosopsyllus laeviceps gobiensis Cyprich, Kiefer & Cendsuren, 1977",Nosopsyllus laeviceps ellobii (Wagner 1933),,,,,,,,,,,,Nosopsyllus,,laeviceps,gobiensis,,,"Cyprich, Kiefer & Cendsuren, 1977",,,,,,,,,Nosopsyllus laeviceps gobiensis,BYU
+BYUSYN,507,,,,,,,,"Peromyscopsylla duma Traub, 1944",Peromyscopsylla selenis (Rothschild 1906),,,,,,,,,,,,Peromyscopsylla,,duma,,,,"Traub, 1944",,,,,,,,,Peromyscopsylla duma,BYU
+NMNH,1025,,,,,,,,Polygenis (Polygenis),,,,,,,,,,Insecta,Siphonaptera,Rhopalopsyllidae,Polygenis,Polygenis,,,,,,,,,,,,,,Polygenis,NMNH
+NMNH,831,,,,,,,,Pulex (Pulex),,,,,,,,,,Insecta,Siphonaptera,Pulicidae,Pulex,Pulex,,,,,,,,,,,,,,Pulex,NMNH
+NMNH,1046,,,,,,,,Pygiopsylla,,,,,,,,,,Insecta,Siphonaptera,Pygiopsyllidae,Pygiopsylla,,,,,,,,,,,,,,,Pygiopsylla,NMNH
+BYU,3096,,,,,,,,Rhadinopsylla,,,,,,,,,,,Siphonaptera,Ctenophthalmidae,Rhadinopsylla,,,,,,,,,,,,Hystrichopsyllomorpha,Hystrichopsylloidea,Rhadinopsyllinae,Rhadinopsylla,BYU
+BYU,3173,,,,,,,,Rhadinopsyllinae,,,,,,,,,,,Siphonaptera,Ctenophthalmidae,,,,,,,,,,,,,Hystrichopsyllomorpha,Hystrichopsylloidea,Rhadinopsyllinae,Rhadinopsyllinae,BYU
+BYU,3176,,,,,,,,Spilopsyllinae,,,,,,,,,,,Siphonaptera,Pulicidae,,,,,,,,,,,,,Pulicomorpha,Pulicoidea,Spilopsyllinae,Spilopsyllinae,BYU
+BYU,3177,,,,,,,,Spilopsyllinae,,,,,,,,,,,Siphonaptera,Pulicidae,,,,,,,,,,,,,Pulicomorpha,Pulicoidea,Spilopsyllinae,Spilopsyllinae,BYU

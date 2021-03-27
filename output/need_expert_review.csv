@@ -1,0 +1,47 @@
+﻿TPTdataset,taxonID,scientificNameID,acceptedNameUsageID,parentNameUsageID,originalNameUsageID,nameAccordingToID,namePublishedInID,taxonConceptID,scientificName,acceptedNameUsage,parentNameUsage,originalNameUsage,nameAccordingTo,namePublishedIn,namePublishedInYear,higherClassification,kingdom,phylum,class,order,family,genus,subgenus,specificEpithet,infraspecificEpithet,taxonRank,verbatimTaxonRank,scientificNameAuthorship,vernacularName,nomenclaturalCode,taxonomicStatus,nomenclaturalStatus,taxonRemarks,infraorder,superfamily,subfamily,canonicalName,dupe_dataset
+BYUSYN,138,,,,,,,,"Acediopsylla Ewing, 1940",Cediopsylla simplex (Baker 1895),,,,,,,,,,,,Acediopsylla,,,,,,"Ewing, 1940",,,,,cediopsylla,,,,Acediopsylla,BYU
+BYUSYN,139,,,,,,,,"Acediopsylla Ewing, 1940","Cediopsylla spillmanni Jordan, 1930",,,,,,,,,,,,Acediopsylla,,,,,,"Ewing, 1940",,,,,cediopsylla,,,,Acediopsylla,BYU
+BYUSYN,140,,,,,,,,"Acediopsylla Ewing, 1940","Cediopsylla tepolita Barrera, 1967",,,,,,,,,,,,Acediopsylla,,,,,,"Ewing, 1940",,,,,cediopsylla,,,,Acediopsylla,BYU
+BYUSYN,34,,,,,,,,"Ceratophyllus acutus Baker, 1904",Nosopsyllus mokrzeckyi (Wagner 1916),,,,,,,,,,,,Ceratophyllus,,acutus,,,,"Baker, 1904",,,,,,,,,Ceratophyllus acutus,BYU
+BYUSYN,35,,,,,,,,"Ceratophyllus acutus Baker, 1904",Oropsylla montana (Baker 1895),,,,,,,,,,,,Ceratophyllus,,acutus,,,,"Baker, 1904",,,,,,,,,Ceratophyllus acutus,BYU
+BYUSYN,528,,,,,,,,"Ceratophyllus hexactena petropolitana Wagner, 1898","Neopsylla honora Jordan, 1932",,,,,,,,,,,,Ceratophyllus,,hexactena,petropolitana,,,"Wagner, 1898",,,,,,,,,Ceratophyllus hexactena petropolitana,BYU
+BYUSYN,529,,,,,,,,"Ceratophyllus hexactena petropolitana Wagner, 1898",Ischnopsyllus hexactenus (Kolenati 1856),,,,,,,,,,,,Ceratophyllus,,hexactena,petropolitana,,,"Wagner, 1898",,,,,,,,,Ceratophyllus hexactena petropolitana,BYU
+BYU,1569,,,,,,,,Ceratophyllus hirundinis (Curtis 1826),,,,,,1826,,,,,Siphonaptera,Ceratophyllidae,Ceratophyllus,,hirundinis,,,,(Curtis 1826),,,,,,Ceratophyllomorpha,Ceratophylloidea,Ceratophyllinae,Ceratophyllus hirundinis,BYU
+BYUSYN,62,,,,,,,,"Ceratophyllus hirundinis Chao, 1947",Ceratophyllus hirundinis (Curtis 1826),,,,,,,,,,,,Ceratophyllus,,hirundinis,,,,"Chao, 1947",,,,Homonym,,,,,Ceratophyllus hirundinis,BYU
+BYUSYN,92,,,,,,,,"Ceratophyllus monedulae Dale, 1878",Dasypsyllus gallinulae gallinulae (Dale 1878),,,,,,,,,,,,Ceratophyllus,,monedulae,,,,"Dale, 1878",,,,,,,,,Ceratophyllus monedulae,BYU
+BYUSYN,572,,,,,,,,"Ceratophyllus monedulae Wahlgren, 1907",Ceratophyllus vagabundus vagabundus (Boheman 1866),,,,,,,,,,,,Ceratophyllus,,monedulae,,,,"Wahlgren, 1907",,,,,,,,,Ceratophyllus monedulae,BYU
+BYUSYN,406,,,,,,,,"Ctenophthalmus agyrtes slovacicus Rosicky, 1951","Ctenophthalmus agyrtes peusianus Rosicky, 1955",,,,,,,,,,,,Ctenophthalmus,,agyrtes,,,,"Rosicky, 1951",,,,,Partim,,,,Ctenophthalmus agyrtes,BYU
+BYUSYN,407,,,,,,,,"Ctenophthalmus agyrtes slovacicus Rosicky, 1951",Ctenophthalmus agyrtes agyrtes (Heller 1896),,,,,,,,,,,,Ctenophthalmus,,agyrtes,,,,"Rosicky, 1951",,,,,Partim,,,,Ctenophthalmus agyrtes,BYU
+BYUSYN,404,,,,,,,,"Ctenophthalmus orphilus tatricus Rosicky, 1951","Ctenophthalmus agyrtes peusianus Rosicky, 1955",,,,,,,,,,,,Ctenophthalmus,,orphilus,tatricus,,,"Rosicky, 1951",,,,,Partim,,,,Ctenophthalmus orphilus tatricus,BYU
+BYUSYN,405,,,,,,,,"Ctenophthalmus orphilus tatricus Rosicky, 1951",Ctenophthalmus agyrtes agyrtes (Heller 1896),,,,,,,,,,,,Ctenophthalmus,,orphilus,tatricus,,,"Rosicky, 1951",,,,,Partim,,,,Ctenophthalmus orphilus tatricus,BYU
+BYUSYN,519,,,,,,,,"Diamanus hopkinsi Vargas, 1955",Oropsylla montana (Baker 1895),,,,,,,,,,,,Diamanus,,hopkinsi,,,,"Vargas, 1955",,,,,,,,,Diamanus hopkinsi,BYU
+BYUSYN,520,,,,,,,,"Diamanus hopkinsi Vargas, 1955",Nosopsyllus mokrzeckyi (Wagner 1916),,,,,,,,,,,,Diamanus,,hopkinsi,,,,"Vargas, 1955",,,,,,,,,Diamanus hopkinsi,BYU
+BYUSYN,357,,,,,,,,"Glauertidos M Rothschild, 1937",Acanthopsylla,,,,,,,,,,,,Glauertidos,,,,,,"M Rothschild, 1937",,,,,,,,,Glauertidos,BYU
+BYUSYN,356,,,,,,,,"Glauertidos M Rothschild, 1937",Acanthopsylla scintilla scintilla (M Rothschild 1936),,,,,,,,,,,,Glauertidos,,,,,,"Rothschild, 1937",,,,,"Nomen novum for glauertia  acanthopsylla jordan & rothschild, 1922",,,,Glauertidos,BYU
+BYUSYN,544,,,,,,,,"Ischnopsyllus kolenatii Wagner, 1930","Neopsylla honora Jordan, 1932",,,,,,,,,,,,Ischnopsyllus,,kolenatii,,,,"Wagner, 1930",,,,,,,,,Ischnopsyllus kolenatii,BYU
+BYUSYN,545,,,,,,,,"Ischnopsyllus kolenatii Wagner, 1930",Ischnopsyllus hexactenus (Kolenati 1856),,,,,,,,,,,,Ischnopsyllus,,kolenatii,,,,"Wagner, 1930",,,,,,,,,Ischnopsyllus kolenatii,BYU
+BYUSYN,386,,,,,,,,"Ischnopsyllus schmitzi Oudemans, 1909",Ischnopsyllus intermedius (Rothschild 1898),,,,,,,,,,,,Ischnopsyllus,,schmitzi,,,,"Oudemans, 1909",,,,,Female ischnopsyllus intermedius,,,,Ischnopsyllus schmitzi,BYU
+BYUSYN,387,,,,,,,,"Ischnopsyllus schmitzi Oudemans, 1909",Citellophilus simplex simplex (Wagner 1902),,,,,,,,,,,,Ischnopsyllus,,schmitzi,,,,"Oudemans, 1909",,,,,Male of ischnopsyllus simplex simplex,,,,Ischnopsyllus schmitzi,BYU
+BYUSYN,506,,,,,,,,"Jellisonia Traub, 1944",Jellisonia,,,,,,,,,,,,,Jellisonia,,,Subgenus,,"Traub, 1944",,,,,,,,,Jellisonia,BYU
+BYUSYN,383,,,,,,,,"Nycteridopsylla bouchei Oudemans, 1906",Ischnopsyllus hexactenus (Kolenati 1856),,,,,,,,,,,,Nycteridopsylla,,bouchei,,,,"Oudemans, 1906",,,,,,,,,Nycteridopsylla bouchei,BYU
+BYUSYN,384,,,,,,,,"Nycteridopsylla bouchei Oudemans, 1906","Neopsylla honora Jordan, 1932",,,,,,,,,,,,Nycteridopsylla,,bouchei,,,,"Oudemans, 1906",,,,,,,,,Nycteridopsylla bouchei,BYU
+BYUSYN,200,,,,,,,,"Opisodasys jellisoni I Fox, 1941",Tarsopsylla octodecimdentata (Kolenati 1863),,,,,,,,,,,,Opisodasys,,jellisoni,,,,"I Fox, 1941",,,,,,,,,Opisodasys jellisoni,BYU
+BYUSYN,201,,,,,,,,"Opisodasys jellisoni I Fox, 1941",Opisodasys vesperalis (Jordan 1929),,,,,,,,,,,,Opisodasys,,jellisoni,,,,"I Fox, 1941",,,,,,,,,Opisodasys jellisoni,BYU
+BYUSYN,2,,,,,,,,"Oropsylla montana mandarina (Jordan & Rothschild, 1911)","Oropsylla montana (Baker, 1895)",,,,,,,,,,,,Oropsylla,,montana,mandarina,,,"(Jordan & Rothschild, 1911)",,,,,,,,,Oropsylla montana mandarina,BYU
+BYUSYN,3,,,,,,,,"Oropsylla montana mandarina (Jordan & Rothschild, 1911)","Nosopsyllus mokrzeckyi (Wagner, 1916)",,,,,,,,,,,,Oropsylla,,montana,mandarina,,,"(Jordan & Rothschild, 1911)",,,,,,,,,Oropsylla montana mandarina,BYU
+BYUSYN,52,,,,,,,,"Palaeopsylla makaluensis Brelih, 1975","Palaeopsylla aporema Smit & Rosicky, 1976",,,,,,,,,,,,Palaeopsylla,,makaluensis,,,,"Brelih, 1975",,,,,Female,,,,Palaeopsylla makaluensis,BYU
+BYUSYN,53,,,,,,,,"Palaeopsylla makaluensis Brelih, 1975","Palaeopsylla tauberi makaluensis Brelih, 1975",,,,,,,,,,,,Palaeopsylla,,makaluensis,,,,"Brelih, 1975",,,,,Male,,,,Palaeopsylla makaluensis,BYU
+BYUSYN,74,,,,,,,,"Pulex canis Curtis, 1826",Ctenocephalides canis (Curtis 1926),,,,,,,,,,,,Pulex,,canis,,,,"Curtis, 1826",,,,Homonym,Junior homonym,,,,Pulex canis,BYU
+BYUSYN,120,,,,,,,,"Pulex canis Dugs, 1832",Ctenocephalides canis (Curtis 1926),,,,,,,,,,,,Pulex,,canis,,,,"Dugs, 1832",,,,Homonym,Junior homonym,,,,Pulex canis,BYU
+BYUSYN,51,,,,,,,,"Pulex vespertilionis Bouch, 1835",Ischnopsyllus hexactenus (Kolenati 1856),,,,,,,,,,,,Pulex,,vespertilionis,,,,"Bouch, 1835",,,,,,,,,Pulex vespertilionis,BYU
+BYUSYN,123,,,,,,,,"Pulex vespertilionis Dugs, 1832",Ischnopsyllus hexactenus (Kolenati 1856),,,,,,,,,,,,Pulex,,vespertilionis,,,,"Dugs, 1832",,,,,,,,,Pulex vespertilionis,BYU
+BYUSYN,292,,,,,,,,"Pygiopsylla congrua Jordan & Rothschild, 1922","Pygiopsylla hoplia Jordan & Rothschild, 1922",,,,,,,,,,,,Pygiopsylla,,congrua,,,,"Jordan & Rothschild, 1922",,,,,"Pygiopsylla congrua jordan & rothschild, 1922 (female)",,,,Pygiopsylla congrua,BYU
+BYUSYN,293,,,,,,,,"Pygiopsylla congrua Jordan & Rothschild, 1922",Pygiopsylla zethi (Rothschild 1904),,,,,,,,,,,,Pygiopsylla,,congrua,,,,"Jordan & Rothschild, 1922",,,,,"Pygiopsylla congrua jordan & rothschild, 1922 (male)",,,,Pygiopsylla congrua,BYU
+BYU,2471,,,,,,,,"Rhadinopsylla semenovi Argyropulo, 1946",,,,,,1946,,,,,Siphonaptera,Ctenophthalmidae,Rhadinopsylla,,semenovi,,,,"Argyropulo, 1946",,,,,,Hystrichopsyllomorpha,Hystrichopsylloidea,Rhadinopsyllinae,Rhadinopsylla semenovi,BYU
+BYUSYN,11,,,,,,,,"Rhadinopsylla semenovi Argyropulo, 1941","Rhadinopsylla semenovi Argyropulo, 1946",,,,,,,,,,,,Rhadinopsylla,,semenovi,,,,"Argyropulo, 1941",,,,,,,,,Rhadinopsylla semenovi,BYU
+BYUSYN,313,,,,,,,,"Spalacopsylla Kolenati, 1856",Ctenophthalmus,,,,,,,,,,,,Spalacopsylla,,,,,,"Kolenati, 1856",,,,Synonym,Junior synonym,,,,Spalacopsylla,BYU
+BYUSYN,382,,,,,,,,"Spalacopsylla Oudemans, 1906",Ischnopsyllus,,,,,,,,,,,,Spalacopsylla,,,,,,"Oudemans, 1906",,,,Synonym,Junior synonym,,,,Spalacopsylla,BYU
+BYUSYN,401,,,,,,,,"Spalacopsylla Pinto, 1930",Adoratopsylla,,,,,,,,,,,,Spalacopsylla,,,,,,"Pinto, 1930",,,,Synonym,Junior synonym,,,,Spalacopsylla,BYU
+BYUSYN,141,,,,,,,,"Trichopsylla Ewing & Fox, 1943",Amalaraeus,,,,,,,,,,,,Trichopsylla,,,,,,Ewing & Fox,,,,Homonym,"Junior homonym of trichopsylla kolenati, 1863",,,,Trichopsylla,BYU
+BYUSYN,288,,,,,,,,"Trichopsylla Jordan & Rothschild, 1920",Amalaraeus,,,,,,,,,,,,Trichopsylla,,,,,,"Jordan & Rothschild, 1920",,,,Homonym,"Junior homonym of trichopsylla kolenati, 1863",,,,Trichopsylla,BYU
+BYUSYN,324,,,,,,,,"Trichopsylla Kolenati, 1863",Amalaraeus,,,,,,,,,,,,Trichopsylla,,,,,,"Kolenati, 1863",,,,,,,,,Trichopsylla,BYU
