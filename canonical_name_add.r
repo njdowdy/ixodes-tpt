@@ -14,9 +14,11 @@ if(TOTAL != (nrow(df) +
   print('Some records appear to have been lost. Script was terminated. Please address errors.')
 } else {
   print('all records accounted for, proceed to canonical name script')
+} # End of Missing data check 1
 
 # extract rows with canonicalName
 canonical <- df[which(lapply(df$canonicalName, name_length) != 0),]
+df <- df[which(lapply(df$canonicalName, name_length) == 0),]
 
 # extract higher taxa for next set of review
 higher_taxa <- df[which(lapply(df$infraspecificEpithet, name_length) == 0 & lapply(df$specificEpithet, name_length) == 0),]
@@ -60,4 +62,9 @@ review_canonical <- read.csv("~/GitHub/ixodes-tpt/input/review_canonical.csv", e
 higher_taxa <- rbind(higher_taxa, review_canonical) # add reviewed higher_taxa back to the working file
 df <- rbind(higher_taxa, df) # add higher taxa back to df for remainder of de-duplication
 
-} # End of Missing data check 1
+# Missing data check 2
+if(TOTAL != nrow(df)){
+  print('Some records appear to have been lost. Script was terminated. Please address errors.')
+} else {
+  print('all records accounted for, proceed to name deduplication name script')
+} # End of Missing data check 2

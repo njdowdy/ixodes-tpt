@@ -1,5 +1,5 @@
-"source_code","original_name_count","duplicated_names","unique_names"
-"BYU",3806,39,3767
-"FMNH",324,324,0
-"NMNH",1046,948,98
-"Total",5176,1311,3865
+"source_code","original_name_count","removed_names","unique_names"
+"BYU",3806,0,3748
+"FMNH",324,16,0
+"NMNH",1046,875,167
+"Total",5176,891,3915
